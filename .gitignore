@@ -39,3 +39,6 @@ Thumbs.db
 # Local
 .npmrc
 .yarnrc
+
+# Vercel
+.vercel

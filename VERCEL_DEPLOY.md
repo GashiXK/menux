@@ -23,7 +23,10 @@ NUXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NUXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 SUPABASE_URL=https://your-project.supabase.co
 SUPABASE_ANON_KEY=your-anon-key
+NUXT_EXPERIMENTAL_IMPORT_PROTECTION=false
 ```
+
+**Note:** `NUXT_EXPERIMENTAL_IMPORT_PROTECTION=false` is required to fix a build issue with @nuxt/ui. This is already configured in `vercel.json`, but you can also set it as an environment variable.
 
 ### Optional (if using service role for server-side operations):
 

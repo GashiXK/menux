@@ -8,6 +8,13 @@ export default defineNuxtConfig({
     transpile: ['@nuxt/ui']
   },
   
+  // Disable import protection for @nuxt/ui module (known issue)
+  experimental: {
+    ...(process.env.NUXT_EXPERIMENTAL_IMPORT_PROTECTION !== 'false' ? {} : {
+      importProtection: false
+    })
+  },
+  
   vite: {
     define: {
       'process.env.NUXT_PUBLIC_SUPABASE_URL': JSON.stringify(process.env.NUXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || 'https://jnmanmirtzvjzxftmfiv.supabase.co'),
@@ -52,7 +59,6 @@ export default defineNuxtConfig({
       rollupOptions: {
         output: {
           manualChunks: {
-            'nuxt-ui': ['@nuxt/ui'],
             'supabase': ['@supabase/supabase-js'],
             'vue-vendor': ['vue', 'vue-router']
           }

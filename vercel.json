@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npm run build",
+  "buildCommand": "NUXT_EXPERIMENTAL_IMPORT_PROTECTION=false npm run build",
   "outputDirectory": ".output/public",
   "devCommand": "npm run dev",
   "installCommand": "npm install",
