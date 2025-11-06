@@ -57,6 +57,6 @@ tests/
 # Database files
 database/
 
-# Type definitions (will be generated)
-types/
+# Type definitions - needed for build
+# types/ - DO NOT EXCLUDE, needed for compilation
 

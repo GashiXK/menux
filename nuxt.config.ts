@@ -3,16 +3,14 @@ import { defineNuxtConfig } from 'nuxt/config'
 import { resolve } from 'path'
 
 export default defineNuxtConfig({
-  // Ensure env vars are loaded
-    build: {
+  // Build configuration
+  build: {
     transpile: ['@nuxt/ui']
   },
   
   // Disable import protection for @nuxt/ui module (known issue)
   experimental: {
-    ...(process.env.NUXT_EXPERIMENTAL_IMPORT_PROTECTION !== 'false' ? {} : {
-      importProtection: false
-    })
+    importProtection: false
   },
   
   vite: {
