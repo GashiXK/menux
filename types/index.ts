@@ -36,6 +36,9 @@ export type {
   SortParams
 } from './common'
 
+// Menu template types
+export type { MenuTemplateProps } from './menu-template'
+
 // Re-export for convenience
 export type { Database } from './database'
 
