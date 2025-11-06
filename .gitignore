@@ -1,0 +1,41 @@
+# Nuxt
+.nuxt
+.output
+dist
+
+# Node
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# IDE
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Testing
+coverage
+.nyc_output
+test-results
+playwright-report
+
+# Logs
+logs
+*.log
+
+# OS
+Thumbs.db
+
+# Local
+.npmrc
+.yarnrc

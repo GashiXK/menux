@@ -1,0 +1,62 @@
+# Dependencies
+node_modules/
+.nuxt/
+.output/
+.nitro/
+dist/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Testing
+coverage/
+.nyc_output/
+playwright-report/
+test-results/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build artifacts
+.turbo/
+.vercel/
+
+# Git
+.git/
+.gitignore
+
+# Documentation
+*.md
+!README.md
+
+# Scripts (not needed in production)
+scripts/
+
+# Tests
+tests/
+*.test.ts
+*.spec.ts
+
+# Database files
+database/
+
+# Type definitions (will be generated)
+types/
+

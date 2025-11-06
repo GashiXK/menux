@@ -1,0 +1,260 @@
+---
+alwaysApply: true
+---
+## 🎯 Purpose
+In any Nuxt 3 project, use this rule to **scaffold, refactor, or extend** a front-end that:
+- Uses **Nuxt UI** for components and **Tailwind CSS** for styling.
+- Applies **enterprise design principles** (NN/g heuristics, Apple HIG, Material, Fluent, Polaris).
+- Ships **clean, reusable, accessible** code with strong UX.
+- Enforces **component/composable architecture**, **testing**, and **performance budgets**.
+
+## 🧩 Activation Scope
+Trigger this rule when:
+- Editing or creating files in a Nuxt project (`nuxt.config.ts`, `app.vue`, `pages/*`, `components/*`, `composables/*`, `plugins/*`, `layouts/*`).
+- Adding UI or UX features, forms, navigation, or component libraries.
+- The request mentions **Nuxt**, **Nuxt UI**, **Tailwind**, **design system**, **UX**, or **best practices**.
+
+## 🏗️ Default Tech Stack
+- **Nuxt 3** (server-side or hybrid rendering; Nitro server where applicable).
+- **Nuxt UI (latest)** for headless/accessible Vue components and tokens.
+- **Tailwind CSS** with a design-token bridge and CSS variables.
+- **Pinia** for state, **VueUse** for utilities, **@nuxt/image** for media, **@nuxt/icon** for icons.
+- **Vitest** + **@vue/test-utils** for unit tests; **Playwright** for E2E.
+- **ESLint** + **Prettier** + **TypeScript strict** for code quality.
+
+> When generating package configs, prefer **pnpm**. If the workspace already uses npm/yarn, match the existing manager.
+
+## 📁 Project Structure (enforce)
+.
+├─ app.vue
+├─ nuxt.config.ts
+├─ tailwind.config.ts
+├─ components/
+│ ├─ ui/ # design-system layer: wrappers around Nuxt UI components
+│ ├─ primitives/ # atoms: buttons, inputs, icons
+│ └─ patterns/ # molecules/organisms: cards, tables, forms
+├─ composables/
+│ ├─ useFetchX.ts # typed API callers
+│ ├─ useFeatureFlags.ts
+│ └─ useA11yFocusRing.ts
+├─ layouts/
+│ ├─ default.vue
+│ └─ marketing.vue
+├─ pages/
+│ └─ (route groups)
+├─ plugins/
+│ ├─ ui.ts # Nuxt UI configuration
+│ └─ analytics.client.ts
+├─ public/
+├─ server/
+│ └─ api/ # optional Nitro endpoints
+├─ styles/
+│ ├─ main.css
+│ └─ tokens.css # CSS variables for theme scales
+├─ tests/
+│ ├─ unit/
+│ └─ e2e/
+└─ types/
+
+## 🧠 Design Principles (apply in code & reviews)
+- **NN/g 10 Heuristics**: visibility of system status, match with real-world, user control, consistency, error prevention, recognition over recall, flexibility, aesthetic/minimalist design, clear error messages, help & docs.
+- **Platform-grade Systems**: adopt patterns from Apple HIG, Material, Microsoft Fluent, Shopify Polaris — especially **spacing, hierarchy, states, motion, accessibility, responsiveness, and content density**.
+- **Information Hierarchy First**: clear visual rhythm; consistent grid; semantic HTML.
+- **Accessible by Default**: keyboard focus order, focus rings, color contrast ≥ WCAG AA; aria-attributes; prefers-reduced-motion.
+- **Composability & Reuse**: small, typed components; no business logic in views; views orchestrate composables/services.
+- **Performance Budgets**: LCP < 2.5s, CLS < 0.1, TTI < 3s; split routes, lazy import non-critical modules, image optimization.
+- **Internationalization**: copy separated; RTL-safe spacing; date/number formats via Intl.
+
+## ⚙️ Nuxt & Library Setup (Cursor should generate/modify)
+1. **Install**
+   - `pnpm dlx nuxi@latest init .` (if new)
+   - Add: `@nuxt/ui`, `@pinia/nuxt`, `@nuxt/image`, `@vueuse/nuxt`, `@nuxt/icon`, `tailwindcss`, `postcss`, `autoprefixer`, `@tailwindcss/forms`, `@tailwindcss/typography`.
+2. **nuxt.config.ts**
+   - Enable modules above.
+   - Turn on `experimental.payloadExtraction` when safe.
+   - Configure routes rules for caching and image domains.
+   - Define runtimeConfig for API endpoints/keys.
+3. **Tailwind**
+   - Create `tailwind.config.ts` with theme tokens (font, spacing scale, color palette).
+   - Add `@tailwind base; @tailwind components; @tailwind utilities;` to `styles/main.css`.
+   - Wire CSS in `nuxt.config.ts` (`css: ['~/styles/main.css','~/styles/tokens.css']`).
+4. **Nuxt UI**
+   - Create `plugins/ui.ts` to register theme, color mode, and UI tokens (radius, shadow, transitions).
+
+## 🧪 Testing Requirements
+- **Unit (Vitest)**: each component/composable has tests for render, props, events, a11y roles, and edge cases.
+- **E2E (Playwright)**: critical flows (auth, search, checkout, upload) must be covered across mobile & desktop viewports.
+- **Contract tests** for API types (Zod or TypeScript inference with `as const` schemas).
+
+## ♿ Accessibility Checklist (enforce)
+- Keyboard focus visible and not suppressed.
+- `aria-*` roles/labels on interactive elements.
+- Contrast checked (tokens enforced).
+- Motion guarded by `prefers-reduced-motion`.
+- Form fields: labels, descriptions, error text, and `aria-invalid`.
+
+## 🧩 Component Patterns
+- **Primitives**: wrap Nuxt UI components with app-level props/tokens.
+- **Patterns**: compose primitives (e.g., `DataTable`, `FilterBar`, `FormDialog`).
+- **State**: local state in components; global via Pinia with explicit interfaces; no direct store usage in primitives.
+- **Async**: use `useAsyncData`/`$fetch` in composables; never in UI primitives.
+
+## 🧱 Example Snippets (generate these when requested)
+
+### `nuxt.config.ts`
+```ts
+export default defineNuxtConfig({
+  modules: [
+    '@nuxt/ui',
+    '@pinia/nuxt',
+    '@nuxt/image',
+    '@vueuse/nuxt',
+    '@nuxt/icon'
+  ],
+  css: ['~/styles/main.css', '~/styles/tokens.css'],
+  ui: {
+    // Nuxt UI theme tokens can be customized here
+    primary: 'indigo',
+    gray: 'neutral',
+    rounded: 'lg'
+  },
+  runtimeConfig: {
+    public: {
+      apiBase: process.env.NUXT_PUBLIC_API_BASE ?? '/api'
+    }
+  },
+  typescript: { strict: true },
+  future: { compatibilityVersion: 4 },
+})
+tailwind.config.ts
+import type { Config } from 'tailwindcss'
+
+export default <Partial<Config>>{
+  content: [
+    './components/**/*.{vue,js,ts}',
+    './layouts/**/*.vue',
+    './pages/**/*.vue',
+    './composables/**/*.{js,ts}',
+    './app.vue',
+    './node_modules/@nuxt/ui/**/*.{js,vue,ts}'
+  ],
+  theme: {
+    extend: {
+      colors: {
+        brand: {
+          DEFAULT: 'oklch(60% 0.14 265)',
+          50: '#eef2ff',
+          600: '#4f46e5',
+          700: '#4338ca'
+        }
+      },
+      spacing: { '72': '18rem', '84': '21rem', '96': '24rem' },
+      borderRadius: { xl: '1rem', '2xl': '1.25rem' }
+    }
+  },
+  plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography')]
+}
+Design-System Button (primitive)
+<!-- components/primitives/AppButton.vue -->
+<script setup lang="ts">
+import { UButton } from '#components'
+defineProps<{
+  label: string
+  icon?: string
+  variant?: 'solid' | 'ghost' | 'soft'
+  loading?: boolean
+  disabled?: boolean
+  type?: 'button' | 'submit' | 'reset'
+}>()
+const emit = defineEmits<{ (e:'click', ev:MouseEvent):void }>()
+</script>
+
+<template>
+  <UButton
+    :label="label"
+    :icon="icon"
+    :variant="variant ?? 'solid'"
+    :loading="loading"
+    :disabled="disabled"
+    :type="type ?? 'button'"
+    class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-700"
+    @click="(ev) => emit('click', ev)"
+  />
+</template>
+Data Fetch Composable
+// composables/useFetchX.ts
+export function useFetchX<T>(path: string, opts?: RequestInit) {
+  const config = useRuntimeConfig()
+  return useAsyncData<T>(path, () =>
+    $fetch<T>(`${config.public.apiBase}${path}`, { ...opts })
+  )
+}
+Form Pattern (a11y, validation)
+<!-- components/patterns/ProfileForm.vue -->
+<script setup lang="ts">
+import { UInput, UFormGroup, UButton } from '#components'
+import { z } from 'zod'
+
+const schema = z.object({ name: z.string().min(2), email: z.string().email() })
+const state = reactive({ name: '', email: '' })
+const errors = ref<Record<string,string>>({})
+
+function validate() {
+  const res = schema.safeParse(state)
+  errors.value = {}
+  if (!res.success) {
+    for (const issue of res.error.issues) errors.value[issue.path.join('.')] = issue.message
+    return false
+  }
+  return true
+}
+function submit() {
+  if (!validate()) return
+  // emit save or call composable
+}
+</script>
+
+<template>
+  <form @submit.prevent="submit" novalidate>
+    <UFormGroup label="Name" name="name" :error="errors.name">
+      <UInput v-model="state.name" aria-describedby="name_hint" />
+      <p id="name_hint" class="text-sm text-neutral-500">Enter your full name.</p>
+    </UFormGroup>
+
+    <UFormGroup label="Email" name="email" :error="errors.email">
+      <UInput v-model="state.email" type="email" autocomplete="email" />
+    </UFormGroup>
+
+    <AppButton label="Save" type="submit" />
+  </form>
+</template>
+🔍 Code Review Checklist (Cursor must enforce)
+Architecture: primitives → patterns → pages (no business logic in primitives).
+Types: props/events typed; composables typed; no any.
+A11y: roles/labels; tab order; focus rings; motion guards.
+Design tokens: spacing, typography, colors via Tailwind & CSS variables; no arbitrary values unless justified.
+State: Pinia stores minimal and serializable; side effects isolated.
+Async: use useAsyncData or composables; error & empty states present.
+Performance: dynamic import heavy components; optimized images; avoid large client bundles.
+Tests: unit for each component/composable; e2e for core flows; CI passes.
+🧪 Testing Templates (Cursor should add)
+Vitest unit for each component (render, props, events, a11y).
+Playwright:
+Smoke: home, nav, search, form submit.
+Visual regressions via snapshots for critical components.
+🚀 How To Use (for developers)
+Run pnpm install and pnpm dev.
+Build with pnpm build.
+Add features by creating primitives or patterns, not directly inside pages.
+Use Nuxt UI components through wrapper primitives to keep a stable API and theming.
+🔐 Non-Goals
+Do not hard-code API URLs, tokens, or secrets.
+Do not mix design tokens inside business logic.
+Do not couple pages directly to stores or remote services.
+---
+
+### References
+Key sources for Nuxt, Nuxt UI, Tailwind setup and design/UX principles: Nuxt UI docs; Nuxt 3 guides; Tailwind docs; NN/g heuristics; Apple HIG; Material; Fluent 2; Shopify Polaris. :contentReference[oaicite:2]{index=2}
+
+If you want, I can also generate a **starter Nuxt repo** following this rule (with pnpm, Nuxt UI, Tailwind, tests, and tokens) so you can clone and start building immediately.
+::contentReference[oaicite:3]{index=3}
