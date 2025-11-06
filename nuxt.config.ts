@@ -22,7 +22,8 @@ export default defineNuxtConfig({
     },
     resolve: {
       alias: {
-        '#app-manifest': resolve(process.cwd(), '.nuxt/manifest/meta/app-manifest.mjs')
+        '#app-manifest': resolve(process.cwd(), '.nuxt/manifest/meta/app-manifest.mjs'),
+        '~/types': resolve(process.cwd(), 'types')
       }
     },
     plugins: [

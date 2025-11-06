@@ -69,7 +69,7 @@
 </template>
 
 <script setup lang="ts">
-import type { MenuTemplateProps } from '~/types/menu-template'
+import type { MenuTemplateProps } from '@/types/menu-template'
 defineProps<MenuTemplateProps>()
 </script>
 
