@@ -60,6 +60,17 @@
                     {{ formatPrice(item.price, item.currency) }}
                   </div>
                 </div>
+                <figure
+                  v-if="item.image_url"
+                  class="overflow-hidden rounded-2xl border border-slate-800/70 bg-slate-900/40 ring-1 ring-slate-700/40 transition duration-300 group-hover:ring-sky-400/50"
+                >
+                  <img
+                    :src="item.image_url"
+                    :alt="`${item.name} photo`"
+                    class="h-48 w-full object-cover"
+                    loading="lazy"
+                  />
+                </figure>
                 <div v-if="item.tags && item.tags.length" class="flex flex-wrap gap-2">
                   <span
                     v-for="tag in item.tags"

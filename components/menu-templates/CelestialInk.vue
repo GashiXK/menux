@@ -49,18 +49,31 @@
                 :key="item.id"
                 class="group rounded-2xl border border-white/10 bg-black/30 p-6 transition duration-300 hover:border-sky-400/50 hover:bg-sky-500/10"
               >
-                <div class="flex items-start justify-between gap-4">
-                  <div>
-                    <h3 class="text-xl font-semibold text-white group-hover:text-sky-200 transition">
-                      {{ item.name }}
-                    </h3>
-                    <p v-if="item.description" class="mt-2 text-sm text-slate-300/80">
-                      {{ item.description }}
-                    </p>
+                <div class="flex flex-col gap-4">
+                  <div class="flex items-start justify-between gap-4">
+                    <div>
+                      <h3 class="text-xl font-semibold text-white group-hover:text-sky-200 transition">
+                        {{ item.name }}
+                      </h3>
+                      <p v-if="item.description" class="mt-2 text-sm text-slate-300/80">
+                        {{ item.description }}
+                      </p>
+                    </div>
+                    <div class="rounded-xl border border-white/20 bg-slate-950/70 px-3 py-2 text-sm font-semibold text-sky-200 shadow-inner shadow-blue-900/60">
+                      {{ formatPrice(item.price, item.currency) }}
+                    </div>
                   </div>
-                  <div class="rounded-xl border border-white/20 bg-slate-950/70 px-3 py-2 text-sm font-semibold text-sky-200 shadow-inner shadow-blue-900/60">
-                    {{ formatPrice(item.price, item.currency) }}
-                  </div>
+                  <figure
+                    v-if="item.image_url"
+                    class="overflow-hidden rounded-2xl border border-white/10 bg-slate-950/60 shadow-[0_30px_90px_-60px_rgba(125,211,252,0.5)]"
+                  >
+                    <img
+                      :src="item.image_url"
+                      :alt="`${item.name} photo`"
+                      class="h-48 w-full object-cover"
+                      loading="lazy"
+                    />
+                  </figure>
                 </div>
                 <div v-if="item.tags && item.tags.length" class="mt-4 flex flex-wrap gap-2">
                   <span

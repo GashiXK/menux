@@ -196,6 +196,11 @@ const quickActions = [
   }
 ]
 
+const cachedMenu = useState<any>('dashboard-menu', () => null)
+const cachedCategoryCount = useState<number>('dashboard-category-count', () => 0)
+const cachedItemCount = useState<number>('dashboard-item-count', () => 0)
+const cachedTenantId = useState<string | null>('dashboard-tenant-id', () => null)
+
 onMounted(async () => {
   if (!currentTenantId.value) {
     loading.value = false
@@ -208,26 +213,33 @@ onMounted(async () => {
     })
     return
   }
-  
-  try {
-    const menus = await listMenusByTenant(currentTenantId.value)
-    menu.value = menus.find(m => m.is_default) || menus[0]
-    
-    if (menu.value) {
-      await loadStats()
-    }
-  } catch (error: unknown) {
-    const err = error as { message?: string }
-    toast.add({
-      title: 'Error',
-      description: err.message || 'Failed to load dashboard data. Please refresh the page.',
-      color: 'red',
-      icon: 'i-heroicons-exclamation-circle',
-      timeout: 5000
-    })
-  } finally {
+
+  if (cachedMenu.value && cachedTenantId.value === currentTenantId.value) {
+    menu.value = cachedMenu.value
+    stats.categories = cachedCategoryCount.value
+    stats.items = cachedItemCount.value
     loading.value = false
+  } else {
+    await hydrateDashboard()
   }
+})
+
+watch(currentTenantId, async tenantId => {
+  if (!tenantId) return
+  await hydrateDashboard()
+  if (cachedMenu.value && cachedTenantId.value === currentTenantId.value) {
+    menu.value = cachedMenu.value
+    stats.categories = cachedCategoryCount.value
+    stats.items = cachedItemCount.value
+    loading.value = false
+  } else {
+    await hydrateDashboard()
+  }
+})
+
+watch(currentTenantId, async tenantId => {
+  if (!tenantId) return
+  await hydrateDashboard()
 })
 
 const togglePublishStatus = async () => {
@@ -291,16 +303,43 @@ const loadStats = async () => {
       console.error('Error loading category count:', catResult.error)
     } else {
       stats.categories = catResult.count || 0
+      cachedCategoryCount.value = stats.categories
     }
     
     if (itemResult.error) {
       console.error('Error loading item count:', itemResult.error)
     } else {
       stats.items = itemResult.count || 0
+      cachedItemCount.value = stats.items
     }
   } catch (error: unknown) {
     const err = error as { message?: string }
     console.error('Error loading stats:', err)
+  }
+}
+
+const hydrateDashboard = async () => {
+  loading.value = true
+  try {
+    const menus = await listMenusByTenant(currentTenantId.value!)
+    menu.value = menus.find(m => m.is_default) || menus[0]
+    cachedMenu.value = menu.value
+    cachedTenantId.value = currentTenantId.value ?? null
+
+    if (menu.value) {
+      await loadStats()
+    }
+  } catch (error: unknown) {
+    const err = error as { message?: string }
+    toast.add({
+      title: 'Error',
+      description: err.message || 'Failed to load dashboard data. Please refresh the page.',
+      color: 'red',
+      icon: 'i-heroicons-exclamation-circle',
+      timeout: 5000
+    })
+  } finally {
+    loading.value = false
   }
 }
 </script>

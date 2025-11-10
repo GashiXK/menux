@@ -20,30 +20,46 @@
           <p v-if="category.description" class="text-purple-200 mb-6">{{ category.description }}</p>
           
           <div class="grid gap-6">
-            <div
+            <article
               v-for="item in category.items"
               :key="item.id"
-              class="backdrop-blur-lg bg-white/10 rounded-xl p-6 border border-purple-400/20 hover:border-purple-400/50 transition"
+              class="group overflow-hidden rounded-2xl border border-purple-400/20 bg-white/10 p-0 transition hover:border-pink-400/40 hover:shadow-[0_20px_60px_-30px_rgba(244,114,182,0.5)]"
             >
-              <div class="flex justify-between items-start gap-4">
-                <div class="flex-1">
-                  <h3 class="text-xl font-semibold text-white">{{ item.name }}</h3>
-                  <p v-if="item.description" class="text-purple-100 mt-1">{{ item.description }}</p>
-                  <div v-if="item.tags && item.tags.length" class="flex flex-wrap gap-2 mt-3">
-                    <span
-                      v-for="tag in item.tags"
-                      :key="tag"
-                      class="px-3 py-1 bg-purple-500/30 rounded-full text-xs text-purple-200"
-                    >
-                      {{ tag }}
-                    </span>
+              <figure
+                v-if="item.image_url"
+                class="relative h-48 w-full overflow-hidden"
+              >
+                <img
+                  :src="item.image_url"
+                  :alt="`${item.name} photo`"
+                  class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                  loading="lazy"
+                />
+                <div class="absolute inset-0 bg-gradient-to-b from-transparent via-purple-900/20 to-purple-950/60" />
+              </figure>
+              <div class="space-y-3 px-6 py-6">
+                <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+                  <div class="flex-1">
+                    <h3 class="text-xl font-semibold text-white">{{ item.name }}</h3>
+                    <p v-if="item.description" class="mt-2 text-sm text-purple-100">
+                      {{ item.description }}
+                    </p>
+                  </div>
+                  <div class="shrink-0 rounded-xl bg-gradient-to-r from-purple-500/40 to-pink-500/40 px-4 py-2 text-right text-lg font-semibold text-pink-200 ring-1 ring-purple-400/30">
+                    {{ formatPrice(item.price, item.currency) }}
                   </div>
                 </div>
-                <div class="text-right">
-                  <span class="text-2xl font-bold text-pink-400">{{ item.price }} {{ item.currency }}</span>
+                <div v-if="item.tags && item.tags.length" class="flex flex-wrap gap-2">
+                  <span
+                    v-for="tag in item.tags"
+                    :key="tag"
+                    class="rounded-full border border-purple-400/30 bg-purple-500/20 px-3 py-1 text-xs font-medium uppercase tracking-wide text-purple-100"
+                  >
+                    {{ tag }}
+                  </span>
                 </div>
               </div>
-            </div>
+            </article>
           </div>
         </div>
       </div>
@@ -54,5 +70,16 @@
 <script setup lang="ts">
 import type { MenuTemplateProps } from '@/types'
 defineProps<MenuTemplateProps>()
+
+const formatPrice = (value: number | string, currency: string) => {
+  const amount = Number(value)
+  if (Number.isFinite(amount)) {
+    return new Intl.NumberFormat(undefined, {
+      style: 'currency',
+      currency: currency || 'EUR'
+    }).format(amount)
+  }
+  return typeof value === 'string' && value.trim().length > 0 ? value : '—'
+}
 </script>
 

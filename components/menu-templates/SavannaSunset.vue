@@ -46,18 +46,31 @@
                 :key="item.id"
                 class="rounded-2xl border border-[#fcd34d]/40 bg-white px-6 py-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-[#f97316]/50"
               >
-                <div class="flex items-start justify-between gap-4">
-                  <div>
-                    <h3 class="text-xl font-semibold text-[#5b2c10]">
-                      {{ item.name }}
-                    </h3>
-                    <p v-if="item.description" class="mt-2 text-sm text-[#7c3f16]/75">
-                      {{ item.description }}
-                    </p>
+                <div class="flex flex-col gap-4">
+                  <div class="flex items-start justify-between gap-4">
+                    <div>
+                      <h3 class="text-xl font-semibold text-[#5b2c10]">
+                        {{ item.name }}
+                      </h3>
+                      <p v-if="item.description" class="mt-2 text-sm text-[#7c3f16]/75">
+                        {{ item.description }}
+                      </p>
+                    </div>
+                    <div class="rounded-xl border border-[#f97316]/30 bg-[#fff5eb] px-3 py-2 text-right text-sm font-semibold text-[#c2410c] shadow-inner shadow-[#fef3c7]">
+                      {{ formatPrice(item.price, item.currency) }}
+                    </div>
                   </div>
-                  <div class="rounded-xl border border-[#f97316]/30 bg-[#fff5eb] px-3 py-2 text-right text-sm font-semibold text-[#c2410c] shadow-inner shadow-[#fef3c7]">
-                    {{ formatPrice(item.price, item.currency) }}
-                  </div>
+                  <figure
+                    v-if="item.image_url"
+                    class="overflow-hidden rounded-2xl border border-[#f97316]/40 bg-[#fff5eb] shadow-[0_30px_80px_-50px_rgba(249,115,22,0.45)]"
+                  >
+                    <img
+                      :src="item.image_url"
+                      :alt="`${item.name} photo`"
+                      class="h-48 w-full object-cover"
+                      loading="lazy"
+                    />
+                  </figure>
                 </div>
                 <div v-if="item.tags && item.tags.length" class="mt-4 flex flex-wrap gap-2">
                   <span

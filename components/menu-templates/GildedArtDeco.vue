@@ -44,13 +44,24 @@
                 :key="item.id"
                 class="grid gap-4 rounded-3xl border border-[#f2d28f]/25 bg-black/30 px-6 py-5 transition duration-300 hover:-translate-y-1 hover:border-[#f8e6b7]/60 hover:bg-[#1a1610]/60 md:grid-cols-[1fr_auto]"
               >
-                <div>
+                <div class="space-y-4">
                   <h3 class="text-xl font-semibold tracking-[0.03em] text-[#fef8e8]">
                     {{ item.name }}
                   </h3>
                   <p v-if="item.description" class="mt-3 text-sm text-[#f5e6c6]/80">
                     {{ item.description }}
                   </p>
+                  <figure
+                    v-if="item.image_url"
+                    class="overflow-hidden rounded-2xl border border-[#f2d28f]/40 bg-[#151514]/80 shadow-[0_35px_90px_-55px_rgba(242,210,143,0.45)]"
+                  >
+                    <img
+                      :src="item.image_url"
+                      :alt="`${item.name} photo`"
+                      class="h-48 w-full object-cover"
+                      loading="lazy"
+                    />
+                  </figure>
                   <div v-if="item.tags && item.tags.length" class="mt-4 flex flex-wrap gap-2">
                     <span
                       v-for="tag in item.tags"

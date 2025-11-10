@@ -288,7 +288,8 @@ const templateComponent = ref<Component | null>(null)
 
 onMounted(() => {
   const templateKey = demoMenu.template_key || 'minimal-elegance'
-  templateComponent.value = resolveTemplateComponent(templateKey) ?? resolveTemplateComponent('minimal-elegance')
+  const component = resolveTemplateComponent(templateKey) ?? resolveTemplateComponent('minimal-elegance')
+  templateComponent.value = component
 })
 </script>
 

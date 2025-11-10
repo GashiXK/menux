@@ -310,9 +310,9 @@ watch(
 const assignTemplateComponent = () => {
   const fallbackKey = menu.value?.template_key || 'minimal-elegance'
   const keyToUse = previewTemplateKey.value ?? fallbackKey
-  const resolvedComponent = resolveTemplateComponent(keyToUse) ?? resolveTemplateComponent('minimal-elegance')
-  if (resolvedComponent) {
-    templateComponent.value = resolvedComponent
+  const component = resolveTemplateComponent(keyToUse) ?? resolveTemplateComponent('minimal-elegance')
+  if (component) {
+    templateComponent.value = component
   } else {
     console.warn(`Template component not found for key: ${keyToUse}`)
     templateComponent.value = null

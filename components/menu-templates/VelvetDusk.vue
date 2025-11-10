@@ -47,19 +47,32 @@
                 :key="item.id"
                 class="group rounded-2xl border border-white/10 bg-white/5 p-6 transition duration-300 hover:border-rose-300/40 hover:bg-white/10"
               >
-                <div class="flex items-start justify-between gap-4">
-                  <div>
-                    <h3 class="text-xl font-semibold text-white group-hover:text-rose-200 transition">
-                      {{ item.name }}
-                    </h3>
-                    <p v-if="item.description" class="mt-2 text-sm text-rose-100/80 leading-relaxed">
-                      {{ item.description }}
-                    </p>
+                  <div class="flex flex-col gap-4">
+                    <div class="flex items-start justify-between gap-4">
+                      <div>
+                        <h3 class="text-xl font-semibold text-white group-hover:text-rose-200 transition">
+                          {{ item.name }}
+                        </h3>
+                        <p v-if="item.description" class="mt-2 text-sm text-rose-100/80 leading-relaxed">
+                          {{ item.description }}
+                        </p>
+                      </div>
+                      <div class="rounded-xl border border-white/20 bg-black/40 px-3 py-2 text-right text-sm font-semibold text-rose-100 shadow-inner shadow-black/40">
+                        {{ formatPrice(item.price, item.currency) }}
+                      </div>
+                    </div>
+                    <figure
+                      v-if="item.image_url"
+                      class="overflow-hidden rounded-2xl border border-white/10 bg-black/40 shadow-[0_25px_60px_-40px_rgba(249,115,197,0.6)]"
+                    >
+                      <img
+                        :src="item.image_url"
+                        :alt="`${item.name} photo`"
+                        class="h-48 w-full object-cover"
+                        loading="lazy"
+                      />
+                    </figure>
                   </div>
-                  <div class="rounded-xl border border-white/20 bg-black/40 px-3 py-2 text-right text-sm font-semibold text-rose-100 shadow-inner shadow-black/40">
-                    {{ formatPrice(item.price, item.currency) }}
-                  </div>
-                </div>
                 <div v-if="item.tags && item.tags.length" class="mt-4 flex flex-wrap gap-2">
                   <span
                     v-for="tag in item.tags"
