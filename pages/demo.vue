@@ -23,6 +23,7 @@
 <script setup lang="ts">
 import type { MenuTemplateProps } from '~/types/menu-template'
 import type { Component } from 'vue'
+import { resolveTemplateComponent } from '~/utils/template-registry'
 
 definePageMeta({
   layout: false,
@@ -283,41 +284,11 @@ const demoCustomTexts = {
   subtitle: 'Experience fine dining reimagined'
 }
 
-// Template component mapping
-const templateMap: Record<string, () => Component> = {
-  'neon-night': () => resolveComponent('NeonNight') as Component,
-  'minimal-elegance': () => resolveComponent('MinimalElegance') as Component,
-  'dark-glass': () => resolveComponent('DarkGlass') as Component,
-  'retro-card': () => resolveComponent('RetroCard') as Component,
-  'photo-hero': () => resolveComponent('PhotoHero') as Component,
-  'grid-menu': () => resolveComponent('GridMenu') as Component,
-  'split-panels': () => resolveComponent('SplitPanels') as Component,
-  'chalk-board': () => resolveComponent('ChalkBoard') as Component,
-  'magazine': () => resolveComponent('Magazine') as Component,
-  'mono-zen': () => resolveComponent('MonoZen') as Component,
-  'elegant-modern': () => resolveComponent('ElegantModern') as Component,
-  'cosmic-dark': () => resolveComponent('CosmicDark') as Component,
-  'glass-morphism': () => resolveComponent('GlassMorphism') as Component,
-  'luxury-gold': () => resolveComponent('LuxuryGold') as Component,
-  'tropical-vibes': () => resolveComponent('TropicalVibes') as Component,
-  'ocean-breeze': () => resolveComponent('OceanBreeze') as Component,
-  'neon-gradient': () => resolveComponent('NeonGradient') as Component,
-  'minimalist-white': () => resolveComponent('MinimalistWhite') as Component,
-  'forest-nature': () => resolveComponent('ForestNature') as Component,
-  'sunset-warm': () => resolveComponent('SunsetWarm') as Component
-}
-
 const templateComponent = ref<Component | null>(null)
 
 onMounted(() => {
   const templateKey = demoMenu.template_key || 'minimal-elegance'
-  const templateFactory = templateMap[templateKey]
-  
-  if (templateFactory) {
-    templateComponent.value = templateFactory()
-  } else {
-    templateComponent.value = templateMap['minimal-elegance']()
-  }
+  templateComponent.value = resolveTemplateComponent(templateKey) ?? resolveTemplateComponent('minimal-elegance')
 })
 </script>
 

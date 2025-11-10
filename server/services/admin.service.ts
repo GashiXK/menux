@@ -83,16 +83,16 @@ export class AdminService {
       console.log(`User ${data.email} already exists, using existing user`)
     } else {
       // Create new user
-      const { data: newUser, error: createError } = await adminClient.auth.admin.createUser({
+      const { data: newUser, error: adminCreateError } = await adminClient.auth.admin.createUser({
         email: data.email,
         email_confirm: true,
         password: data.password
       })
 
-      if (createError || !newUser?.user) {
+      if (adminCreateError || !newUser?.user) {
         throw createError({
           statusCode: 400,
-          message: createError?.message || 'Failed to create user'
+          message: adminCreateError?.message || 'Failed to create user'
         })
       }
 
@@ -105,7 +105,7 @@ export class AdminService {
       .upsert({
         id: userId,
         full_name: data.full_name || data.email.split('@')[0],
-        role: 'admin' // Profile role is 'admin' for tenant users
+        app_role: 'tenant_user'
       }, { onConflict: 'id' })
 
     if (profileUpsertError) {

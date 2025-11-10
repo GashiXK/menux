@@ -1,133 +1,117 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-white via-gray-50 to-gray-100 dark:from-ink-950 dark:via-ink-900 dark:to-ink-800">
-    <div class="space-y-8">
-      <!-- Header -->
-      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
-        <div class="space-y-2">
-          <h1 class="text-4xl font-bold text-ink-900 dark:text-white tracking-tight">
-            Categories
-          </h1>
-          <p class="text-ink-600 dark:text-ink-300 text-lg">
-            Organize your menu items into categories
-          </p>
-        </div>
-        <button
-          @click="openDialog()"
-          class="bg-brand-500 hover:bg-brand-600 text-white shadow-lg shadow-brand-500/30 hover:shadow-xl hover:shadow-brand-500/40 transition-all duration-300 font-semibold px-6 py-3 rounded-xl flex items-center gap-2 shrink-0"
-        >
-          <UIcon name="i-heroicons-plus-circle" class="w-5 h-5" />
-          Add Category
-        </button>
+  <div class="space-y-10">
+    <section class="relative overflow-hidden rounded-3xl border border-ink-100 bg-gradient-to-br from-brand-500/15 via-white to-secondary/15 px-6 py-10 shadow-xl shadow-brand-500/10 dark:border-ink-800 dark:from-brand-900/30 dark:via-ink-950 dark:to-secondary/20 sm:px-10">
+      <div class="absolute inset-0 opacity-40">
+        <div class="absolute -left-16 top-[-40px] h-56 w-56 rounded-full bg-brand-500/40 blur-3xl" />
+        <div class="absolute bottom-[-60px] right-[-30px] h-72 w-72 rounded-full bg-secondary/40 blur-3xl" />
       </div>
-
-      <!-- Stats Card -->
-      <div v-if="!loading && categories.length > 0" class="bg-white dark:bg-ink-900 rounded-2xl p-6 shadow-lg border border-ink-100 dark:border-ink-800">
-        <div class="flex items-center justify-between">
+      <div class="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+        <div class="space-y-4">
+          <span class="inline-flex items-center gap-2 rounded-full border border-brand-500/30 bg-brand-500/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.4em] text-brand-700 dark:text-brand-300">
+            Menu architecture
+          </span>
           <div>
-            <p class="text-ink-500 dark:text-ink-400 text-sm font-medium mb-1">Total Categories</p>
-            <p class="text-3xl font-bold text-ink-900 dark:text-white">{{ categories.length }}</p>
+            <h1 class="text-3xl font-bold text-ink-900 dark:text-white sm:text-4xl">Categories</h1>
+            <p class="mt-2 max-w-2xl text-sm text-ink-600 dark:text-ink-300 sm:text-base">
+              Compose tasting pathways and organize every item into curated sections that feel effortless to scan.
+            </p>
           </div>
-          <div class="w-12 h-12 rounded-xl bg-brand-500/10 flex items-center justify-center">
-            <UIcon name="i-heroicons-folder" class="w-6 h-6 text-brand-500" />
+          <div class="flex flex-wrap gap-3">
+            <UButton color="primary" size="md" icon="i-heroicons-plus-circle" label="Add category" @click="openDialog()" />
+            <UButton to="/dashboard/items" variant="soft" size="md" icon="i-heroicons-squares-2x2" label="Manage items" />
+          </div>
+        </div>
+        <div class="grid w-full max-w-xs gap-4 rounded-3xl bg-white/80 p-5 text-sm text-ink-600 shadow-lg dark:bg-ink-950/75 dark:text-ink-300">
+          <div class="flex items-center justify-between">
+            <span class="font-medium">Published categories</span>
+            <span v-if="loading" class="h-6 w-12 rounded bg-ink-200/70 dark:bg-ink-800/70 animate-pulse" />
+            <span v-else class="text-lg font-semibold text-ink-900 dark:text-white">{{ visibleCount }}</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="font-medium">Hidden drafts</span>
+            <span v-if="loading" class="h-6 w-12 rounded bg-ink-200/70 dark:bg-ink-800/70 animate-pulse" />
+            <span v-else class="text-lg font-semibold text-ink-900 dark:text-white">{{ hiddenCount }}</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="font-medium">Last updated</span>
+            <span class="text-xs uppercase tracking-[0.3em] text-ink-400 dark:text-ink-500">
+              {{ lastUpdated }}
+            </span>
           </div>
         </div>
       </div>
+    </section>
 
-      <!-- Loading State -->
-      <div v-if="loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div v-for="i in 3" :key="i" class="bg-white dark:bg-ink-900 rounded-2xl p-6 shadow-lg border border-ink-100 dark:border-ink-800 animate-pulse">
-          <div class="h-4 bg-ink-200 dark:bg-ink-700 rounded w-2/3 mb-4"></div>
-          <div class="h-3 bg-ink-200 dark:bg-ink-700 rounded w-full mb-2"></div>
-          <div class="h-3 bg-ink-200 dark:bg-ink-700 rounded w-3/4"></div>
-        </div>
+    <div v-if="loading" class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div v-for="i in 3" :key="i" class="rounded-2xl border border-ink-100 bg-white p-6 shadow-md animate-pulse dark:border-ink-800 dark:bg-ink-900">
+        <div class="mb-4 h-4 w-2/3 rounded bg-ink-200 dark:bg-ink-700" />
+        <div class="mb-2 h-3 w-full rounded bg-ink-200 dark:bg-ink-700" />
+        <div class="h-3 w-3/4 rounded bg-ink-200 dark:bg-ink-700" />
       </div>
+    </div>
 
-      <!-- Categories Grid -->
-      <div v-else-if="categories.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div
-          v-for="category in categories"
-          :key="category.id"
-          class="group bg-white dark:bg-ink-900 rounded-2xl p-6 shadow-lg border border-ink-100 dark:border-ink-800 hover:shadow-2xl hover:border-brand-500/50 transition-all duration-300 transform hover:-translate-y-1"
-        >
-          <!-- Category Header -->
-          <div class="flex items-start justify-between mb-4">
-            <div class="flex items-center gap-4 flex-1">
-              <div class="w-16 h-16 rounded-xl bg-gradient-to-br from-brand-500 to-brand-600 flex items-center justify-center shadow-lg shadow-brand-500/30">
-                <UIcon name="i-heroicons-folder" class="w-8 h-8 text-white" />
+    <div v-else-if="categories.length > 0" class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div
+        v-for="category in categories"
+        :key="category.id"
+        class="group rounded-3xl border border-ink-100 bg-white/90 p-6 shadow-md transition hover:-translate-y-1 hover:border-brand-400 hover:shadow-xl dark:border-ink-800 dark:bg-ink-900/80"
+      >
+        <div class="mb-6 flex items-start justify-between">
+          <div class="flex flex-1 items-center gap-4">
+            <div class="flex h-16 w-16 items-center justify-center rounded-xl bg-gradient-to-br from-brand-500 to-brand-600 text-white shadow-lg shadow-brand-500/25">
+              <UIcon name="i-heroicons-folder" class="h-7 w-7" />
+            </div>
+            <div class="min-w-0 flex-1">
+              <h3 class="text-xl font-semibold text-ink-900 dark:text-white truncate">{{ category.name }}</h3>
+              <div class="mt-2 flex flex-wrap items-center gap-2 text-xs text-ink-500 dark:text-ink-400">
+                <span
+                  :class="[
+                    'inline-flex items-center rounded-full px-2.5 py-0.5 font-semibold uppercase tracking-[0.3em]',
+                    category.visible
+                      ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-300'
+                      : 'bg-ink-100 text-ink-600 dark:bg-ink-800 dark:text-ink-300'
+                  ]"
+                >
+                  {{ category.visible ? 'Visible' : 'Hidden' }}
+                </span>
+                <span>Order {{ category.sort_order }}</span>
               </div>
-              <div class="flex-1 min-w-0">
-                <h3 class="text-xl font-bold text-ink-900 dark:text-white truncate mb-1">
-                  {{ category.name }}
-                </h3>
-                <div class="flex items-center gap-2">
-                  <span
-                    :class="[
-                      'px-2 py-1 rounded text-xs font-medium',
-                      category.visible
-                        ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
-                        : 'bg-ink-100 dark:bg-ink-800 text-ink-700 dark:text-ink-400'
-                    ]"
-                  >
-                    {{ category.visible ? 'Visible' : 'Hidden' }}
-                  </span>
-                  <span class="text-xs text-ink-500 dark:text-ink-400">
-                    Order: {{ category.sort_order }}
-                  </span>
-                </div>
-              </div>
             </div>
-          </div>
-
-          <!-- Category Details -->
-          <div class="space-y-3 mb-6">
-            <div v-if="category.description" class="text-sm text-ink-600 dark:text-ink-300 line-clamp-2">
-              {{ category.description }}
-            </div>
-            <div v-else class="text-sm text-ink-500 dark:text-ink-400 italic">
-              No description
-            </div>
-          </div>
-
-          <!-- Action Buttons -->
-          <div class="flex flex-wrap gap-2 pt-4 border-t border-ink-100 dark:border-ink-800">
-            <button
-              @click="openDialog(category)"
-              class="flex-1 min-w-[100px] px-4 py-2 text-sm font-medium text-brand-600 dark:text-brand-400 hover:bg-brand-500/10 rounded-lg transition-colors flex items-center justify-center gap-2"
-            >
-              <UIcon name="i-heroicons-pencil-square" class="w-4 h-4" />
-              Edit
-            </button>
-            <button
-              @click="confirmDelete(category)"
-              class="flex-1 min-w-[100px] px-4 py-2 text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors flex items-center justify-center gap-2"
-            >
-              <UIcon name="i-heroicons-trash" class="w-4 h-4" />
-              Delete
-            </button>
           </div>
         </div>
-      </div>
 
-      <!-- Empty State -->
-      <div v-else class="flex items-center justify-center min-h-[60vh]">
-        <div class="text-center max-w-md">
-          <div class="w-24 h-24 mx-auto mb-6 rounded-3xl bg-gradient-to-br from-brand-500 to-brand-600 flex items-center justify-center shadow-2xl shadow-brand-500/30">
-            <UIcon name="i-heroicons-folder" class="w-12 h-12 text-white" />
-          </div>
-          <h3 class="text-2xl font-bold text-ink-900 dark:text-white mb-3">
-            No categories yet
-          </h3>
-          <p class="text-ink-600 dark:text-ink-400 mb-8 text-lg">
-            Create your first category to organize your menu items. Categories help customers find what they're looking for.
-          </p>
+        <div class="space-y-3 text-sm text-ink-600 dark:text-ink-300">
+          <p v-if="category.description" class="line-clamp-3 leading-relaxed">{{ category.description }}</p>
+          <p v-else class="italic text-ink-400 dark:text-ink-500">No description</p>
+        </div>
+
+        <div class="mt-6 flex flex-wrap gap-2 border-t border-ink-100 pt-4 dark:border-ink-800">
           <button
-            @click="openDialog()"
-            class="bg-brand-500 hover:bg-brand-600 text-white shadow-lg shadow-brand-500/30 hover:shadow-xl hover:shadow-brand-500/40 transition-all duration-300 font-semibold px-8 py-4 rounded-xl flex items-center gap-2 mx-auto"
+            @click="openDialog(category)"
+            class="flex-1 min-w-[110px] rounded-xl border border-brand-200 bg-brand-50/60 px-4 py-2 text-sm font-medium text-brand-600 transition hover:bg-brand-100 dark:border-brand-900/40 dark:bg-brand-900/20 dark:text-brand-300"
           >
-            <UIcon name="i-heroicons-plus-circle" class="w-5 h-5" />
-            Create Your First Category
+            Edit
+          </button>
+          <button
+            @click="confirmDelete(category)"
+            class="flex-1 min-w-[110px] rounded-xl border border-red-200 bg-red-50/70 px-4 py-2 text-sm font-medium text-red-600 transition hover:bg-red-100 dark:border-red-900/40 dark:bg-red-900/20 dark:text-red-300"
+          >
+            Delete
           </button>
         </div>
+      </div>
+    </div>
+
+    <div v-else class="flex min-h-[50vh] items-center justify-center">
+      <div class="max-w-md text-center">
+        <div class="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-3xl bg-gradient-to-br from-brand-500 to-brand-600 text-white shadow-2xl shadow-brand-500/30">
+          <UIcon name="i-heroicons-folder" class="h-12 w-12" />
+        </div>
+        <h3 class="text-2xl font-semibold text-ink-900 dark:text-white">No categories yet</h3>
+        <p class="mt-3 text-sm text-ink-600 dark:text-ink-300">
+          Create your first category to organize the story across your sections. Guests discover faster when your menu has rhythm.
+        </p>
+        <UButton class="mt-6" color="primary" size="md" icon="i-heroicons-plus-circle" label="Create category" @click="openDialog()" />
       </div>
     </div>
 
@@ -325,6 +309,21 @@ const form = reactive({
 })
 
 const menuId = ref('')
+
+const visibleCount = computed(() => categories.value.filter(category => category.visible).length)
+const hiddenCount = computed(() => Math.max(categories.value.length - visibleCount.value, 0))
+const lastUpdated = computed(() => {
+  if (!categories.value.length) return 'No activity yet'
+  const timestamps = categories.value
+    .map(category => {
+      const date = category.created_at ? new Date(category.created_at) : null
+      return date && !Number.isNaN(date.getTime()) ? date.getTime() : null
+    })
+    .filter((value): value is number => value !== null)
+  if (!timestamps.length) return 'No activity yet'
+  const latest = new Date(Math.max(...timestamps))
+  return latest.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
+})
 
 const loadCategories = async () => {
   if (!menuId.value) return

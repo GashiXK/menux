@@ -62,6 +62,7 @@
 <script setup lang="ts">
 import type { MenuWithDetails, CategoryWithItems, Tenant } from '~/types/database'
 import type { Component } from 'vue'
+import { resolveTemplateComponent } from '~/utils/template-registry'
 
 // Public page - no auth required
 definePageMeta({
@@ -73,30 +74,6 @@ definePageMeta({
 const route = useRoute()
 const menuSlug = route.params.menuSlug as string
 
-// Template component mapping with proper typing
-const templateMap: Record<string, () => Component> = {
-  'neon-night': () => resolveComponent('NeonNight') as Component,
-  'minimal-elegance': () => resolveComponent('MinimalElegance') as Component,
-  'dark-glass': () => resolveComponent('DarkGlass') as Component,
-  'retro-card': () => resolveComponent('RetroCard') as Component,
-  'photo-hero': () => resolveComponent('PhotoHero') as Component,
-  'grid-menu': () => resolveComponent('GridMenu') as Component,
-  'split-panels': () => resolveComponent('SplitPanels') as Component,
-  'chalk-board': () => resolveComponent('ChalkBoard') as Component,
-  'magazine': () => resolveComponent('Magazine') as Component,
-  'mono-zen': () => resolveComponent('MonoZen') as Component,
-  'elegant-modern': () => resolveComponent('ElegantModern') as Component,
-  'cosmic-dark': () => resolveComponent('CosmicDark') as Component,
-  'glass-morphism': () => resolveComponent('GlassMorphism') as Component,
-  'luxury-gold': () => resolveComponent('LuxuryGold') as Component,
-  'tropical-vibes': () => resolveComponent('TropicalVibes') as Component,
-  'ocean-breeze': () => resolveComponent('OceanBreeze') as Component,
-  'neon-gradient': () => resolveComponent('NeonGradient') as Component,
-  'minimalist-white': () => resolveComponent('MinimalistWhite') as Component,
-  'forest-nature': () => resolveComponent('ForestNature') as Component,
-  'sunset-warm': () => resolveComponent('SunsetWarm') as Component
-}
-
 const tenant = ref<Tenant | null>(null)
 const menu = ref<MenuWithDetails | null>(null)
 const categories = ref<CategoryWithItems[]>([])
@@ -104,6 +81,13 @@ const customTexts = ref<Record<string, string>>({})
 const templateComponent = ref<Component | null>(null)
 const loading = ref(true)
 const error = ref<string | null>(null)
+const previewTemplateKey = computed(() => {
+  const raw = route.query.templatePreview
+  if (typeof raw === 'string' && raw.trim().length > 0) {
+    return raw
+  }
+  return null
+})
 
 // Use public Supabase client for menu viewing (no auth required)
 const client = useSupabaseClient()
@@ -296,15 +280,7 @@ if (process.server) {
     customTexts.value = data.customTexts
     
     // Set template component
-    const templateKey = menu.value.template_key || 'minimal-elegance'
-    const templateFactory = templateMap[templateKey]
-    
-    if (templateFactory) {
-      templateComponent.value = templateFactory()
-    } else {
-      console.warn(`Template component not found for key: ${templateKey}, using minimal-elegance`)
-      templateComponent.value = templateMap['minimal-elegance']()
-    }
+    assignTemplateComponent()
   } catch (e: unknown) {
     console.error('Failed to load menu', e)
     const err = e as Error
@@ -322,5 +298,24 @@ onMounted(() => {
 } else {
   // On server, set loading to false
   loading.value = false
+}
+
+watch(
+  () => [menu.value?.template_key, previewTemplateKey.value],
+  () => {
+    assignTemplateComponent()
+  }
+)
+
+const assignTemplateComponent = () => {
+  const fallbackKey = menu.value?.template_key || 'minimal-elegance'
+  const keyToUse = previewTemplateKey.value ?? fallbackKey
+  const resolvedComponent = resolveTemplateComponent(keyToUse) ?? resolveTemplateComponent('minimal-elegance')
+  if (resolvedComponent) {
+    templateComponent.value = resolvedComponent
+  } else {
+    console.warn(`Template component not found for key: ${keyToUse}`)
+    templateComponent.value = null
+  }
 }
 </script>

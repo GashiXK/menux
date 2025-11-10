@@ -67,26 +67,132 @@ async function seedTemplates() {
   console.log('Seeding menu templates...')
   
   const templates = [
-    { key: 'neon-night', name: 'Neon Night', base_config: { accent: '#7c3aed', radius: '1rem', glass: true } },
-    { key: 'minimal-elegance', name: 'Minimal Elegance', base_config: { accent: '#111827', radius: '0.5rem' } },
-    { key: 'dark-glass', name: 'Dark Glass', base_config: { accent: '#22d3ee', glass: true, blur: 8 } },
-    { key: 'retro-card', name: 'Retro Card', base_config: { accent: '#ef4444', shadow: 'lg' } },
-    { key: 'photo-hero', name: 'Photo Hero', base_config: { hero: 'photo', overlay: 0.4 } },
-    { key: 'grid-menu', name: 'Grid Menu', base_config: { layout: 'grid', columns: 2 } },
-    { key: 'split-panels', name: 'Split Panels', base_config: { layout: 'split', accent: '#10b981' } },
-    { key: 'chalk-board', name: 'Chalk Board', base_config: { texture: 'chalk', contrast: 'high' } },
-    { key: 'magazine', name: 'Magazine', base_config: { layout: 'magazine', serif: true } },
-    { key: 'mono-zen', name: 'Mono Zen', base_config: { mono: true, radius: '0.25rem' } },
-    { key: 'elegant-modern', name: 'Elegant Modern', base_config: { accent: '#1e293b', elegant: true, typography: 'light' } },
-    { key: 'cosmic-dark', name: 'Cosmic Dark', base_config: { accent: '#a855f7', dark: true, gradient: true } },
-    { key: 'glass-morphism', name: 'Glass Morphism', base_config: { accent: '#8b5cf6', glass: true, blur: 20, modern: true } },
-    { key: 'luxury-gold', name: 'Luxury Gold', base_config: { accent: '#f59e0b', gold: true, elegant: true } },
-    { key: 'tropical-vibes', name: 'Tropical Vibes', base_config: { accent: '#f97316', vibrant: true, warm: true } },
-    { key: 'ocean-breeze', name: 'Ocean Breeze', base_config: { accent: '#06b6d4', cool: true, fresh: true } },
-    { key: 'neon-gradient', name: 'Neon Gradient', base_config: { accent: '#a855f7', neon: true, animated: true } },
-    { key: 'minimalist-white', name: 'Minimalist White', base_config: { accent: '#000000', minimal: true, bold: true } },
-    { key: 'forest-nature', name: 'Forest Nature', base_config: { accent: '#10b981', natural: true, fresh: true } },
-    { key: 'sunset-warm', name: 'Sunset Warm', base_config: { accent: '#f97316', warm: true, vibrant: true } }
+    {
+      key: 'neon-night',
+      name: 'Neon Night',
+      preview_image_url: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80',
+      base_config: { accent: '#7c3aed', radius: '1rem', glass: true }
+    },
+    {
+      key: 'minimal-elegance',
+      name: 'Minimal Elegance',
+      preview_image_url: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1200&q=80',
+      base_config: { accent: '#111827', radius: '0.5rem' }
+    },
+    {
+      key: 'dark-glass',
+      name: 'Dark Glass',
+      preview_image_url: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80',
+      base_config: { accent: '#22d3ee', glass: true, blur: 8 }
+    },
+    {
+      key: 'retro-card',
+      name: 'Retro Card',
+      preview_image_url: 'https://images.unsplash.com/photo-1533777419517-3e4017e2e15d?auto=format&fit=crop&w=1200&q=80',
+      base_config: { accent: '#ef4444', shadow: 'lg' }
+    },
+    {
+      key: 'photo-hero',
+      name: 'Photo Hero',
+      preview_image_url: 'https://images.unsplash.com/photo-1499028344343-cd173ffc68a9?auto=format&fit=crop&w=1200&q=80',
+      base_config: { hero: 'photo', overlay: 0.4 }
+    },
+    {
+      key: 'grid-menu',
+      name: 'Grid Menu',
+      preview_image_url: 'https://images.unsplash.com/photo-1521302200778-33500795e128?auto=format&fit=crop&w=1200&q=80',
+      base_config: { layout: 'grid', columns: 2 }
+    },
+    {
+      key: 'split-panels',
+      name: 'Split Panels',
+      preview_image_url: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80',
+      base_config: { layout: 'split', accent: '#10b981' }
+    },
+    {
+      key: 'elegant-modern',
+      name: 'Elegant Modern',
+      preview_image_url: 'https://images.unsplash.com/photo-1523475472560-d2df97ec485c?auto=format&fit=crop&w=1200&q=80',
+      base_config: { accent: '#1e293b', elegant: true, typography: 'light' }
+    },
+    {
+      key: 'aurora-luxe',
+      name: 'Aurora Luxe',
+      preview_image_url: 'https://images.unsplash.com/photo-1526367790999-0150786686a2?auto=format&fit=crop&w=1200&q=80',
+      base_config: { accent: '#38bdf8', gradient: 'aurora', mode: 'dark' }
+    },
+    {
+      key: 'modern-bento',
+      name: 'Modern Bento',
+      preview_image_url: 'https://images.unsplash.com/photo-1521579971123-1192931a1452?auto=format&fit=crop&w=1200&q=80',
+      base_config: { accent: '#0ea5e9', layout: 'bento', cards: true }
+    },
+    {
+      key: 'pastel-dream',
+      name: 'Pastel Dream',
+      preview_image_url: 'https://images.unsplash.com/photo-1523475472560-d2df97ec485c?auto=format&fit=crop&w=1200&q=80',
+      base_config: { accent: '#f472b6', pastel: true, serif: true }
+    },
+    {
+      key: 'ember-noir',
+      name: 'Ember Noir',
+      preview_image_url: 'https://images.unsplash.com/photo-1542831371-d531d36971e6?auto=format&fit=crop&w=1200&q=80',
+      base_config: { accent: '#f97316', dark: true, ember: true }
+    },
+    {
+      key: 'botanical-garden',
+      name: 'Botanical Garden',
+      preview_image_url: 'https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&w=1200&q=80',
+      base_config: { accent: '#047857', organic: true, fresh: true }
+    },
+    {
+      key: 'nordic-slate',
+      name: 'Nordic Slate',
+      preview_image_url: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80',
+      base_config: { accent: '#38bdf8', mode: 'dark', layout: 'slate' }
+    },
+    {
+      key: 'neo-brutalist',
+      name: 'Neo Brutalist',
+      preview_image_url: 'https://images.unsplash.com/photo-1529180979161-05b6dd0ebb62?auto=format&fit=crop&w=1200&q=80',
+      base_config: { accent: '#ef4444', blocks: true, high_contrast: true }
+    },
+    {
+      key: 'holographic-wave',
+      name: 'Holographic Wave',
+      preview_image_url: 'https://images.unsplash.com/photo-1526401485004-46910ecc8e51?auto=format&fit=crop&w=1200&q=80',
+      base_config: { accent: '#a855f7', glass: true, glow: true }
+    },
+    {
+      key: 'velvet-dusk',
+      name: 'Velvet Dusk',
+      preview_image_url: 'https://images.unsplash.com/photo-1520256862855-398228c41684?auto=format&fit=crop&w=1200&q=80',
+      base_config: { accent: '#f973c5', palette: 'velvet', mood: 'twilight' }
+    },
+    {
+      key: 'celestial-ink',
+      name: 'Celestial Ink',
+      preview_image_url: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80',
+      base_config: { accent: '#38bdf8', palette: 'midnight', mood: 'immersive' }
+    },
+    {
+      key: 'gilded-art-deco',
+      name: 'Gilded Art Deco',
+      preview_image_url: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80',
+      base_config: { accent: '#d4af37', style: 'art_deco', luxury: true }
+    },
+    {
+      key: 'savanna-sunset',
+      name: 'Savanna Sunset',
+      preview_image_url: 'https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1200&q=80',
+      base_config: { accent: '#ff6b35', palette: 'sunset', warm: true }
+    },
+    {
+      key: 'coastal-zen',
+      name: 'Coastal Zen',
+      preview_image_url: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80',
+      base_config: { accent: '#0284c7', palette: 'coastal', fresh: true }
+    }
   ]
 
   for (const template of templates) {
@@ -95,7 +201,7 @@ async function seedTemplates() {
       .upsert({
         key: template.key,
         name: template.name,
-        preview_image_url: null,
+        preview_image_url: template.preview_image_url,
         base_config: template.base_config
       }, { onConflict: 'key' })
     

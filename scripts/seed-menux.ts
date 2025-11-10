@@ -251,6 +251,84 @@ async function run() {
         blur: 16,
         style: 'futuristic'
       }
+    },
+    {
+      key: 'aurora-luxe',
+      name: 'Aurora Luxe',
+      preview_image_url: 'https://images.unsplash.com/photo-1526367790999-0150786686a2?auto=format&fit=crop&w=1200&q=80',
+      base_config: { accent: '#38bdf8', gradient: 'aurora', mode: 'dark' }
+    },
+    {
+      key: 'modern-bento',
+      name: 'Modern Bento',
+      preview_image_url: 'https://images.unsplash.com/photo-1521579971123-1192931a1452?auto=format&fit=crop&w=1200&q=80',
+      base_config: { accent: '#0ea5e9', layout: 'bento', cards: true }
+    },
+    {
+      key: 'pastel-dream',
+      name: 'Pastel Dream',
+      preview_image_url: 'https://images.unsplash.com/photo-1523475472560-d2df97ec485c?auto=format&fit=crop&w=1200&q=80',
+      base_config: { accent: '#f472b6', pastel: true, serif: true }
+    },
+    {
+      key: 'ember-noir',
+      name: 'Ember Noir',
+      preview_image_url: 'https://images.unsplash.com/photo-1542831371-d531d36971e6?auto=format&fit=crop&w=1200&q=80',
+      base_config: { accent: '#f97316', dark: true, ember: true }
+    },
+    {
+      key: 'botanical-garden',
+      name: 'Botanical Garden',
+      preview_image_url: 'https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&w=1200&q=80',
+      base_config: { accent: '#047857', organic: true, fresh: true }
+    },
+    {
+      key: 'nordic-slate',
+      name: 'Nordic Slate',
+      preview_image_url: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80',
+      base_config: { accent: '#38bdf8', mode: 'dark', layout: 'slate' }
+    },
+    {
+      key: 'neo-brutalist',
+      name: 'Neo Brutalist',
+      preview_image_url: 'https://images.unsplash.com/photo-1529180979161-05b6dd0ebb62?auto=format&fit=crop&w=1200&q=80',
+      base_config: { accent: '#ef4444', blocks: true, high_contrast: true }
+    },
+    {
+      key: 'holographic-wave',
+      name: 'Holographic Wave',
+      preview_image_url: 'https://images.unsplash.com/photo-1526401485004-46910ecc8e51?auto=format&fit=crop&w=1200&q=80',
+      base_config: { accent: '#a855f7', glass: true, glow: true }
+    },
+    {
+      key: 'velvet-dusk',
+      name: 'Velvet Dusk',
+      preview_image_url: 'https://images.unsplash.com/photo-1520256862855-398228c41684?auto=format&fit=crop&w=1200&q=80',
+      base_config: { accent: '#f973c5', palette: 'velvet', mood: 'twilight' }
+    },
+    {
+      key: 'celestial-ink',
+      name: 'Celestial Ink',
+      preview_image_url: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80',
+      base_config: { accent: '#38bdf8', palette: 'midnight', mood: 'immersive' }
+    },
+    {
+      key: 'gilded-art-deco',
+      name: 'Gilded Art Deco',
+      preview_image_url: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80',
+      base_config: { accent: '#d4af37', style: 'art_deco', luxury: true }
+    },
+    {
+      key: 'savanna-sunset',
+      name: 'Savanna Sunset',
+      preview_image_url: 'https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1200&q=80',
+      base_config: { accent: '#ff6b35', palette: 'sunset', warm: true }
+    },
+    {
+      key: 'coastal-zen',
+      name: 'Coastal Zen',
+      preview_image_url: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80',
+      base_config: { accent: '#0284c7', palette: 'coastal', fresh: true }
     }
   ]
 

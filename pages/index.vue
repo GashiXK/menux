@@ -1,68 +1,448 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-primary/10 via-default to-secondary/10 flex items-center justify-center px-4">
-    <div class="text-center max-w-3xl">
-      <h1 class="text-6xl font-bold text-primary mb-4">MenuX</h1>
-      <p class="text-2xl text-highlighted mb-6">
-        Modern Digital Menu Platform
-      </p>
-      <p class="text-lg text-muted mb-12 max-w-xl mx-auto">
-        Beautiful, responsive menus for restaurants and cafés. Create stunning digital menus that your customers will love.
-      </p>
-      
-      <div class="flex justify-center gap-4 flex-wrap">
-        <UButton
-          to="/auth/login"
-          size="lg"
-          label="Sign In"
-          icon="i-heroicons-arrow-right-on-rectangle"
-        />
-        <UButton
-          to="/demo"
-          size="lg"
-          variant="outline"
-          label="View Demo"
-          icon="i-heroicons-eye"
-        />
+  <div class="min-h-screen bg-gradient-to-b from-white via-slate-50 to-white dark:from-ink-900 dark:via-ink-950 dark:to-ink-900 text-ink-900 dark:text-ink-100">
+    <header class="sticky top-0 z-40 border-b border-ink-100/60 dark:border-ink-800/60 bg-white/80 dark:bg-ink-950/70 backdrop-blur">
+      <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
+        <NuxtLink to="/" class="flex items-center gap-3">
+          <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-brand-500 to-brand-600 shadow-lg shadow-brand-500/30">
+            <UIcon name="i-heroicons-rocket-launch" class="h-6 w-6 text-white" />
+          </span>
+          <div>
+            <p class="text-xl font-semibold text-ink-900 dark:text-white leading-tight">MenuX</p>
+            <p class="text-xs font-medium uppercase tracking-widest text-brand-600 dark:text-brand-300">Digital Menu Platform</p>
+          </div>
+        </NuxtLink>
+        <nav class="hidden items-center gap-8 text-sm font-medium text-ink-600 dark:text-ink-300 lg:flex">
+          <a href="#features" class="hover:text-brand-600 dark:hover:text-brand-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 rounded-lg px-1 py-1">Features</a>
+          <a href="#templates" class="hover:text-brand-600 dark:hover:text-brand-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 rounded-lg px-1 py-1">Templates</a>
+          <a href="#analytics" class="hover:text-brand-600 dark:hover:text-brand-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 rounded-lg px-1 py-1">Analytics</a>
+          <a href="#pricing" class="hover:text-brand-600 dark:hover:text-brand-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 rounded-lg px-1 py-1">Pricing</a>
+          <a href="#testimonials" class="hover:text-brand-600 dark:hover:text-brand-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 rounded-lg px-1 py-1">Stories</a>
+        </nav>
+        <div class="flex items-center gap-3">
+          <UButton to="/auth/login" variant="ghost" size="sm" label="Log in" />
+          <UButton to="/demo" size="sm" color="primary" label="See demo" icon="i-heroicons-eye" />
+        </div>
       </div>
-      
-      <div class="mt-16 grid md:grid-cols-3 gap-6 text-left">
-        <UCard variant="soft" class="hover:bg-elevated/75 transition">
-          <div class="flex items-start gap-4">
-            <UIcon name="i-heroicons-sparkles" class="w-8 h-8 text-primary shrink-0" />
-            <div>
-              <h3 class="font-semibold text-highlighted mb-2">Beautiful Templates</h3>
-              <p class="text-sm text-muted">Choose from multiple stunning menu templates</p>
+    </header>
+
+    <main>
+      <section id="hero" class="relative overflow-hidden">
+        <div class="absolute inset-0 -z-10 bg-gradient-to-br from-brand-100 via-transparent to-secondary/40 dark:from-brand-900/20 dark:via-transparent dark:to-secondary/20" />
+        <div class="mx-auto grid max-w-7xl gap-12 px-6 py-24 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+          <div class="space-y-8">
+            <span class="inline-flex items-center gap-2 rounded-full bg-brand-50 dark:bg-brand-900/30 px-4 py-1 text-sm font-medium text-brand-700 dark:text-brand-200 ring-1 ring-brand-500/20">
+              <UIcon name="i-heroicons-sparkles" class="h-4 w-4" />
+              Elevate the dining journey
+            </span>
+            <h1 class="text-4xl font-bold tracking-tight text-ink-900 sm:text-5xl lg:text-6xl dark:text-white">
+              Craft stunning digital menus that convert diners into loyal fans
+            </h1>
+            <p class="max-w-2xl text-lg text-ink-600 dark:text-ink-300">
+              MenuX blends modern design systems with real-time publishing, giving restaurants an enterprise-grade experience across mobile, tablet, and tabletop displays.
+            </p>
+            <div class="flex flex-wrap gap-4">
+              <UButton to="/auth/login" size="lg" color="primary" label="Start building" icon="i-heroicons-arrow-right-circle" />
+              <UButton to="#features" size="lg" variant="soft" label="Why MenuX" icon="i-heroicons-information-circle" />
+            </div>
+            <div class="flex flex-wrap items-center gap-10 pt-10 text-sm text-ink-500 dark:text-ink-400">
+              <div class="space-y-1">
+                <p class="text-xl font-semibold text-ink-900 dark:text-white">2.5M+</p>
+                <p>menus viewed per month</p>
+              </div>
+              <div class="space-y-1">
+                <p class="text-xl font-semibold text-ink-900 dark:text-white">45%</p>
+                <p>higher upsell rates</p>
+              </div>
+              <div class="space-y-1">
+                <p class="text-xl font-semibold text-ink-900 dark:text-white">120+</p>
+                <p>premium templates</p>
+              </div>
             </div>
           </div>
-        </UCard>
-        
-        <UCard variant="soft" class="hover:bg-elevated/75 transition">
-          <div class="flex items-start gap-4">
-            <UIcon name="i-heroicons-device-phone-mobile" class="w-8 h-8 text-primary shrink-0" />
-            <div>
-              <h3 class="font-semibold text-highlighted mb-2">Mobile First</h3>
-              <p class="text-sm text-muted">Fully responsive design for all devices</p>
+          <div class="relative">
+            <div class="absolute inset-0 rounded-3xl bg-gradient-to-br from-brand-500/20 via-transparent to-secondary/30 blur-3xl" />
+            <div class="relative overflow-hidden rounded-3xl border border-ink-100/80 bg-white/80 shadow-xl shadow-brand-500/10 dark:border-ink-800 dark:bg-ink-950/60 backdrop-blur">
+              <div class="flex items-center justify-between border-b border-ink-100/60 px-6 py-4 dark:border-ink-800/80">
+                <div class="flex items-center gap-3">
+                  <span class="h-10 w-10 rounded-xl bg-brand-500/20 flex items-center justify-center">
+                    <UIcon name="i-heroicons-qr-code" class="h-6 w-6 text-brand-600" />
+                  </span>
+                  <div>
+                    <p class="text-sm font-semibold text-ink-700 dark:text-ink-200">Table 08 · Skyline Lounge</p>
+                    <p class="text-xs text-ink-500 dark:text-ink-400">Real-time updates · 2 devices active</p>
+                  </div>
+                </div>
+                <UButton to="/demo" size="xs" variant="outline" label="View menu" />
+              </div>
+              <div class="space-y-6 px-6 py-8">
+                <div class="flex items-center justify-between">
+                  <h3 class="text-xl font-semibold text-ink-900 dark:text-white">Tonight’s Signature Plates</h3>
+                  <span class="rounded-full border border-brand-500/40 bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-700 dark:bg-brand-900/30 dark:text-brand-200">Auto translated</span>
+                </div>
+                <div class="grid gap-4">
+                  <div class="flex items-start justify-between rounded-2xl border border-ink-100 bg-white px-4 py-3 shadow-sm hover:border-brand-200 hover:shadow-md transition dark:border-ink-800 dark:bg-ink-900/80">
+                    <div>
+                      <p class="font-semibold text-ink-900 dark:text-white">Truffle Arancini</p>
+                      <p class="text-sm text-ink-500 dark:text-ink-400">Crisp risotto, smoked mozzarella, basil oil</p>
+                    </div>
+                    <p class="text-sm font-semibold text-brand-600 dark:text-brand-300">€12</p>
+                  </div>
+                  <div class="flex items-start justify-between rounded-2xl border border-ink-100 bg-white px-4 py-3 shadow-sm hover:border-brand-200 hover:shadow-md transition dark:border-ink-800 dark:bg-ink-900/80">
+                    <div>
+                      <p class="font-semibold text-ink-900 dark:text-white">Sea Salt Caramel Tart</p>
+                      <p class="text-sm text-ink-500 dark:text-ink-400">Local cacao, citrus chantilly, almond praline</p>
+                    </div>
+                    <p class="text-sm font-semibold text-brand-600 dark:text-brand-300">€9</p>
+                  </div>
+                </div>
+                <div class="flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-ink-900/5 px-4 py-3 dark:bg-ink-900/40">
+                  <div class="flex items-center gap-3">
+                    <UIcon name="i-heroicons-bolt" class="h-5 w-5 text-brand-600 dark:text-brand-300" />
+                    <p class="text-sm font-medium text-ink-600 dark:text-ink-300">Upsell engine suggests adding dessert pairing</p>
+                  </div>
+                  <UButton size="xs" variant="soft" label="Add recommendation" />
+                </div>
+              </div>
             </div>
           </div>
-        </UCard>
-        
-        <UCard variant="soft" class="hover:bg-elevated/75 transition">
-          <div class="flex items-start gap-4">
-            <UIcon name="i-heroicons-qr-code" class="w-8 h-8 text-primary shrink-0" />
-            <div>
-              <h3 class="font-semibold text-highlighted mb-2">QR Codes</h3>
-              <p class="text-sm text-muted">Generate QR codes for instant access</p>
+        </div>
+      </section>
+
+      <section id="features" class="bg-white/90 dark:bg-ink-950/60">
+        <div class="mx-auto max-w-7xl px-6 py-24">
+          <div class="mx-auto max-w-3xl text-center">
+            <h2 class="text-3xl font-bold text-ink-900 dark:text-white sm:text-4xl">A modern toolkit crafted for hospitality teams</h2>
+            <p class="mt-4 text-lg text-ink-600 dark:text-ink-300">Blend brand storytelling with operational efficiency. MenuX keeps teams in sync and guests delighted.</p>
+          </div>
+          <div class="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            <UCard class="h-full border border-ink-100/70 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg dark:border-ink-800/70 dark:bg-ink-900/80">
+              <div class="flex flex-col gap-4">
+                <span class="h-12 w-12 rounded-2xl bg-brand-500/15 text-brand-600 flex items-center justify-center">
+                  <UIcon name="i-heroicons-cog-8-tooth" class="h-6 w-6" />
+                </span>
+                <h3 class="text-xl font-semibold text-ink-900 dark:text-white">Design system native</h3>
+                <p class="text-sm leading-relaxed text-ink-600 dark:text-ink-300">Tailor layouts with tokens, typography, and animation presets aligned to global design standards.</p>
+              </div>
+            </UCard>
+            <UCard class="h-full border border-ink-100/70 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg dark:border-ink-800/70 dark:bg-ink-900/80">
+              <div class="flex flex-col gap-4">
+                <span class="h-12 w-12 rounded-2xl bg-secondary/15 text-secondary flex items-center justify-center">
+                  <UIcon name="i-heroicons-signal" class="h-6 w-6" />
+                </span>
+                <h3 class="text-xl font-semibold text-ink-900 dark:text-white">Live performance insights</h3>
+                <p class="text-sm leading-relaxed text-ink-600 dark:text-ink-300">Measure dwell time and dish conversions in real time to amplify high-performing items.</p>
+              </div>
+            </UCard>
+            <UCard class="h-full border border-ink-100/70 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg dark:border-ink-800/70 dark:bg-ink-900/80">
+              <div class="flex flex-col gap-4">
+                <span class="h-12 w-12 rounded-2xl bg-emerald-500/15 text-emerald-500 flex items-center justify-center">
+                  <UIcon name="i-heroicons-globe-alt" class="h-6 w-6" />
+                </span>
+                <h3 class="text-xl font-semibold text-ink-900 dark:text-white">Global-ready publishing</h3>
+                <p class="text-sm leading-relaxed text-ink-600 dark:text-ink-300">Localize content, manage seasonal menus, and ship updates instantly across every table-side experience.</p>
+              </div>
+            </UCard>
+            <UCard class="h-full border border-ink-100/70 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg dark:border-ink-800/70 dark:bg-ink-900/80">
+              <div class="flex flex-col gap-4">
+                <span class="h-12 w-12 rounded-2xl bg-amber-500/15 text-amber-500 flex items-center justify-center">
+                  <UIcon name="i-heroicons-device-phone-mobile" class="h-6 w-6" />
+                </span>
+                <h3 class="text-xl font-semibold text-ink-900 dark:text-white">Mobile-first experiences</h3>
+                <p class="text-sm leading-relaxed text-ink-600 dark:text-ink-300">Optimized for quick scanning, dynamic imagery, and multilingual guests on any device.</p>
+              </div>
+            </UCard>
+            <UCard class="h-full border border-ink-100/70 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg dark:border-ink-800/70 dark:bg-ink-900/80">
+              <div class="flex flex-col gap-4">
+                <span class="h-12 w-12 rounded-2xl bg-purple-500/15 text-purple-500 flex items-center justify-center">
+                  <UIcon name="i-heroicons-command-line" class="h-6 w-6" />
+                </span>
+                <h3 class="text-xl font-semibold text-ink-900 dark:text-white">Composable architecture</h3>
+                <p class="text-sm leading-relaxed text-ink-600 dark:text-ink-300">Structured primitives and patterns make it easy to scale from boutique cafes to hospitality groups.</p>
+              </div>
+            </UCard>
+            <UCard class="h-full border border-ink-100/70 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg dark:border-ink-800/70 dark:bg-ink-900/80">
+              <div class="flex flex-col gap-4">
+                <span class="h-12 w-12 rounded-2xl bg-rose-500/15 text-rose-500 flex items-center justify-center">
+                  <UIcon name="i-heroicons-user-group" class="h-6 w-6" />
+                </span>
+                <h3 class="text-xl font-semibold text-ink-900 dark:text-white">Team ready workflows</h3>
+                <p class="text-sm leading-relaxed text-ink-600 dark:text-ink-300">Assign roles, approve changes, and sync brand assets through a guided workflow.</p>
+              </div>
+            </UCard>
+          </div>
+        </div>
+      </section>
+
+      <section id="templates" class="bg-gradient-to-b from-white to-ink-50/60 dark:from-ink-950 dark:to-ink-900">
+        <div class="mx-auto max-w-7xl px-6 py-24">
+          <div class="flex flex-col items-start justify-between gap-10 lg:flex-row">
+            <div class="max-w-lg space-y-6">
+              <h2 class="text-3xl font-bold text-ink-900 dark:text-white sm:text-4xl">Template collections curated by hospitality designers</h2>
+              <p class="text-lg text-ink-600 dark:text-ink-300">Choose from layered glassmorphism, neo-brutalist, botanical, and luxury palettes. Every template is accessible, responsive, and optimized for conversions.</p>
+              <div class="flex flex-wrap gap-3 text-sm text-ink-600 dark:text-ink-300">
+                <span class="rounded-full bg-white px-4 py-2 shadow-sm ring-1 ring-ink-100 dark:bg-ink-900 dark:ring-ink-800">Aurora Luxe</span>
+                <span class="rounded-full bg-white px-4 py-2 shadow-sm ring-1 ring-ink-100 dark:bg-ink-900 dark:ring-ink-800">Modern Bento</span>
+                <span class="rounded-full bg-white px-4 py-2 shadow-sm ring-1 ring-ink-100 dark:bg-ink-900 dark:ring-ink-800">Nordic Slate</span>
+                <span class="rounded-full bg-white px-4 py-2 shadow-sm ring-1 ring-ink-100 dark:bg-ink-900 dark:ring-ink-800">Holographic Wave</span>
+              </div>
+            </div>
+            <div class="grid w-full max-w-2xl gap-4 sm:grid-cols-2">
+              <div class="rounded-3xl border border-ink-100 bg-white/90 p-6 shadow-lg shadow-ink-500/10 dark:border-ink-800 dark:bg-ink-900/70">
+                <p class="text-sm font-semibold text-brand-600 dark:text-brand-300">Premium dark</p>
+                <p class="mt-3 text-lg font-semibold text-ink-900 dark:text-white">Aurora Luxe</p>
+                <p class="mt-2 text-sm text-ink-500 dark:text-ink-400">Gradient glass, luminous hierarchy, perfect for cocktail lounges.</p>
+              </div>
+              <div class="rounded-3xl border border-ink-100 bg-white/90 p-6 shadow-lg shadow-ink-500/10 dark:border-ink-800 dark:bg-ink-900/70">
+                <p class="text-sm font-semibold text-secondary">Bento layout</p>
+                <p class="mt-3 text-lg font-semibold text-ink-900 dark:text-white">Modern Bento</p>
+                <p class="mt-2 text-sm text-ink-500 dark:text-ink-400">Card-based grid designed for fast casual and tasting menus.</p>
+              </div>
+              <div class="rounded-3xl border border-ink-100 bg-white/90 p-6 shadow-lg shadow-ink-500/10 dark:border-ink-800 dark:bg-ink-900/70">
+                <p class="text-sm font-semibold text-emerald-500">Organic calm</p>
+                <p class="mt-3 text-lg font-semibold text-ink-900 dark:text-white">Botanical Garden</p>
+                <p class="mt-2 text-sm text-ink-500 dark:text-ink-400">Leaf motifs and gentle gradients for farm-to-table narratives.</p>
+              </div>
+              <div class="rounded-3xl border border-ink-100 bg-white/90 p-6 shadow-lg shadow-ink-500/10 dark:border-ink-800 dark:bg-ink-900/70">
+                <p class="text-sm font-semibold text-purple-500">Neo futurism</p>
+                <p class="mt-3 text-lg font-semibold text-ink-900 dark:text-white">Holographic Wave</p>
+                <p class="mt-2 text-sm text-ink-500 dark:text-ink-400">Immersive lighting, holographic gradients, cinematic typography.</p>
+              </div>
             </div>
           </div>
-        </UCard>
-      </div>
-    </div>
+        </div>
+      </section>
+
+      <section id="analytics" class="bg-white dark:bg-ink-950">
+        <div class="mx-auto max-w-7xl px-6 py-24">
+          <div class="grid gap-14 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+            <div class="space-y-6">
+              <h2 class="text-3xl font-bold text-ink-900 dark:text-white sm:text-4xl">Data-informed storytelling without the noise</h2>
+              <p class="text-lg text-ink-600 dark:text-ink-300">Monitor customer behavior across locations, test new menu variations, and surface insights with actionable dashboards built for culinary teams.</p>
+              <div class="grid gap-6 sm:grid-cols-2">
+                <div class="rounded-2xl border border-ink-100 bg-ink-50/80 p-5 dark:border-ink-800 dark:bg-ink-900/70">
+                  <p class="text-2xl font-semibold text-brand-600 dark:text-brand-300">+32%</p>
+                  <p class="mt-2 text-sm text-ink-600 dark:text-ink-400">Average uplift in highlighted dishes after applying upsell prompts.</p>
+                </div>
+                <div class="rounded-2xl border border-ink-100 bg-ink-50/80 p-5 dark:border-ink-800 dark:bg-ink-900/70">
+                  <p class="text-2xl font-semibold text-secondary">92%</p>
+                  <p class="mt-2 text-sm text-ink-600 dark:text-ink-400">Guest satisfaction score for digital ordering flows augmented with MenuX.</p>
+                </div>
+              </div>
+              <div class="flex flex-wrap gap-3">
+                <UButton size="md" color="primary" label="Explore analytics suite" icon="i-heroicons-chart-bar" />
+                <UButton size="md" variant="outline" label="Download brochure" icon="i-heroicons-arrow-down-on-square" />
+              </div>
+            </div>
+            <div class="relative">
+              <div class="absolute inset-0 rounded-3xl bg-gradient-to-br from-brand-500/20 via-transparent to-secondary/30 blur-3xl" />
+              <div class="relative grid gap-4 rounded-3xl border border-ink-100 bg-white/95 p-6 shadow-xl shadow-ink-500/10 dark:border-ink-800 dark:bg-ink-950/70">
+                <div class="flex items-center justify-between">
+                  <p class="text-sm font-semibold text-ink-500 dark:text-ink-300">Live dashboard</p>
+                  <span class="rounded-full bg-brand-100 px-3 py-1 text-xs font-medium text-brand-700 dark:bg-brand-900/30 dark:text-brand-300">Updated 2m ago</span>
+                </div>
+                <div class="rounded-2xl border border-ink-100 bg-gradient-to-br from-brand-500/10 via-white to-secondary/20 p-6 dark:border-ink-800/60 dark:bg-ink-900/70">
+                  <p class="text-sm font-medium text-ink-600 dark:text-ink-300">Top performing categories</p>
+                  <div class="mt-4 space-y-4">
+                    <div>
+                      <div class="flex justify-between text-sm font-semibold text-ink-900 dark:text-white">
+                        <p>Chef Specials</p>
+                        <p>68%</p>
+                      </div>
+                      <div class="mt-2 h-2 rounded-full bg-ink-100 dark:bg-ink-800">
+                        <div class="h-2 rounded-full bg-brand-500" style="width:68%" />
+                      </div>
+                    </div>
+                    <div>
+                      <div class="flex justify-between text-sm font-semibold text-ink-900 dark:text-white">
+                        <p>Signature Cocktails</p>
+                        <p>54%</p>
+                      </div>
+                      <div class="mt-2 h-2 rounded-full bg-ink-100 dark:bg-ink-800">
+                        <div class="h-2 rounded-full bg-secondary" style="width:54%" />
+                      </div>
+                    </div>
+                    <div>
+                      <div class="flex justify-between text-sm font-semibold text-ink-900 dark:text-white">
+                        <p>Elevated Comfort</p>
+                        <p>42%</p>
+                      </div>
+                      <div class="mt-2 h-2 rounded-full bg-ink-100 dark:bg-ink-800">
+                        <div class="h-2 rounded-full bg-emerald-500" style="width:42%" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="rounded-2xl border border-ink-100 bg-white/90 p-4 dark:border-ink-800/70 dark:bg-ink-900/80">
+                  <div class="flex items-center justify-between text-sm text-ink-500 dark:text-ink-400">
+                    <p>Smart recommendations</p>
+                    <span class="rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-600 dark:text-emerald-400">Live · 12 tables</span>
+                  </div>
+                  <div class="mt-4 space-y-3">
+                    <div class="flex items-center justify-between rounded-xl border border-ink-100 bg-white px-3 py-2 text-sm font-medium text-ink-600 shadow-sm dark:border-ink-800 dark:bg-ink-950">
+                      <p>Upgrade flat white to single-origin</p>
+                      <p class="text-emerald-600 dark:text-emerald-400">+18%</p>
+                    </div>
+                    <div class="flex items-center justify-between rounded-xl border border-ink-100 bg-white px-3 py-2 text-sm font-medium text-ink-600 shadow-sm dark:border-ink-800 dark:bg-ink-950">
+                      <p>Add dessert pairing to tasting menu</p>
+                      <p class="text-emerald-600 dark:text-emerald-400">+26%</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="testimonials" class="bg-gradient-to-b from-ink-50 via-white to-ink-50 dark:from-ink-900 dark:via-ink-950 dark:to-ink-900">
+        <div class="mx-auto max-w-7xl px-6 py-24">
+          <div class="mx-auto max-w-3xl text-center">
+            <h2 class="text-3xl font-bold text-ink-900 dark:text-white sm:text-4xl">Loved by chefs, sommeliers, and operators</h2>
+            <p class="mt-4 text-lg text-ink-600 dark:text-ink-300">MenuX unlocks hospitality teams to deliver premium guest journeys without sacrificing agility.</p>
+          </div>
+          <div class="mt-16 grid gap-8 lg:grid-cols-3">
+            <UCard class="border border-ink-100/80 bg-white/90 shadow-lg shadow-ink-500/10 dark:border-ink-800/70 dark:bg-ink-900/80">
+              <div class="flex flex-col gap-6">
+                <div class="flex items-center gap-4">
+                  <span class="flex h-12 w-12 items-center justify-center rounded-full bg-brand-500/15 text-brand-600">
+                    <UIcon name="i-heroicons-user-circle" class="h-7 w-7" />
+                  </span>
+                  <div>
+                    <p class="font-semibold text-ink-900 dark:text-white">Chef Elena Miranda</p>
+                    <p class="text-sm text-ink-500 dark:text-ink-400">Culinary Director · Aurora Group</p>
+                  </div>
+                </div>
+                <p class="text-sm leading-relaxed text-ink-600 dark:text-ink-300">“We ship seasonal menu updates in under fifteen minutes. The visual merchandising tools have helped us increase premium dish uptake by 38%.”</p>
+              </div>
+            </UCard>
+            <UCard class="border border-ink-100/80 bg-white/90 shadow-lg shadow-ink-500/10 dark:border-ink-800/70 dark:bg-ink-900/80">
+              <div class="flex flex-col gap-6">
+                <div class="flex items-center gap-4">
+                  <span class="flex h-12 w-12 items-center justify-center rounded-full bg-secondary/15 text-secondary">
+                    <UIcon name="i-heroicons-user-group" class="h-7 w-7" />
+                  </span>
+                  <div>
+                    <p class="font-semibold text-ink-900 dark:text-white">Arben Krasniqi</p>
+                    <p class="text-sm text-ink-500 dark:text-ink-400">GM · Skyline Lounge</p>
+                  </div>
+                </div>
+                <p class="text-sm leading-relaxed text-ink-600 dark:text-ink-300">“MenuX lets our servers focus on storytelling while the platform personalizes offers. Guests love how premium and responsive the experience feels.”</p>
+              </div>
+            </UCard>
+            <UCard class="border border-ink-100/80 bg-white/90 shadow-lg shadow-ink-500/10 dark:border-ink-800/70 dark:bg-ink-900/80">
+              <div class="flex flex-col gap-6">
+                <div class="flex items-center gap-4">
+                  <span class="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-500/15 text-emerald-500">
+                    <UIcon name="i-heroicons-currency-euro" class="h-7 w-7" />
+                  </span>
+                  <div>
+                    <p class="font-semibold text-ink-900 dark:text-white">Maya Patel</p>
+                    <p class="text-sm text-ink-500 dark:text-ink-400">Revenue Manager · Vista Collective</p>
+                  </div>
+                </div>
+                <p class="text-sm leading-relaxed text-ink-600 dark:text-ink-300">“The analytics suite revealed unexpected best sellers and guided a pricing strategy that paid off in weeks. MenuX is now core to our growth stack.”</p>
+              </div>
+            </UCard>
+          </div>
+        </div>
+      </section>
+
+      <section id="pricing" class="bg-white dark:bg-ink-950">
+        <div class="mx-auto max-w-7xl px-6 py-24">
+          <div class="flex flex-col items-center text-center">
+            <h2 class="text-3xl font-bold text-ink-900 dark:text-white sm:text-4xl">Flexible plans for every concept</h2>
+            <p class="mt-4 max-w-2xl text-lg text-ink-600 dark:text-ink-300">Start with essentials and scale to enterprise-grade governance, analytics, and premium templates as you grow.</p>
+          </div>
+          <div class="mt-16 grid gap-8 lg:grid-cols-3">
+            <UCard class="border border-ink-100 bg-white/90 p-8 shadow-md dark:border-ink-800 dark:bg-ink-900/80">
+              <p class="text-sm font-semibold uppercase tracking-widest text-ink-500 dark:text-ink-400">Starter</p>
+              <p class="mt-4 text-4xl font-bold text-ink-900 dark:text-white">€49<span class="text-base font-medium text-ink-500 dark:text-ink-400">/month</span></p>
+              <p class="mt-2 text-sm text-ink-600 dark:text-ink-300">Ideal for independent cafés and pop-ups launching their first digital menu.</p>
+              <ul class="mt-6 space-y-3 text-sm text-ink-600 dark:text-ink-300">
+                <li class="flex items-center gap-3">
+                  <UIcon name="i-heroicons-check-circle" class="h-5 w-5 text-brand-500" />
+                  1 live menu · core templates
+                </li>
+                <li class="flex items-center gap-3">
+                  <UIcon name="i-heroicons-check-circle" class="h-5 w-5 text-brand-500" />
+                  QR codes + analytics snapshot
+                </li>
+                <li class="flex items-center gap-3">
+                  <UIcon name="i-heroicons-check-circle" class="h-5 w-5 text-brand-500" />
+                  Email support
+                </li>
+              </ul>
+              <UButton to="/auth/login" class="mt-8 w-full" label="Start Starter" />
+            </UCard>
+            <UCard class="border-2 border-brand-500 bg-gradient-to-br from-brand-500/10 via-white to-secondary/10 p-8 shadow-xl shadow-brand-500/20 dark:border-brand-400 dark:from-brand-900/40 dark:via-ink-950 dark:to-secondary/10">
+              <div class="mb-4 inline-flex items-center gap-2 rounded-full bg-brand-500 text-white px-4 py-1 text-xs font-semibold uppercase tracking-widest">
+                Most popular
+              </div>
+              <p class="text-sm font-semibold uppercase tracking-widest text-brand-600 dark:text-brand-200">Growth</p>
+              <p class="mt-4 text-4xl font-bold text-ink-900 dark:text-white">€129<span class="text-base font-medium text-ink-500 dark:text-ink-300">/month</span></p>
+              <p class="mt-2 text-sm text-ink-600 dark:text-ink-300">For multi-location teams needing collaboration, localization, and conversion insights.</p>
+              <ul class="mt-6 space-y-3 text-sm text-ink-600 dark:text-ink-300">
+                <li class="flex items-center gap-3">
+                  <UIcon name="i-heroicons-check-circle" class="h-5 w-5 text-brand-500" />
+                  Unlimited menus and categories
+                </li>
+                <li class="flex items-center gap-3">
+                  <UIcon name="i-heroicons-check-circle" class="h-5 w-5 text-brand-500" />
+                  Advanced analytics + upsell AI
+                </li>
+                <li class="flex items-center gap-3">
+                  <UIcon name="i-heroicons-check-circle" class="h-5 w-5 text-brand-500" />
+                  Role-based governance
+                </li>
+              </ul>
+              <UButton to="/auth/login" class="mt-8 w-full" color="primary" label="Choose Growth" />
+            </UCard>
+            <UCard class="border border-ink-100 bg-white/90 p-8 shadow-md dark:border-ink-800 dark:bg-ink-900/80">
+              <p class="text-sm font-semibold uppercase tracking-widest text-ink-500 dark:text-ink-400">Enterprise</p>
+              <p class="mt-4 text-4xl font-bold text-ink-900 dark:text-white">Custom</p>
+              <p class="mt-2 text-sm text-ink-600 dark:text-ink-300">Tailored to hospitality groups with complex governance, data, and compliance needs.</p>
+              <ul class="mt-6 space-y-3 text-sm text-ink-600 dark:text-ink-300">
+                <li class="flex items-center gap-3">
+                  <UIcon name="i-heroicons-check-circle" class="h-5 w-5 text-brand-500" />
+                  White-glove onboarding
+                </li>
+                <li class="flex items-center gap-3">
+                  <UIcon name="i-heroicons-check-circle" class="h-5 w-5 text-brand-500" />
+                  SSO, SAML, audit trails
+                </li>
+                <li class="flex items-center gap-3">
+                  <UIcon name="i-heroicons-check-circle" class="h-5 w-5 text-brand-500" />
+                  Dedicated success partner
+                </li>
+              </ul>
+              <UButton to="/contact" class="mt-8 w-full" variant="outline" label="Talk to sales" />
+            </UCard>
+          </div>
+        </div>
+      </section>
+
+      <section id="cta" class="relative overflow-hidden bg-gradient-to-br from-brand-600 via-brand-500 to-secondary text-white">
+        <div class="absolute inset-0 opacity-30">
+          <div class="absolute -left-10 top-10 h-64 w-64 rounded-full bg-white/30 blur-3xl" />
+          <div class="absolute right-10 bottom-10 h-72 w-72 rounded-full bg-secondary/40 blur-3xl" />
+        </div>
+        <div class="relative mx-auto flex max-w-6xl flex-col items-center gap-8 px-6 py-24 text-center">
+          <span class="rounded-full border border-white/40 px-4 py-1 text-xs font-medium uppercase tracking-[0.4em] text-white/80">Ready in minutes</span>
+          <h2 class="max-w-3xl text-3xl font-bold sm:text-4xl">Launch a premium digital menu experience that feels uniquely yours</h2>
+          <p class="max-w-2xl text-lg text-white/80">Sign in, select a template, tailor your story, and publish to every table. Menu updates, translations, and analytics happen in the same flow.</p>
+          <div class="flex flex-wrap justify-center gap-4">
+            <UButton to="/auth/login" size="lg" color="white" label="Sign in" class="text-brand-600" icon="i-heroicons-arrow-right-circle" />
+            <UButton to="/demo" size="lg" variant="ghost" label="View a live menu" icon="i-heroicons-eye" class="text-white hover:bg-white/10" />
+          </div>
+        </div>
+      </section>
+    </main>
   </div>
 </template>
 
 <script setup lang="ts">
 definePageMeta({
   layout: false,
-  ssr: false // Client-only to avoid hydration issues
+  ssr: false
 })
 </script>
