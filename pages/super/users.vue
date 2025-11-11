@@ -258,13 +258,12 @@
 
                 <div>
                   <label class="block text-sm font-medium text-ink-700 dark:text-ink-300 mb-2">
-                    Password <span class="text-red-500">*</span>
+                    Password
                   </label>
                   <input
                     v-model="userForm.password"
                     type="password"
                     placeholder="Secure password"
-                    required
                     class="w-full px-4 py-3 rounded-xl border border-ink-200 dark:border-ink-700 bg-white dark:bg-ink-800 text-ink-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                   />
                   <p class="text-xs text-ink-500 dark:text-ink-400 mt-2">Required if creating new user</p>
@@ -526,6 +525,7 @@ definePageMeta({
 
 const { client } = useSupabaseClientStrict()
 const toast = useToast()
+const supabaseSession = useSupabaseSession()
 
 const tenants = ref<Tenant[]>([])
 const allUsers = ref<TenantUserWithDetails[]>([])
@@ -647,10 +647,10 @@ const loadData = async () => {
 }
 
 const handleAddUser = async () => {
-  if (!userForm.tenant_id || !userForm.email || !userForm.password) {
+  if (!userForm.tenant_id || !userForm.email) {
     toast.add({
       title: 'Validation Error',
-      description: 'Please fill in all required fields',
+      description: 'Tenant and email are required',
       color: 'red',
       icon: 'i-heroicons-exclamation-circle',
       timeout: 3000
@@ -660,32 +660,44 @@ const handleAddUser = async () => {
 
   savingUser.value = true
   try {
-    const { data: { session } } = await client.auth.getSession()
-    if (!session?.access_token) {
-      throw new Error('No active session')
+    const email = userForm.email.trim()
+    const password = userForm.password.trim()
+    const fullName = userForm.full_name.trim()
+
+    if (!email) {
+      toast.add({
+        title: 'Validation Error',
+        description: 'Email must not be empty',
+        color: 'red',
+        icon: 'i-heroicons-exclamation-circle',
+        timeout: 3000
+      })
+      return
     }
 
-    const result = await $fetch('/api/admin/create-user', {
+    const payload: Record<string, unknown> = {
+      email,
+      tenant_id: userForm.tenant_id,
+      role: userForm.role,
+      is_owner: userForm.is_owner
+    }
+
+    if (password) {
+      payload.password = password
+    }
+
+    if (fullName) {
+      payload.full_name = fullName
+    }
+
+    const token = await getAccessToken()
+
+    await $fetch('/api/admin/create-user', {
       method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${session.access_token}`
-      },
-      body: {
-        email: userForm.email,
-        password: userForm.password,
-        full_name: userForm.full_name || null,
-        tenant_id: userForm.tenant_id,
-        role: userForm.role
-      }
+      headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+      credentials: 'include',
+      body: payload
     })
-
-    if (userForm.is_owner && result?.user_id) {
-      await client
-        .from('tenant_users')
-        .update({ is_owner: true })
-        .eq('tenant_id', userForm.tenant_id)
-        .eq('user_id', result.user_id)
-    }
 
     await loadData()
     resetUserForm()
@@ -722,14 +734,19 @@ const handleUpdateRole = async () => {
 
   savingUser.value = true
   try {
-    await client
-      .from('tenant_users')
-      .update({
+    const token = await getAccessToken()
+
+    await $fetch('/api/admin/update-tenant-user', {
+      method: 'PATCH',
+      headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+      credentials: 'include',
+      body: {
+        tenant_id: editingUser.value.tenant_id,
+        user_id: editingUser.value.user_id,
         role: roleForm.role,
         is_owner: roleForm.is_owner
-      })
-      .eq('tenant_id', editingUser.value.tenant_id)
-      .eq('user_id', editingUser.value.user_id)
+      }
+    })
 
     await loadData()
     showEditRoleDialog.value = false
@@ -742,10 +759,10 @@ const handleUpdateRole = async () => {
       timeout: 3000
     })
   } catch (error: unknown) {
-    const err = error as { message?: string }
+    const err = error as { data?: { statusMessage?: string }; message?: string }
     toast.add({
       title: 'Error',
-      description: err.message || 'Failed to update user role.',
+      description: err.data?.statusMessage || err.message || 'Failed to update user role.',
       color: 'red',
       icon: 'i-heroicons-exclamation-circle',
       timeout: 5000
@@ -764,11 +781,17 @@ const handleRemoveUser = async () => {
   if (!removingUser.value) return
 
   try {
-    await client
-      .from('tenant_users')
-      .delete()
-      .eq('tenant_id', removingUser.value.tenant_id)
-      .eq('user_id', removingUser.value.user_id)
+    const token = await getAccessToken()
+
+    await $fetch('/api/admin/remove-tenant-user', {
+      method: 'DELETE',
+      headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+      credentials: 'include',
+      body: {
+        tenant_id: removingUser.value.tenant_id,
+        user_id: removingUser.value.user_id
+      }
+    })
 
     await loadData()
     showRemoveUserDialog.value = false
@@ -782,10 +805,10 @@ const handleRemoveUser = async () => {
       timeout: 3000
     })
   } catch (error: unknown) {
-    const err = error as { message?: string }
+    const err = error as { data?: { statusMessage?: string }; message?: string }
     toast.add({
       title: 'Error',
-      description: err.message || 'Failed to remove user.',
+      description: err.data?.statusMessage || err.message || 'Failed to remove user.',
       color: 'red',
       icon: 'i-heroicons-exclamation-circle',
       timeout: 5000
@@ -801,6 +824,34 @@ const resetUserForm = () => {
   userForm.role = 'admin'
   userForm.is_owner = false
   showAddUserDialog.value = false
+}
+
+const getAccessToken = async () => {
+  if (supabaseSession.value?.access_token) {
+    return supabaseSession.value.access_token
+  }
+
+  const { data: { session }, error } = await client.auth.getSession()
+  if (error) {
+    console.error('Failed to get session', error)
+  }
+  if (session?.access_token) {
+    supabaseSession.value = session
+    return session.access_token
+  }
+
+  const { data: refreshed, error: refreshError } = await client.auth.refreshSession()
+  if (refreshError) {
+    console.error('Failed to refresh session', refreshError)
+    return null
+  }
+
+  if (refreshed.session) {
+    supabaseSession.value = refreshed.session
+    return refreshed.session.access_token ?? null
+  }
+
+  return null
 }
 
 onMounted(async () => {

@@ -8,15 +8,29 @@ import * as z from 'zod'
 
 export const createUserSchema = z.object({
   email: z.string().email('Invalid email address'),
-  password: z.string().min(8, 'Password must be at least 8 characters'),
+  password: z.string().min(8, 'Password must be at least 8 characters').optional(),
   full_name: z.string().optional(),
   tenant_id: z.string().uuid('Invalid tenant ID'),
-  role: z.enum(['admin', 'editor', 'viewer']).default('admin')
+  role: z.enum(['admin', 'editor', 'viewer']).default('admin'),
+  is_owner: z.boolean().optional()
 })
 
 export const updateUserPasswordSchema = z.object({
   user_id: z.string().uuid('Invalid user ID'),
   password: z.string().min(8, 'Password must be at least 8 characters')
+})
+
+export const updateTenantUserSchema = z.object({
+  tenant_id: z.string().uuid('Invalid tenant ID'),
+  user_id: z.string().uuid('Invalid user ID'),
+  role: z.enum(['admin', 'editor', 'viewer']),
+  is_owner: z.boolean().optional()
+})
+
+export const removeTenantUserSchema = z.object({
+  tenant_id: z.string().uuid('Invalid tenant ID'),
+  user_id: z.string().uuid('Invalid user ID'),
+  delete_account: z.boolean().optional()
 })
 
 export const updateAccountSchema = z.object({
@@ -73,34 +87,69 @@ export class AdminService {
     const { adminClient } = await AuthService.verifySuperAdmin(event)
 
     // Check if user already exists
-    const { data: existingUserResponse, error: existingUserError } = await adminClient.auth.admin.getUserByEmail(data.email)
+    const { data: existingUsers, error: existingUsersError } = await adminClient.auth.admin.listUsers({
+      page: 1,
+      perPage: 1,
+      email: data.email
+    } as { page?: number; perPage?: number; email?: string })
 
-    if (existingUserError && existingUserError.message !== 'User not found') {
+    if (existingUsersError) {
       throw createError({
         statusCode: 400,
-        message: existingUserError.message || 'Unable to check existing user'
+        message: existingUsersError.message || 'Unable to check existing user'
       })
     }
 
+    const existingUser = existingUsers?.users?.[0] ?? null
+
     let userId: string
+    let accountAction: 'existing' | 'created' | 'invited' = 'existing'
 
-    if (existingUserResponse?.user) {
-      userId = existingUserResponse.user.id
-    } else {
-      const { data: newUser, error: adminCreateError } = await adminClient.auth.admin.createUser({
-        email: data.email,
-        email_confirm: true,
-        password: data.password
-      })
+    if (existingUser?.id) {
+      userId = existingUser.id
 
-      if (adminCreateError || !newUser?.user) {
-        throw createError({
-          statusCode: 400,
-          message: adminCreateError?.message || 'Failed to create user'
+      if (data.password) {
+        const { error: passwordUpdateError } = await adminClient.auth.admin.updateUserById(userId, {
+          password: data.password
         })
-      }
 
-      userId = newUser.user.id
+        if (passwordUpdateError) {
+          throw createError({
+            statusCode: 400,
+            message: passwordUpdateError.message || 'Failed to update existing user password'
+          })
+        }
+      }
+    } else {
+      if (data.password) {
+        const { data: newUser, error: adminCreateError } = await adminClient.auth.admin.createUser({
+          email: data.email,
+          email_confirm: true,
+          password: data.password
+        })
+
+        if (adminCreateError || !newUser?.user) {
+          throw createError({
+            statusCode: 400,
+            message: adminCreateError?.message || 'Failed to create user'
+          })
+        }
+
+        userId = newUser.user.id
+        accountAction = 'created'
+      } else {
+        const { data: invitedUser, error: inviteError } = await adminClient.auth.admin.inviteUserByEmail(data.email)
+
+        if (inviteError || !invitedUser?.user) {
+          throw createError({
+            statusCode: 400,
+            message: inviteError?.message || 'Failed to invite user'
+          })
+        }
+
+        userId = invitedUser.user.id
+        accountAction = 'invited'
+      }
     }
 
     // Create/update profile
@@ -126,7 +175,7 @@ export class AdminService {
         tenant_id: data.tenant_id,
         user_id: userId,
         role: data.role,
-        is_owner: false
+        is_owner: Boolean(data.is_owner)
       }, { onConflict: 'tenant_id,user_id' })
 
     if (tenantUserError) {
@@ -136,13 +185,17 @@ export class AdminService {
       })
     }
 
-    const existingAccount = Boolean(existingUserResponse?.user)
+    const existingAccount = Boolean(existingUser?.id)
 
     return {
       success: true,
       user_id: userId,
       email: data.email,
-      message: existingAccount ? 'User linked to tenant' : 'User created and linked to tenant'
+      message: existingAccount
+        ? 'User linked to tenant'
+        : accountAction === 'created'
+          ? 'User created and linked to tenant'
+          : 'Invitation sent and user linked to tenant'
     }
   }
 
@@ -204,6 +257,89 @@ export class AdminService {
     }
 
     return { success: true }
+  }
+
+  /**
+   * Update tenant user role or ownership
+   */
+  static async updateTenantUser(event: any, data: z.infer<typeof updateTenantUserSchema>) {
+    const { adminClient } = await AuthService.verifySuperAdmin(event)
+
+    const { data: existingTenantUser, error: existingError } = await adminClient
+      .from('tenant_users')
+      .select('tenant_id, user_id')
+      .eq('tenant_id', data.tenant_id)
+      .eq('user_id', data.user_id)
+      .maybeSingle()
+
+    if (existingError) {
+      throw createError({
+        statusCode: 400,
+        message: existingError.message || 'Failed to load tenant user'
+      })
+    }
+
+    if (!existingTenantUser) {
+      throw createError({
+        statusCode: 404,
+        message: 'Tenant user not found'
+      })
+    }
+
+    const { error: updateError } = await adminClient
+      .from('tenant_users')
+      .update({
+        role: data.role,
+        is_owner: Boolean(data.is_owner)
+      })
+      .eq('tenant_id', data.tenant_id)
+      .eq('user_id', data.user_id)
+
+    if (updateError) {
+      throw createError({
+        statusCode: 400,
+        message: updateError.message || 'Failed to update tenant user'
+      })
+    }
+
+    return {
+      success: true
+    }
+  }
+
+  /**
+   * Remove tenant user or delete account completely
+   */
+  static async removeTenantUser(event: any, data: z.infer<typeof removeTenantUserSchema>) {
+    const { adminClient } = await AuthService.verifySuperAdmin(event)
+
+    const { error: deleteLinkError } = await adminClient
+      .from('tenant_users')
+      .delete()
+      .eq('tenant_id', data.tenant_id)
+      .eq('user_id', data.user_id)
+
+    if (deleteLinkError) {
+      throw createError({
+        statusCode: 400,
+        message: deleteLinkError.message || 'Failed to remove tenant user'
+      })
+    }
+
+    if (data.delete_account) {
+      const { error: deleteAccountError } = await adminClient.auth.admin.deleteUser(data.user_id)
+
+      if (deleteAccountError) {
+        throw createError({
+          statusCode: 400,
+          message: deleteAccountError.message || 'Tenant link removed but failed to delete auth user'
+        })
+      }
+    }
+
+    return {
+      success: true
+    }
   }
 }
 

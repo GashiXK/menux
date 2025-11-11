@@ -33,7 +33,16 @@ export class AuthService {
    */
   static async authenticate(event: any): Promise<User> {
     // Try to get user from serverSupabaseUser (handles cookies automatically)
-    let user = await serverSupabaseUser(event)
+    let user: User | null = null
+
+    try {
+      user = await serverSupabaseUser(event)
+    } catch (error) {
+      // Ignore missing cookie-based session and fall back to bearer token
+      if (process.dev) {
+        console.debug('serverSupabaseUser failed, falling back to Authorization header', (error as Error).message)
+      }
+    }
 
     // If that fails, try to get from Authorization header
     if (!user) {
