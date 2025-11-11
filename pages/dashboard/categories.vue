@@ -17,18 +17,10 @@
             </p>
           </div>
           <div class="flex flex-wrap gap-3">
-            <AppSelect
-              v-model="menuId"
-              :options="menuOptions"
-              placeholder="Select a menu"
-              size="md"
-              :disabled="menuLoading || menuOptions.length === 0"
-              class="min-w-[220px]"
-            />
             <UButton color="primary" size="md" icon="i-heroicons-plus-circle" :disabled="!menuId || menuLoading" label="Add category" @click="openDialog()" />
             <UButton to="/dashboard/items" variant="soft" size="md" icon="i-heroicons-squares-2x2" label="Manage items" />
           </div>
-          <p v-if="!menuId && !menuLoading" class="text-sm text-ink-500 dark:text-ink-400">Create or select a menu to start organizing categories.</p>
+          <p v-if="menuLoading" class="text-sm text-ink-500 dark:text-ink-400">Loading your menu structure…</p>
         </div>
         <div class="grid w-full max-w-xs gap-4 rounded-3xl bg-white/80 p-5 text-sm text-ink-600 shadow-lg dark:bg-ink-950/75 dark:text-ink-300">
           <div class="flex items-center justify-between">
@@ -335,13 +327,6 @@ const lastUpdated = computed(() => {
   const latest = new Date(Math.max(...timestamps))
   return latest.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
 })
-
-const menuOptions = computed(() =>
-  menus.value.map(menu => ({
-    label: menu.name,
-    value: menu.id
-  }))
-)
 
 const loadCategories = async () => {
   if (!menuId.value) return

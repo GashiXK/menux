@@ -757,6 +757,9 @@ const { client } = useSupabaseClientStrict()
 const { listMenusByTenant } = useMenu()
 const toast = useToast()
 
+const DEFAULT_MENU_TEMPLATE_KEY = 'luxury-gold'
+const DEFAULT_MENU_SLUG = 'main'
+
 const tenantSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   slug: z.string().min(1, 'Slug is required'),
@@ -955,7 +958,7 @@ const handleSave = async (e?: Event) => {
         timeout: 3000
       })
     } else {
-      await client
+      const { data: createdTenant, error: createTenantError } = await client
         .from('tenants')
         .insert({
           name: form.name,
@@ -964,7 +967,15 @@ const handleSave = async (e?: Event) => {
           logo_url: form.logo_url || null,
           is_active: form.is_active
         })
-      
+        .select('*')
+        .single()
+
+      if (createTenantError || !createdTenant) {
+        throw createTenantError || new Error('Failed to create tenant')
+      }
+
+      await createDefaultMenuForTenant(createdTenant.id)
+
       toast.add({
         title: 'Success',
         description: 'Tenant created successfully',
@@ -987,6 +998,35 @@ const handleSave = async (e?: Event) => {
     })
   } finally {
     saving.value = false
+  }
+}
+
+const createDefaultMenuForTenant = async (tenantId: string) => {
+  try {
+    const { error: menuError } = await client
+      .from('menus')
+      .insert({
+        tenant_id: tenantId,
+        name: 'Main Menu',
+        slug: DEFAULT_MENU_SLUG,
+        template_key: DEFAULT_MENU_TEMPLATE_KEY,
+        design_config: {},
+        is_published: false,
+        is_default: true
+      })
+
+    if (menuError && menuError.code !== '23505') {
+      throw menuError
+    }
+  } catch (error: unknown) {
+    const err = error as { message?: string }
+    toast.add({
+      title: 'Menu setup notice',
+      description: err.message || 'Tenant was created, but the default menu could not be generated automatically. Please create one manually.',
+      color: 'yellow',
+      icon: 'i-heroicons-exclamation-triangle',
+      timeout: 6000
+    })
   }
 }
 

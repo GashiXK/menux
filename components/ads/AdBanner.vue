@@ -1,73 +1,79 @@
 <template>
   <Transition name="ad-banner-fade">
-    <div
+    <aside
       v-if="ad"
-      class="relative overflow-hidden rounded-2xl border border-brand-500/20 bg-gradient-to-br from-brand-700 via-brand-600 to-secondary/50 text-white shadow-lg shadow-brand-500/20"
+      class="relative overflow-hidden rounded-2xl border border-brand-500/25 bg-gradient-to-r from-brand-950 via-brand-800 to-brand-600 text-white shadow-lg shadow-brand-900/30"
       role="region"
       aria-live="polite"
     >
-      <div class="absolute inset-0 opacity-25">
-        <div class="absolute -left-10 top-0 h-32 w-32 rounded-full bg-white/30 blur-3xl" />
-        <div class="absolute right-[-10%] bottom-[-30%] h-40 w-40 rounded-full bg-secondary/30 blur-3xl" />
-      </div>
-      <div class="relative grid gap-6 px-5 py-5 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
-        <div class="flex flex-col gap-4">
-          <div class="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.28em] text-white/70">
-            <span class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-white/15">
-              <UIcon name="i-heroicons-megaphone" class="h-4 w-4" />
-            </span>
-            <span>{{ badgeLabel }}</span>
-            <span v-if="ad.end_time" class="rounded-full border border-white/20 px-2 py-0.5 text-[10px] tracking-widest text-white/80">
-              Ends {{ formattedEndTime }}
-            </span>
-          </div>
-          <div class="space-y-1.5">
-            <h3 class="text-xl font-semibold leading-snug sm:text-2xl">{{ ad.title }}</h3>
-            <p v-if="ad.body" class="text-sm text-white/80">
-              {{ ad.body }}
-            </p>
-          </div>
-          <div class="flex flex-wrap items-center gap-3 text-xs text-white/80">
-            <div v-if="countdown" class="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1">
-              <UIcon name="i-heroicons-clock" class="h-4 w-4" />
-              <span>Expires in {{ countdown }}</span>
+      <div class="absolute inset-y-0 right-[-60px] hidden h-[180px] w-[180px] rounded-full bg-white/15 blur-3xl md:block" aria-hidden="true" />
+      <button
+        type="button"
+        class="absolute right-3.5 top-3.5 inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition hover:bg-white/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+        @click="dismissAd"
+      >
+        <span class="sr-only">Dismiss promotion</span>
+        <UIcon name="i-heroicons-x-mark" class="h-4.5 w-4.5" />
+      </button>
+
+      <div class="relative flex items-center gap-4 px-4 py-4 md:px-6 md:py-5">
+        <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white/15 text-white shadow-inner shadow-brand-600/40">
+          <UIcon name="i-heroicons-megaphone" class="h-6 w-6" />
+        </div>
+
+        <div class="flex flex-1 flex-col gap-3 md:flex-row md:items-center md:justify-between">
+          <div class="space-y-2">
+            <div class="flex flex-wrap items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.35em] text-white/70">
+              <span>{{ badgeLabel }}</span>
+              <span
+                v-if="ad.end_time"
+                class="inline-flex items-center gap-1 rounded-full border border-white/30 px-2 py-0.5 text-[10px] tracking-[0.25em] text-white/80"
+              >
+                <UIcon name="i-heroicons-clock" class="h-3.5 w-3.5" />
+                {{ formattedEndTime }}
+              </span>
             </div>
+            <div class="space-y-1 md:max-w-xl">
+              <h3 class="text-base font-semibold leading-snug md:text-lg">{{ ad.title }}</h3>
+              <p v-if="ad.body" class="text-sm text-white/80">
+                {{ ad.body }}
+              </p>
+            </div>
+            <div class="flex flex-wrap items-center gap-2 text-[11px] text-white/75">
+              <span
+                v-if="countdown"
+                class="inline-flex items-center gap-1 rounded-full bg-white/10 px-2.5 py-1"
+              >
+                <UIcon name="i-heroicons-bolt" class="h-4 w-4" />
+                Ends in {{ countdown }}
+              </span>
+              <span class="inline-flex items-center gap-1 rounded-full bg-white/10 px-2.5 py-1">
+                <UIcon name="i-heroicons-fire" class="h-4 w-4" />
+                Spotlight this week
+              </span>
+            </div>
+          </div>
+
+          <div class="flex flex-col items-end gap-3">
             <button
               v-if="ad.link_url"
               type="button"
-              class="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2 text-sm font-semibold text-brand-600 shadow-md transition hover:bg-brand-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+              class="inline-flex items-center gap-2 rounded-xl bg-white px-3.5 py-2 text-sm font-semibold text-brand-700 shadow-lg shadow-white/30 transition hover:shadow-brand-200/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
               @click="openAdLink"
             >
-              Explore offer
+              Discover
               <UIcon name="i-heroicons-arrow-right" class="h-4 w-4" />
             </button>
+            <div v-if="progress !== null" class="flex w-32 items-center gap-2 text-[11px] text-white/70">
+              <div class="h-1.5 flex-1 rounded-full bg-white/20">
+                <div class="h-full rounded-full bg-white/80 transition-[width]" :style="{ width: `${progress}%` }" />
+              </div>
+              <span>{{ Math.max(0, Math.min(100, Math.round(progress))) }}%</span>
+            </div>
           </div>
         </div>
-        <div v-if="ad.media_url" class="relative self-stretch">
-          <div class="absolute inset-0 rounded-2xl bg-white/15 blur-xl" />
-          <img
-            :src="ad.media_url"
-            alt="Promoted visual"
-            class="relative h-28 w-28 rounded-2xl object-cover shadow-lg sm:h-28 sm:w-28"
-          />
-        </div>
-        <button
-          type="button"
-          class="absolute right-4 top-4 inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-white/15 text-white transition hover:bg-white/25 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
-          @click="dismissAd"
-        >
-          <span class="sr-only">Dismiss promotion</span>
-          <UIcon name="i-heroicons-x-mark" class="h-5 w-5" />
-        </button>
       </div>
-      <div class="absolute inset-x-0 bottom-0 h-1.5 bg-white/20">
-        <div
-          v-if="progress !== null"
-          class="h-full bg-white/80 transition-[width]"
-          :style="{ width: `${progress}%` }"
-        />
-      </div>
-    </div>
+    </aside>
   </Transition>
 </template>
 
@@ -86,41 +92,39 @@ const props = defineProps<Props>()
 const ad = ref<AdWithTargets | null>(null)
 const countdown = ref<string | null>(null)
 const progress = ref<number | null>(null)
+const dismissedAds = ref<Map<string, number>>(new Map())
 
 const DISMISS_STORAGE_KEY = 'menux.dismissedAds'
-const DISMISS_DURATION_MS = 1000 * 60 * 60 * 12 // 12 hours
+const DEFAULT_DISMISS_MS = 1000 * 60 * 60 * 12
 let refreshIntervalId: number | null = null
 let expiryTimeoutId: number | null = null
 let countdownIntervalId: number | null = null
 
 const loadDismissedAds = () => {
-  if (typeof window === 'undefined') return {}
+  if (typeof window === 'undefined') return
   try {
     const raw = window.localStorage.getItem(DISMISS_STORAGE_KEY)
-    if (!raw) return {}
+    if (!raw) return
     const parsed = JSON.parse(raw) as Record<string, number>
-    const now = Date.now()
-    return Object.fromEntries(
-      Object.entries(parsed).filter(([, expiry]) => expiry > now)
+    dismissedAds.value = new Map(
+      Object.entries(parsed).filter(([, expiry]) => expiry > Date.now())
     )
   } catch {
-    return {}
+    dismissedAds.value = new Map()
   }
 }
 
-const storeDismissedAd = (adId: string) => {
+const persistDismissedAds = () => {
   if (typeof window === 'undefined') return
-  const dismissed = loadDismissedAds()
-  dismissed[adId] = Date.now() + DISMISS_DURATION_MS
-  window.localStorage.setItem(DISMISS_STORAGE_KEY, JSON.stringify(dismissed))
-}
-
-const isAdDismissed = (adId: string) => {
-  const dismissed = loadDismissedAds()
-  return Boolean(dismissed[adId] && dismissed[adId] > Date.now())
+  const serialized = Object.fromEntries(dismissedAds.value.entries())
+  window.localStorage.setItem(DISMISS_STORAGE_KEY, JSON.stringify(serialized))
 }
 
 const fetchAd = async () => {
+  if (refreshIntervalId === null && typeof window !== 'undefined') {
+    refreshIntervalId = window.setInterval(fetchAd, 1000 * 60 * 5)
+  }
+
   const result = await $fetch<AdWithTargets | null>('/api/ads/active', {
     query: {
       tenant_id: props.tenantId,
@@ -130,12 +134,25 @@ const fetchAd = async () => {
     }
   })
 
-  if (result && !isAdDismissed(result.id)) {
-    ad.value = result
-    scheduleExpiryChecks()
-  } else {
-    clearAdState()
+  if (!result) {
+    clearAdState(false)
+    return
   }
+
+  const dismissalExpiry = dismissedAds.value.get(result.id)
+  if (dismissalExpiry && dismissalExpiry > Date.now()) {
+    clearAdState(false)
+    return
+  }
+
+  if (dismissalExpiry && dismissalExpiry <= Date.now()) {
+    dismissedAds.value.delete(result.id)
+    persistDismissedAds()
+  }
+
+  const hasChanged = ad.value?.id !== result.id
+  ad.value = result
+  scheduleExpiryChecks(hasChanged)
 }
 
 const clearTimers = () => {
@@ -153,16 +170,41 @@ const clearTimers = () => {
   }
 }
 
-const clearAdState = () => {
-  clearTimers()
+const clearAdState = (resetIntervals = true) => {
+  if (resetIntervals) {
+    clearTimers()
+  } else {
+    if (expiryTimeoutId) {
+      clearTimeout(expiryTimeoutId)
+      expiryTimeoutId = null
+    }
+    if (countdownIntervalId) {
+      clearInterval(countdownIntervalId)
+      countdownIntervalId = null
+    }
+  }
   ad.value = null
   countdown.value = null
   progress.value = null
 }
 
-const scheduleExpiryChecks = () => {
-  clearTimers()
-  if (!ad.value) return
+const scheduleExpiryChecks = (resetRefresh = false) => {
+  if (resetRefresh) {
+    clearTimers()
+  } else {
+    if (expiryTimeoutId) {
+      clearTimeout(expiryTimeoutId)
+      expiryTimeoutId = null
+    }
+    if (countdownIntervalId) {
+      clearInterval(countdownIntervalId)
+      countdownIntervalId = null
+    }
+  }
+
+  if (!ad.value) {
+    return
+  }
 
   if (ad.value.end_time) {
     updateCountdown()
@@ -180,7 +222,9 @@ const scheduleExpiryChecks = () => {
     progress.value = null
   }
 
-  refreshIntervalId = window.setInterval(fetchAd, 1000 * 60 * 5) // refresh every 5 minutes
+  if (resetRefresh || refreshIntervalId === null) {
+    refreshIntervalId = window.setInterval(fetchAd, 1000 * 60 * 5)
+  }
 }
 
 const updateCountdown = () => {
@@ -219,14 +263,16 @@ const handleAdExpired = () => {
   ad.value = null
   countdown.value = null
   progress.value = null
-  fetchAd()
+  fetchAd().catch(() => {})
 }
 
 const dismissAd = () => {
   if (!ad.value) return
-  storeDismissedAd(ad.value.id)
+  const expiry = ad.value.end_time ? new Date(ad.value.end_time).getTime() : Date.now() + DEFAULT_DISMISS_MS
+  dismissedAds.value.set(ad.value.id, expiry)
+  persistDismissedAds()
   clearAdState()
-  fetchAd()
+  fetchAd().catch(() => {})
 }
 
 const openAdLink = () => {
@@ -237,7 +283,7 @@ const openAdLink = () => {
 const badgeLabel = computed(() => {
   if (!ad.value) return 'Promotion'
   if (ad.value.start_time && ad.value.end_time) {
-    return 'Limited window offer'
+    return 'Limited-time offer'
   }
   return 'Featured promotion'
 })
@@ -250,7 +296,8 @@ const formattedEndTime = computed(() => {
 })
 
 onMounted(() => {
-  fetchAd()
+  loadDismissedAds()
+  fetchAd().catch(() => {})
 })
 
 onBeforeUnmount(() => {
@@ -260,7 +307,7 @@ onBeforeUnmount(() => {
 watch(
   () => [props.tenantId, props.cityId, props.scope, props.pagePath],
   () => {
-    fetchAd()
+    fetchAd().catch(() => {})
   }
 )
 

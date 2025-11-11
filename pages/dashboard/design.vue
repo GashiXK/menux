@@ -830,15 +830,15 @@ const getTemplateDescription = (key: string): string => {
     'modern-bento': 'Contemporary bento grid layout with modular sections perfect for tasting menus and chef specials.',
     'pastel-dream': 'Pastel gradients with editorial photography frames create an inviting patisserie showcase.',
     'ember-noir': 'Noir-inspired dark mode with ember highlights that amplify signature dishes and mixology.',
-  'botanical-garden': 'Botanical textures and refined typography tailored for farm-to-table and plant-forward concepts.',
-  'nordic-slate': 'Scandinavian-inspired slate gradients with frosted panels and soft ambient glow.',
-  'neo-brutalist': 'Statement-making neo-brutalist layout with tactile blocks and bold typography.',
-  'holographic-wave': 'Iridescent glow, glass layers, and cinematic typography for futuristic spaces.',
-  'velvet-dusk': 'Midnight velvet backdrop with blush highlights perfect for moody cocktail lounges.',
-  'celestial-ink': 'Celestial-inspired gradient canvas designed for immersive tasting menu storytelling.',
-  'gilded-art-deco': 'Art Deco lines and gilded accents curated for grand dining rooms and hotel lounges.',
-  'savanna-sunset': 'Sun-warmed palette with natural textures ideal for fusion bistros and terrace dining.',
-  'coastal-zen': 'Breezy coastal minimalism featuring airy blues and tactile whites for seafood concepts.'
+    'botanical-garden': 'Botanical textures and refined typography tailored for farm-to-table and plant-forward concepts.',
+    'nordic-slate': 'Scandinavian-inspired slate gradients with frosted panels and soft ambient glow.',
+    'neo-brutalist': 'Statement-making neo-brutalist layout with tactile blocks and bold typography.',
+    'holographic-wave': 'Iridescent glow, glass layers, and cinematic typography for futuristic spaces.',
+    'velvet-dusk': 'Midnight velvet backdrop with blush highlights perfect for moody cocktail lounges.',
+    'celestial-ink': 'Celestial-inspired gradient canvas designed for immersive tasting menu storytelling.',
+    'gilded-art-deco': 'Art Deco lines and gilded accents curated for grand dining rooms and hotel lounges.',
+    'savanna-sunset': 'Sun-warmed palette with natural textures ideal for fusion bistros and terrace dining.',
+    'coastal-zen': 'Breezy coastal minimalism featuring airy blues and tactile whites for seafood concepts.'
   }
   return descriptions[key] || 'A beautiful menu template for your restaurant.'
 }

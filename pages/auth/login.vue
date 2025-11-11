@@ -71,26 +71,41 @@
               />
 
               <UForm :schema="schema" :state="formState" class="space-y-6" @submit="handleLogin">
-                <div class="space-y-4">
-                  <UFormField label="Email" name="email" help="Use your work email associated with MenuX.">
+                <div class="flex flex-col gap-4">
+              <UFormField label="Email" name="email">
+                <template #description>
+                  <p id="login-email-description" class="text-sm text-ink-500 dark:text-ink-400">
+                    Enter the work email connected to your MenuX account.
+                  </p>
+                </template>
                     <UInput
                       v-model="formState.email"
                       type="email"
-                      placeholder="team@restaurant.com"
+                  placeholder="you@restaurant.com"
                       autocomplete="email"
                       size="lg"
                       inputmode="email"
+                  spellcheck="false"
+                  icon="i-heroicons-envelope"
+                  aria-describedby="login-email-description"
                       required
                     />
                   </UFormField>
 
                   <UFormField label="Password" name="password">
+                <template #description>
+                  <p id="login-password-description" class="text-sm text-ink-500 dark:text-ink-400">
+                    Use the secure password provided by your MenuX administrator.
+                  </p>
+                </template>
                     <UInput
                       v-model="formState.password"
                       type="password"
                       placeholder="Enter your secure passphrase"
                       autocomplete="current-password"
                       size="lg"
+                  icon="i-heroicons-lock-closed"
+                  aria-describedby="login-password-description"
                       required
                     />
                     <template #hint>

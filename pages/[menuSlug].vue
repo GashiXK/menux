@@ -7,27 +7,27 @@
       :city-id="tenant.city_id || undefined"
       scope="menu"
     />
-    
+   
     <!-- Dynamic Template -->
     <component
-      v-if="templateComponent && tenant && menu"
+      v-if="!loading && !error && templateComponent && tenant && menu"
       :is="templateComponent"
       :tenant="tenant"
       :menu="menu"
       :categories="categories"
       :custom-texts="customTexts"
     />
-    
+   
     <!-- Loading State -->
-    <div v-else-if="loading" class="min-h-screen flex items-center justify-center bg-default">
-      <UCard class="max-w-md w-full mx-4">
-        <div class="text-center py-8">
-          <UIcon name="i-heroicons-arrow-path" class="w-12 h-12 animate-spin text-primary mx-auto mb-4" />
-          <p class="text-muted">Loading menu...</p>
-        </div>
-      </UCard>
-    </div>
-    
+    <AppLoader
+      v-else-if="loading"
+      variant="restaurant"
+      :size="loaderSize"
+      :fullscreen="true"
+      text="Loading menu..."
+      class="text-neutral-700 dark:text-neutral-200"
+    />
+   
     <!-- Error State -->
     <div v-else-if="error" class="min-h-screen flex items-center justify-center bg-default px-4">
       <UCard class="max-w-md w-full">
@@ -37,7 +37,7 @@
             <h2 class="text-xl font-bold text-highlighted">Error Loading Menu</h2>
           </div>
         </template>
-        
+       
         <div class="space-y-4">
           <p class="text-muted">{{ error }}</p>
           <div class="bg-elevated p-4 rounded-lg">
@@ -47,7 +47,7 @@
               <li>Use a custom domain or subdomain</li>
             </ul>
           </div>
-          
+         
           <UButton
             label="Try Again"
             @click="loadMenu"
@@ -58,22 +58,23 @@
     </div>
   </div>
 </template>
-
+ 
 <script setup lang="ts">
 import type { MenuWithDetails, CategoryWithItems, Tenant } from '~/types/database'
 import type { Component } from 'vue'
 import { resolveTemplateComponent } from '~/utils/template-registry'
-
+import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
+ 
 // Public page - no auth required
 definePageMeta({
   layout: false,
   middleware: [],
   ssr: false // Client-only to avoid hydration issues with dynamic content
 })
-
+ 
 const route = useRoute()
 const menuSlug = route.params.menuSlug as string
-
+ 
 const tenant = ref<Tenant | null>(null)
 const menu = ref<MenuWithDetails | null>(null)
 const categories = ref<CategoryWithItems[]>([])
@@ -81,6 +82,8 @@ const customTexts = ref<Record<string, string>>({})
 const templateComponent = ref<Component | null>(null)
 const loading = ref(true)
 const error = ref<string | null>(null)
+const breakpoints = useBreakpoints(breakpointsTailwind)
+const loaderSize = computed<'lg' | 'xl'>(() => (breakpoints.greater('lg').value ? 'xl' : 'lg'))
 const previewTemplateKey = computed(() => {
   const raw = route.query.templatePreview
   if (typeof raw === 'string' && raw.trim().length > 0) {
@@ -88,10 +91,10 @@ const previewTemplateKey = computed(() => {
   }
   return null
 })
-
+ 
 // Use public Supabase client for menu viewing (no auth required)
 const client = useSupabaseClient()
-
+ 
 interface TenantWithCity extends Tenant {
   city?: {
     id: number
@@ -99,26 +102,26 @@ interface TenantWithCity extends Tenant {
     slug: string
   }
 }
-
+ 
 const loadTenantByDomain = async (domain: string): Promise<TenantWithCity> => {
   const { data: domainData, error: domainError } = await client
     .from('tenant_domains')
     .select('*, tenant:tenants!inner(*, city:cities(*))')
     .or(`domain.eq.${domain},subdomain.eq.${domain}`)
     .maybeSingle()
-    
+   
   if (domainError) {
     console.error('Error loading tenant by domain:', domainError)
     throw domainError
   }
-  
+ 
   if (!domainData || !domainData.tenant) {
     throw new Error(`Tenant not found for domain: ${domain}`)
   }
-  
+ 
   return domainData.tenant as TenantWithCity
 }
-
+ 
 const loadPublishedMenu = async (tenantId: string, slug = 'main') => {
   // Load menu with template
   const { data: menuData, error: menuError } = await client
@@ -127,46 +130,46 @@ const loadPublishedMenu = async (tenantId: string, slug = 'main') => {
     .eq('tenant_id', tenantId)
     .eq('slug', slug)
     .maybeSingle()
-    
+   
   if (menuError) {
     console.error('Error loading menu:', menuError)
     throw menuError
   }
-  
+ 
   if (!menuData) {
     throw new Error(`Menu not found: ${slug} for tenant ${tenantId}`)
   }
-  
+ 
   // Load categories
   const { data: categoriesData, error: catError } = await client
     .from('categories')
     .select('*')
     .eq('menu_id', menuData.id)
     .order('sort_order', { ascending: true })
-    
+   
   if (catError) {
     console.error('Error loading categories:', catError)
     throw catError
   }
-  
+ 
   // Load menu items for all categories
   const categoryIds = (categoriesData || []).map(cat => cat.id)
   let allItems: unknown[] = []
-  
+ 
   if (categoryIds.length > 0) {
     const { data: itemsData, error: itemsError } = await client
       .from('menu_items')
       .select('*')
       .in('category_id', categoryIds)
       .order('sort_order', { ascending: true })
-    
+   
     if (itemsError) {
       console.warn('Error loading menu items:', itemsError)
     } else {
       allItems = itemsData || []
     }
   }
-  
+ 
   // Attach items to categories
   const categoriesWithItems = (categoriesData || []).map(category => ({
     ...category,
@@ -175,39 +178,39 @@ const loadPublishedMenu = async (tenantId: string, slug = 'main') => {
       return menuItem.category_id === category.id
     })
   }))
-  
+ 
   // Load custom texts
   const { data: customTextsData, error: textsError } = await client
     .from('custom_texts')
     .select('*')
     .eq('tenant_id', tenantId)
-  
+ 
   if (textsError) {
     console.warn('Error loading custom texts:', textsError)
   }
-  
+ 
   const textsMap = (customTextsData || []).reduce((acc, text) => {
     acc[text.key] = text.value
     return acc
   }, {} as Record<string, string>)
-  
+ 
   return {
     menu: menuData as MenuWithDetails,
     categories: categoriesWithItems as CategoryWithItems[],
     customTexts: textsMap
   }
 }
-
+ 
 const loadMenu = async () => {
   // Only run on client side
 if (process.server) {
     loading.value = false
     return
   }
-  
+ 
   loading.value = true
   error.value = null
-  
+ 
   try {
     // Try to get tenant from various sources
     if (!tenant.value) {
@@ -216,7 +219,7 @@ if (process.server) {
       if (event?.context?.tenant) {
         tenant.value = event.context.tenant as Tenant
       }
-      
+     
       // 2. Check query parameter
   if (!tenant.value) {
     const tenantSlug = route.query.tenant as string
@@ -226,7 +229,7 @@ if (process.server) {
           .select('*, city:cities(*)')
           .eq('slug', tenantSlug)
             .maybeSingle()
-        
+       
           if (tenantError) {
             console.error('Error loading tenant from query param:', tenantError)
           } else if (tenantData) {
@@ -234,7 +237,7 @@ if (process.server) {
         }
       }
     }
-    
+   
       // 3. Try domain-based detection
       if (!tenant.value && typeof window !== 'undefined') {
       const host = window.location.host
@@ -247,7 +250,7 @@ if (process.server) {
           }
         }
       }
-      
+     
       // 4. Fallback: load first available tenant (for development/testing)
       if (!tenant.value) {
         console.warn('No tenant found, trying to load first available tenant')
@@ -256,7 +259,7 @@ if (process.server) {
           .select('*, city:cities(*)')
           .limit(1)
           .maybeSingle()
-        
+       
         if (!tenantsError && tenantsData) {
           tenant.value = tenantsData as Tenant
         } else {
@@ -266,19 +269,19 @@ if (process.server) {
         }
     }
   }
-  
+ 
     if (!tenant.value) {
       error.value = 'Unable to load tenant information'
       loading.value = false
       return
     }
-    
+   
     // Load menu data
     const data = await loadPublishedMenu(tenant.value.id, menuSlug || 'main')
     menu.value = data.menu
     categories.value = data.categories
     customTexts.value = data.customTexts
-    
+   
     // Set template component
     assignTemplateComponent()
   } catch (e: unknown) {
@@ -289,7 +292,7 @@ if (process.server) {
     loading.value = false
   }
 }
-
+ 
 // Only load menu on client side to avoid hydration issues
 if (process.client) {
 onMounted(() => {
@@ -299,14 +302,14 @@ onMounted(() => {
   // On server, set loading to false
   loading.value = false
 }
-
+ 
 watch(
   () => [menu.value?.template_key, previewTemplateKey.value],
   () => {
     assignTemplateComponent()
   }
 )
-
+ 
 const assignTemplateComponent = () => {
   const fallbackKey = menu.value?.template_key || 'minimal-elegance'
   const keyToUse = previewTemplateKey.value ?? fallbackKey
@@ -319,3 +322,4 @@ const assignTemplateComponent = () => {
   }
 }
 </script>
+ 

@@ -73,16 +73,20 @@ export class AdminService {
     const { adminClient } = await AuthService.verifySuperAdmin(event)
 
     // Check if user already exists
-    const { data: existingUsers } = await adminClient.auth.admin.listUsers()
-    const existingUser = existingUsers?.users?.find(u => u.email === data.email)
+    const { data: existingUserResponse, error: existingUserError } = await adminClient.auth.admin.getUserByEmail(data.email)
+
+    if (existingUserError && existingUserError.message !== 'User not found') {
+      throw createError({
+        statusCode: 400,
+        message: existingUserError.message || 'Unable to check existing user'
+      })
+    }
 
     let userId: string
 
-    if (existingUser) {
-      userId = existingUser.id
-      console.log(`User ${data.email} already exists, using existing user`)
+    if (existingUserResponse?.user) {
+      userId = existingUserResponse.user.id
     } else {
-      // Create new user
       const { data: newUser, error: adminCreateError } = await adminClient.auth.admin.createUser({
         email: data.email,
         email_confirm: true,
@@ -132,11 +136,13 @@ export class AdminService {
       })
     }
 
+    const existingAccount = Boolean(existingUserResponse?.user)
+
     return {
       success: true,
       user_id: userId,
       email: data.email,
-      message: existingUser ? 'User linked to tenant' : 'User created and linked to tenant'
+      message: existingAccount ? 'User linked to tenant' : 'User created and linked to tenant'
     }
   }
 

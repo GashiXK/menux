@@ -1,5 +1,5 @@
 import type { Config } from 'tailwindcss'
-
+ 
 export default <Partial<Config>>{
   content: [
     './components/**/*.{vue,js,ts}',
@@ -43,21 +43,55 @@ export default <Partial<Config>>{
           950: '#000000'
         }
       },
-      spacing: { 
-        '72': '18rem', 
-        '84': '21rem', 
-        '96': '24rem' 
+      spacing: {
+        '72': '18rem',
+        '84': '21rem',
+        '96': '24rem'
       },
-      borderRadius: { 
-        'xl': '1rem', 
+      borderRadius: {
+        'xl': '1rem',
         '2xl': '1.25rem',
         '3xl': '1.5rem'
+      },
+      keyframes: {
+        'pulse-scale': {
+          '0%, 100%': { transform: 'scale(0.95)', opacity: '0.8' },
+          '50%': { transform: 'scale(1.05)', opacity: '1' }
+        },
+        'cutlery-sway': {
+          '0%, 100%': { transform: 'rotate(-8deg)' },
+          '50%': { transform: 'rotate(8deg)' }
+        },
+        'dot-bounce': {
+          '0%, 100%': { transform: 'translateY(0)', opacity: '0.5' },
+          '50%': { transform: 'translateY(-0.4rem)', opacity: '1' }
+        },
+        'progress-bar': {
+          '0%': { transform: 'translateX(-50%)' },
+          '100%': { transform: 'translateX(150%)' }
+        },
+        'slide-up': {
+          '0%': { transform: 'translateY(0.4rem)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' }
+        },
+        'fade-in': {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' }
+        }
+      },
+      animation: {
+        'pulse-scale': 'pulse-scale 1.4s ease-in-out infinite',
+        'cutlery-sway': 'cutlery-sway 1.8s ease-in-out infinite',
+        'dot-bounce': 'dot-bounce 1.2s ease-in-out infinite',
+        'progress-bar': 'progress-bar 1.6s ease-in-out infinite',
+        'slide-up': 'slide-up 0.4s ease-out both',
+        'fade-in': 'fade-in 0.3s ease-out both'
       }
     }
   },
   plugins: [
-    require('@tailwindcss/forms'), 
+    require('@tailwindcss/forms'),
     require('@tailwindcss/typography')
   ]
 }
-
+ 
