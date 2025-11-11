@@ -10,7 +10,7 @@
     
     <!-- Dynamic Template -->
     <component
-      v-if="templateComponent && tenant && menu"
+      v-if="!loading && !error && templateComponent && tenant && menu"
       :is="templateComponent"
       :tenant="tenant"
       :menu="menu"
@@ -19,14 +19,14 @@
     />
     
     <!-- Loading State -->
-    <div v-else-if="loading" class="min-h-screen flex items-center justify-center bg-default">
-      <UCard class="max-w-md w-full mx-4">
-        <div class="text-center py-8">
-          <UIcon name="i-heroicons-arrow-path" class="w-12 h-12 animate-spin text-primary mx-auto mb-4" />
-          <p class="text-muted">Loading menu...</p>
-        </div>
-      </UCard>
-    </div>
+    <AppLoader
+      v-else-if="loading"
+      variant="restaurant"
+      :size="loaderSize"
+      :fullscreen="true"
+      text="Loading menu..."
+      class="text-neutral-700 dark:text-neutral-200"
+    />
     
     <!-- Error State -->
     <div v-else-if="error" class="min-h-screen flex items-center justify-center bg-default px-4">
@@ -63,6 +63,7 @@
 import type { MenuWithDetails, CategoryWithItems, Tenant } from '~/types/database'
 import type { Component } from 'vue'
 import { resolveTemplateComponent } from '~/utils/template-registry'
+import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 
 // Public page - no auth required
 definePageMeta({
@@ -81,6 +82,8 @@ const customTexts = ref<Record<string, string>>({})
 const templateComponent = ref<Component | null>(null)
 const loading = ref(true)
 const error = ref<string | null>(null)
+const breakpoints = useBreakpoints(breakpointsTailwind)
+const loaderSize = computed<'lg' | 'xl'>(() => (breakpoints.greater('lg').value ? 'xl' : 'lg'))
 const previewTemplateKey = computed(() => {
   const raw = route.query.templatePreview
   if (typeof raw === 'string' && raw.trim().length > 0) {
