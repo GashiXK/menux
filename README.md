@@ -192,9 +192,9 @@ npm run preview  # or deploy to Vercel/Netlify/etc.
 
 MIT
 
-## 🤝 Contributing
+## 🤝 AUTHOR
 
-Pull requests are welcome! Please follow the code style and include tests.
+Lumbardh Gashi
 
 ---
 
