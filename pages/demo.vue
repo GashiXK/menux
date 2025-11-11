@@ -45,16 +45,16 @@ const demoTenant = {
 const demoMenu = {
   id: 'demo-menu',
   tenant_id: 'demo-tenant',
-  name: 'Main Menu',
+  name: 'Chef’s Signature Menu',
   slug: 'main',
-  template_key: 'minimal-elegance', // Best template for demo
+  template_key: 'aurora-luxe',
   design_config: {},
   is_published: true,
   is_default: true,
   created_at: new Date().toISOString(),
   template: {
-    key: 'minimal-elegance',
-    name: 'Minimal Elegance',
+    key: 'aurora-luxe',
+    name: 'Aurora Luxe',
     preview_image_url: null,
     base_config: {}
   }
@@ -65,50 +65,57 @@ const demoCategories = [
     id: 'demo-cat-1',
     menu_id: 'demo-menu',
     tenant_id: 'demo-tenant',
-    name: 'Appetizers',
-    description: 'Start your culinary journey with our carefully crafted starters',
+    name: 'Prelude Plates',
+    description: 'Begin with luminous flavors crafted for the golden hour in our lounge.',
     sort_order: 1,
     visible: true,
     is_special: false,
+    created_at: new Date().toISOString(),
     items: [
       {
         id: 'demo-item-1',
         category_id: 'demo-cat-1',
         tenant_id: 'demo-tenant',
-        name: 'Truffle Arancini',
-        description: 'Crispy risotto balls filled with truffle and parmesan, served with aioli',
-        price: 14.50,
+        name: 'Golden Truffle Arancini',
+        description: 'Crisp saffron risotto, black truffle cream, 30-month parmigiano.',
+        price: 18,
         currency: '€',
         is_active: true,
         sort_order: 1,
-        tags: ['vegetarian', 'signature'],
-        image_url: null
+        tags: ['Signature', 'Vegetarian'],
+        image_url: null,
+        attributes: {},
+        created_at: new Date().toISOString()
       },
       {
         id: 'demo-item-2',
         category_id: 'demo-cat-1',
         tenant_id: 'demo-tenant',
-        name: 'Burrata Caprese',
-        description: 'Fresh burrata with heirloom tomatoes, basil, and aged balsamic',
-        price: 16.00,
+        name: 'Burrata Stellata',
+        description: 'Heirloom tomatoes, yuzu pearls, basil oil, smoked sea salt.',
+        price: 19,
         currency: '€',
         is_active: true,
         sort_order: 2,
-        tags: ['vegetarian', 'gluten-free'],
-        image_url: null
+        tags: ['Vegetarian', 'Gluten-free'],
+        image_url: null,
+        attributes: {},
+        created_at: new Date().toISOString()
       },
       {
         id: 'demo-item-3',
         category_id: 'demo-cat-1',
         tenant_id: 'demo-tenant',
-        name: 'Seared Scallops',
-        description: 'Pan-seared scallops with cauliflower puree and pancetta',
-        price: 18.00,
+        name: 'Emerald Sea Scallops',
+        description: 'Pan-seared scallops, pea velouté, crispy pancetta lattice.',
+        price: 21,
         currency: '€',
         is_active: true,
         sort_order: 3,
-        tags: ['signature'],
-        image_url: null
+        tags: ['Seafood'],
+        image_url: null,
+        attributes: {},
+        created_at: new Date().toISOString()
       }
     ]
   },
@@ -116,63 +123,72 @@ const demoCategories = [
     id: 'demo-cat-2',
     menu_id: 'demo-menu',
     tenant_id: 'demo-tenant',
-    name: 'Main Courses',
-    description: 'Our chef\'s signature dishes prepared with the finest ingredients',
+    name: 'Signature Courses',
+    description: 'Iconic dishes that define the Aurora Luxe tasting journey.',
     sort_order: 2,
     visible: true,
     is_special: false,
+    created_at: new Date().toISOString(),
     items: [
       {
         id: 'demo-item-4',
         category_id: 'demo-cat-2',
         tenant_id: 'demo-tenant',
-        name: 'Wagyu Beef Tenderloin',
-        description: '8oz premium wagyu with roasted vegetables and red wine reduction',
-        price: 48.00,
+        name: 'A5 Wagyu Aurora',
+        description: 'Charred wagyu, smoked pomme purée, black garlic jus.',
+        price: 54,
         currency: '€',
         is_active: true,
         sort_order: 1,
-        tags: ['signature', 'premium'],
-        image_url: null
+        tags: ['Signature', 'Premium'],
+        image_url: null,
+        attributes: {},
+        created_at: new Date().toISOString()
       },
       {
         id: 'demo-item-5',
         category_id: 'demo-cat-2',
         tenant_id: 'demo-tenant',
-        name: 'Pan-Seared Salmon',
-        description: 'Atlantic salmon with lemon butter sauce, asparagus, and quinoa',
-        price: 26.00,
+        name: 'Glacier Salmon',
+        description: 'Miso-glazed Atlantic salmon, charred asparagus, preserved lemon.',
+        price: 32,
         currency: '€',
         is_active: true,
         sort_order: 2,
-        tags: ['gluten-free'],
-        image_url: null
+        tags: ['Gluten-free'],
+        image_url: null,
+        attributes: {},
+        created_at: new Date().toISOString()
       },
       {
         id: 'demo-item-6',
         category_id: 'demo-cat-2',
         tenant_id: 'demo-tenant',
-        name: 'Wild Mushroom Risotto',
-        description: 'Creamy arborio rice with assorted wild mushrooms and truffle oil',
-        price: 22.00,
+        name: 'Forest Floor Risotto',
+        description: 'Wild mushrooms, aged pecorino, white truffle espuma.',
+        price: 27,
         currency: '€',
         is_active: true,
         sort_order: 3,
-        tags: ['vegetarian', 'signature'],
-        image_url: null
+        tags: ['Vegetarian'],
+        image_url: null,
+        attributes: {},
+        created_at: new Date().toISOString()
       },
       {
         id: 'demo-item-7',
         category_id: 'demo-cat-2',
         tenant_id: 'demo-tenant',
-        name: 'Herb-Crusted Lamb Rack',
-        description: 'New Zealand lamb with mint jus, roasted potatoes, and seasonal vegetables',
-        price: 38.00,
+        name: 'Heritage Lamb Duet',
+        description: 'Herb-crusted lamb rack, confit shoulder, mint-labneh glaze.',
+        price: 42,
         currency: '€',
         is_active: true,
         sort_order: 4,
-        tags: ['signature'],
-        image_url: null
+        tags: ['Signature'],
+        image_url: null,
+        attributes: {},
+        created_at: new Date().toISOString()
       }
     ]
   },
@@ -180,50 +196,57 @@ const demoCategories = [
     id: 'demo-cat-3',
     menu_id: 'demo-menu',
     tenant_id: 'demo-tenant',
-    name: 'Desserts',
-    description: 'Sweet endings to your perfect meal',
+    name: 'Dessert Gallery',
+    description: 'Brilliant finales inspired by aurora-lit nights.',
     sort_order: 3,
     visible: true,
     is_special: false,
+    created_at: new Date().toISOString(),
     items: [
       {
         id: 'demo-item-8',
         category_id: 'demo-cat-3',
         tenant_id: 'demo-tenant',
-        name: 'Chocolate Soufflé',
-        description: 'Warm chocolate soufflé with vanilla bean ice cream',
-        price: 12.00,
+        name: 'Midnight Soufflé',
+        description: '70% cacao, vanilla bean chantilly, smoked salt.',
+        price: 14,
         currency: '€',
         is_active: true,
         sort_order: 1,
-        tags: ['signature'],
-        image_url: null
+        tags: ['Signature'],
+        image_url: null,
+        attributes: {},
+        created_at: new Date().toISOString()
       },
       {
         id: 'demo-item-9',
         category_id: 'demo-cat-3',
         tenant_id: 'demo-tenant',
-        name: 'Tiramisu',
-        description: 'Classic Italian dessert with espresso-soaked ladyfingers',
-        price: 10.00,
+        name: 'Aurora Tiramisu',
+        description: 'Espresso-soaked savoiardi, pistachio mascarpone, cocoa veil.',
+        price: 13,
         currency: '€',
         is_active: true,
         sort_order: 2,
         tags: [],
-        image_url: null
+        image_url: null,
+        attributes: {},
+        created_at: new Date().toISOString()
       },
       {
         id: 'demo-item-10',
         category_id: 'demo-cat-3',
         tenant_id: 'demo-tenant',
-        name: 'Lemon Tart',
-        description: 'Zesty lemon curd in a buttery shortcrust pastry',
-        price: 9.00,
+        name: 'Limoncello Prism',
+        description: 'Meyer lemon curd, brûléed meringue, almond sable.',
+        price: 12,
         currency: '€',
         is_active: true,
         sort_order: 3,
-        tags: ['vegetarian'],
-        image_url: null
+        tags: ['Vegetarian'],
+        image_url: null,
+        attributes: {},
+        created_at: new Date().toISOString()
       }
     ]
   },
@@ -231,64 +254,72 @@ const demoCategories = [
     id: 'demo-cat-4',
     menu_id: 'demo-menu',
     tenant_id: 'demo-tenant',
-    name: 'Beverages',
-    description: 'Carefully selected wines and craft cocktails',
+    name: 'Elevated Pairings',
+    description: 'Cocktails and pours choreographed for the tasting sequence.',
     sort_order: 4,
     visible: true,
     is_special: false,
+    created_at: new Date().toISOString(),
     items: [
       {
         id: 'demo-item-11',
         category_id: 'demo-cat-4',
         tenant_id: 'demo-tenant',
-        name: 'House Wine Selection',
-        description: 'Red, white, or rosé - ask your server for recommendations',
-        price: 8.00,
+        name: 'Sommelier Flight',
+        description: 'Three curated pours, rotating weekly terroirs.',
+        price: 24,
         currency: '€',
         is_active: true,
         sort_order: 1,
-        tags: [],
-        image_url: null
+        tags: ['Pairing'],
+        image_url: null,
+        attributes: {},
+        created_at: new Date().toISOString()
       },
       {
         id: 'demo-item-12',
         category_id: 'demo-cat-4',
         tenant_id: 'demo-tenant',
-        name: 'Signature Cocktail',
-        description: 'Our bartender\'s special creation - changes seasonally',
-        price: 14.00,
+        name: 'Celestial Negroni',
+        description: 'Saffron gin, bitter bianco, smoked vermouth sphere.',
+        price: 16,
         currency: '€',
         is_active: true,
         sort_order: 2,
-        tags: ['signature'],
-        image_url: null
+        tags: ['Signature'],
+        image_url: null,
+        attributes: {},
+        created_at: new Date().toISOString()
       },
       {
         id: 'demo-item-13',
         category_id: 'demo-cat-4',
         tenant_id: 'demo-tenant',
-        name: 'Espresso',
-        description: 'Premium Italian espresso',
-        price: 3.50,
+        name: 'Nordic Espresso',
+        description: 'Single-origin roast, cedar smoke, vanilla crema.',
+        price: 5,
         currency: '€',
         is_active: true,
         sort_order: 3,
         tags: [],
-        image_url: null
+        image_url: null,
+        attributes: {},
+        created_at: new Date().toISOString()
       }
     ]
   }
 ]
 
 const demoCustomTexts = {
-  subtitle: 'Experience fine dining reimagined'
+  subtitle: 'Aurora-lit tasting journeys with sustainably sourced ingredients.',
+  cta: 'Reservations recommended'
 }
 
 const templateComponent = ref<Component | null>(null)
 
 onMounted(() => {
-  const templateKey = demoMenu.template_key || 'minimal-elegance'
-  const component = resolveTemplateComponent(templateKey) ?? resolveTemplateComponent('minimal-elegance')
+  const templateKey = demoMenu.template_key || 'aurora-luxe'
+  const component = resolveTemplateComponent(templateKey) ?? resolveTemplateComponent('aurora-luxe')
   templateComponent.value = component
 })
 </script>

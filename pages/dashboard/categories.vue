@@ -17,9 +17,18 @@
             </p>
           </div>
           <div class="flex flex-wrap gap-3">
-            <UButton color="primary" size="md" icon="i-heroicons-plus-circle" label="Add category" @click="openDialog()" />
+            <AppSelect
+              v-model="menuId"
+              :options="menuOptions"
+              placeholder="Select a menu"
+              size="md"
+              :disabled="menuLoading || menuOptions.length === 0"
+              class="min-w-[220px]"
+            />
+            <UButton color="primary" size="md" icon="i-heroicons-plus-circle" :disabled="!menuId || menuLoading" label="Add category" @click="openDialog()" />
             <UButton to="/dashboard/items" variant="soft" size="md" icon="i-heroicons-squares-2x2" label="Manage items" />
           </div>
+          <p v-if="!menuId && !menuLoading" class="text-sm text-ink-500 dark:text-ink-400">Create or select a menu to start organizing categories.</p>
         </div>
         <div class="grid w-full max-w-xs gap-4 rounded-3xl bg-white/80 p-5 text-sm text-ink-600 shadow-lg dark:bg-ink-950/75 dark:text-ink-300">
           <div class="flex items-center justify-between">
@@ -279,7 +288,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Category } from '~/types/database'
+import type { Category, Menu } from '~/types/database'
 import { useCategories } from '~/composables/useCategories'
 import { useMenu } from '~/composables/useMenu'
 
@@ -294,7 +303,9 @@ const { listCategories, createCategory, updateCategory, deleteCategory } = useCa
 const toast = useToast()
 
 const categories = ref<Category[]>([])
+const menus = ref<Menu[]>([])
 const loading = ref(false)
+const menuLoading = ref(false)
 const dialogOpen = ref(false)
 const showDeleteDialog = ref(false)
 const editingCategory = ref<Category | null>(null)
@@ -325,6 +336,13 @@ const lastUpdated = computed(() => {
   return latest.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
 })
 
+const menuOptions = computed(() =>
+  menus.value.map(menu => ({
+    label: menu.name,
+    value: menu.id
+  }))
+)
+
 const loadCategories = async () => {
   if (!menuId.value) return
   
@@ -345,23 +363,20 @@ const loadCategories = async () => {
   }
 }
 
-onMounted(async () => {
-  if (!currentTenantId.value) {
-    toast.add({
-      title: 'Error',
-      description: 'No tenant information available',
-      color: 'red',
-      icon: 'i-heroicons-exclamation-circle',
-      timeout: 5000
-    })
-    return
-  }
-  
+const loadMenus = async (tenantId: string) => {
+  menuLoading.value = true
   try {
-    const menus = await listMenusByTenant(currentTenantId.value)
-    const defaultMenu = menus.find(m => m.is_default) || menus[0]
-    if (defaultMenu) {
-      menuId.value = defaultMenu.id
+    const fetched = await listMenusByTenant(tenantId)
+    menus.value = fetched
+    if (!fetched.length) {
+      menuId.value = ''
+      categories.value = []
+      return
+    }
+    const preferredMenu = fetched.find(menu => menu.is_default) ?? fetched[0]
+    if (preferredMenu && preferredMenu.id !== menuId.value) {
+      menuId.value = preferredMenu.id
+    } else if (menuId.value) {
       await loadCategories()
     }
   } catch (error: unknown) {
@@ -373,8 +388,32 @@ onMounted(async () => {
       icon: 'i-heroicons-exclamation-circle',
       timeout: 5000
     })
+  } finally {
+    menuLoading.value = false
   }
+}
+
+watch(menuId, async newMenuId => {
+  if (!newMenuId) {
+    categories.value = []
+    return
+  }
+  await loadCategories()
 })
+
+watch(
+  currentTenantId,
+  async tenantId => {
+    if (!tenantId) {
+      menuId.value = ''
+      menus.value = []
+      categories.value = []
+      return
+    }
+    await loadMenus(tenantId)
+  },
+  { immediate: true }
+)
 
 const openDialog = (category?: Category) => {
   if (category) {

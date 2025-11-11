@@ -353,69 +353,38 @@
             <h2 class="text-3xl font-bold text-ink-900 dark:text-white sm:text-4xl">Flexible plans for every concept</h2>
             <p class="mt-4 max-w-2xl text-lg text-ink-600 dark:text-ink-300">Start with essentials and scale to enterprise-grade governance, analytics, and premium templates as you grow.</p>
           </div>
-          <div class="mt-16 grid gap-8 lg:grid-cols-3">
-            <UCard class="border border-ink-100 bg-white/90 p-8 shadow-md dark:border-ink-800 dark:bg-ink-900/80">
-              <p class="text-sm font-semibold uppercase tracking-widest text-ink-500 dark:text-ink-400">Starter</p>
-              <p class="mt-4 text-4xl font-bold text-ink-900 dark:text-white">€49<span class="text-base font-medium text-ink-500 dark:text-ink-400">/month</span></p>
-              <p class="mt-2 text-sm text-ink-600 dark:text-ink-300">Ideal for independent cafés and pop-ups launching their first digital menu.</p>
-              <ul class="mt-6 space-y-3 text-sm text-ink-600 dark:text-ink-300">
-                <li class="flex items-center gap-3">
-                  <UIcon name="i-heroicons-check-circle" class="h-5 w-5 text-brand-500" />
-                  1 live menu · core templates
-                </li>
-                <li class="flex items-center gap-3">
-                  <UIcon name="i-heroicons-check-circle" class="h-5 w-5 text-brand-500" />
-                  QR codes + analytics snapshot
-                </li>
-                <li class="flex items-center gap-3">
-                  <UIcon name="i-heroicons-check-circle" class="h-5 w-5 text-brand-500" />
-                  Email support
-                </li>
-              </ul>
-              <UButton to="/auth/login" class="mt-8 w-full" label="Start Starter" />
-            </UCard>
-            <UCard class="border-2 border-brand-500 bg-gradient-to-br from-brand-500/10 via-white to-secondary/10 p-8 shadow-xl shadow-brand-500/20 dark:border-brand-400 dark:from-brand-900/40 dark:via-ink-950 dark:to-secondary/10">
-              <div class="mb-4 inline-flex items-center gap-2 rounded-full bg-brand-500 text-white px-4 py-1 text-xs font-semibold uppercase tracking-widest">
-                Most popular
+          <div class="mt-16 flex justify-center">
+            <UCard class="w-full max-w-3xl border-2 border-brand-500 bg-gradient-to-br from-brand-500/10 via-white to-secondary/10 p-10 shadow-2xl shadow-brand-500/20 dark:border-brand-400 dark:from-brand-900/40 dark:via-ink-950 dark:to-secondary/10">
+              <div class="flex flex-col items-center text-center">
+                <div class="mb-4 inline-flex items-center gap-2 rounded-full bg-brand-500 px-4 py-1 text-xs font-semibold uppercase tracking-[0.4em] text-white">
+                  Unified plan
+                </div>
+                <p class="text-sm font-semibold uppercase tracking-[0.48em] text-brand-700 dark:text-brand-200">MenuX Studio</p>
+                <p class="mt-5 text-5xl font-bold text-ink-900 dark:text-white">€36<span class="ml-2 text-base font-medium text-ink-500 dark:text-ink-300">per month</span></p>
+                <p class="mt-3 max-w-xl text-sm text-ink-600 dark:text-ink-300">One simple package with premium tooling, 50 handcrafted designs, and data-driven publishing workflows that scale across every table.</p>
               </div>
-              <p class="text-sm font-semibold uppercase tracking-widest text-brand-600 dark:text-brand-200">Growth</p>
-              <p class="mt-4 text-4xl font-bold text-ink-900 dark:text-white">€129<span class="text-base font-medium text-ink-500 dark:text-ink-300">/month</span></p>
-              <p class="mt-2 text-sm text-ink-600 dark:text-ink-300">For multi-location teams needing collaboration, localization, and conversion insights.</p>
-              <ul class="mt-6 space-y-3 text-sm text-ink-600 dark:text-ink-300">
-                <li class="flex items-center gap-3">
-                  <UIcon name="i-heroicons-check-circle" class="h-5 w-5 text-brand-500" />
-                  Unlimited menus and categories
+              <ul class="mt-8 grid gap-4 text-sm text-ink-600 dark:text-ink-300 sm:grid-cols-2">
+                <li class="flex items-start gap-3">
+                  <UIcon name="i-heroicons-check-circle" class="mt-0.5 h-5 w-5 text-brand-500" />
+                  <span><strong class="font-semibold text-ink-900 dark:text-white">50 premium menu designs</strong> with seasonal updates and brand-safe variants.</span>
                 </li>
-                <li class="flex items-center gap-3">
-                  <UIcon name="i-heroicons-check-circle" class="h-5 w-5 text-brand-500" />
-                  Advanced analytics + upsell AI
+                <li class="flex items-start gap-3">
+                  <UIcon name="i-heroicons-check-circle" class="mt-0.5 h-5 w-5 text-brand-500" />
+                  <span>Unlimited menus, categories, and localized translations.</span>
                 </li>
-                <li class="flex items-center gap-3">
-                  <UIcon name="i-heroicons-check-circle" class="h-5 w-5 text-brand-500" />
-                  Role-based governance
+                <li class="flex items-start gap-3">
+                  <UIcon name="i-heroicons-check-circle" class="mt-0.5 h-5 w-5 text-brand-500" />
+                  <span>Real-time analytics, upsell intelligence, and QR experiences.</span>
                 </li>
-              </ul>
-              <UButton to="/auth/login" class="mt-8 w-full" color="primary" label="Choose Growth" />
-            </UCard>
-            <UCard class="border border-ink-100 bg-white/90 p-8 shadow-md dark:border-ink-800 dark:bg-ink-900/80">
-              <p class="text-sm font-semibold uppercase tracking-widest text-ink-500 dark:text-ink-400">Enterprise</p>
-              <p class="mt-4 text-4xl font-bold text-ink-900 dark:text-white">Custom</p>
-              <p class="mt-2 text-sm text-ink-600 dark:text-ink-300">Tailored to hospitality groups with complex governance, data, and compliance needs.</p>
-              <ul class="mt-6 space-y-3 text-sm text-ink-600 dark:text-ink-300">
-                <li class="flex items-center gap-3">
-                  <UIcon name="i-heroicons-check-circle" class="h-5 w-5 text-brand-500" />
-                  White-glove onboarding
-                </li>
-                <li class="flex items-center gap-3">
-                  <UIcon name="i-heroicons-check-circle" class="h-5 w-5 text-brand-500" />
-                  SSO, SAML, audit trails
-                </li>
-                <li class="flex items-center gap-3">
-                  <UIcon name="i-heroicons-check-circle" class="h-5 w-5 text-brand-500" />
-                  Dedicated success partner
+                <li class="flex items-start gap-3">
+                  <UIcon name="i-heroicons-check-circle" class="mt-0.5 h-5 w-5 text-brand-500" />
+                  <span>Dedicated chat support and guided onboarding sessions.</span>
                 </li>
               </ul>
-              <UButton to="/contact" class="mt-8 w-full" variant="outline" label="Talk to sales" />
+              <div class="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-center">
+                <UButton to="/auth/login" size="lg" color="primary" icon="i-heroicons-arrow-right-circle" label="Activate MenuX Studio" class="w-full sm:w-auto" />
+                <UButton to="/demo" size="lg" variant="soft" icon="i-heroicons-eye" label="Preview included designs" class="w-full sm:w-auto" />
+              </div>
             </UCard>
           </div>
         </div>
