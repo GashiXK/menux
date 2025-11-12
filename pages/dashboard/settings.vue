@@ -4,10 +4,10 @@
       <!-- Header -->
       <div class="space-y-2">
         <h1 class="text-4xl font-bold text-ink-900 dark:text-white tracking-tight">
-          Account Settings
+          Cilësimet e llogarisë
         </h1>
         <p class="text-ink-600 dark:text-ink-300 text-lg">
-          Manage your profile information and security settings
+          Menaxhoni informacionin e profilit dhe cilësimet e sigurisë
         </p>
       </div>
       
@@ -18,25 +18,25 @@
             <div class="w-12 h-12 rounded-xl bg-brand-500/10 flex items-center justify-center">
               <UIcon name="i-heroicons-user-circle" class="w-6 h-6 text-brand-500" />
             </div>
-            <h2 class="text-2xl font-bold text-ink-900 dark:text-white">Profile Information</h2>
+            <h2 class="text-2xl font-bold text-ink-900 dark:text-white">Informacioni i profilit</h2>
           </div>
           
           <form @submit.prevent="handleUpdateProfile" class="space-y-6">
             <div>
               <label class="block text-sm font-medium text-ink-700 dark:text-ink-300 mb-2">
-                Full Name
+                Emri i plotë
               </label>
               <input
                 v-model="profileForm.full_name"
                 type="text"
-                placeholder="Your name"
+                placeholder="Emri juaj"
                 class="w-full px-4 py-3 rounded-xl border border-ink-200 dark:border-ink-700 bg-white dark:bg-ink-800 text-ink-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
               />
             </div>
             
             <div>
               <label class="block text-sm font-medium text-ink-700 dark:text-ink-300 mb-2">
-                Email
+                Email-i
               </label>
               <input
                 v-model="profileForm.email"
@@ -45,7 +45,7 @@
                 disabled
                 class="w-full px-4 py-3 rounded-xl border border-ink-200 dark:border-ink-700 bg-ink-50 dark:bg-ink-800 text-ink-600 dark:text-ink-400 opacity-50 cursor-not-allowed"
               />
-              <p class="text-xs text-ink-500 dark:text-ink-400 mt-2">Email cannot be changed</p>
+              <p class="text-xs text-ink-500 dark:text-ink-400 mt-2">Email-i nuk mund të ndryshohet</p>
             </div>
             
             <div class="flex justify-end pt-4 border-t border-ink-100 dark:border-ink-800">
@@ -56,7 +56,7 @@
               >
                 <UIcon v-if="savingProfile" name="i-heroicons-arrow-path" class="w-4 h-4 animate-spin" />
                 <UIcon v-else name="i-heroicons-check-circle" class="w-4 h-4" />
-                Update Profile
+                Përditëso profilin
               </button>
             </div>
           </form>
@@ -68,13 +68,13 @@
             <div class="w-12 h-12 rounded-xl bg-brand-500/10 flex items-center justify-center">
               <UIcon name="i-heroicons-lock-closed" class="w-6 h-6 text-brand-500" />
             </div>
-            <h2 class="text-2xl font-bold text-ink-900 dark:text-white">Change Password</h2>
+            <h2 class="text-2xl font-bold text-ink-900 dark:text-white">Ndrysho fjalëkalimin</h2>
           </div>
           
           <form @submit.prevent="handleUpdatePassword" class="space-y-6">
             <div>
               <label class="block text-sm font-medium text-ink-700 dark:text-ink-300 mb-2">
-                New Password <span class="text-red-500">*</span>
+                Fjalëkalimi i ri <span class="text-red-500">*</span>
               </label>
               <input
                 v-model="passwordForm.password"
@@ -85,12 +85,12 @@
                 minlength="8"
                 class="w-full px-4 py-3 rounded-xl border border-ink-200 dark:border-ink-700 bg-white dark:bg-ink-800 text-ink-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
               />
-              <p class="text-xs text-ink-500 dark:text-ink-400 mt-2">Password must be at least 8 characters</p>
+              <p class="text-xs text-ink-500 dark:text-ink-400 mt-2">Fjalëkalimi duhet të ketë të paktën 8 karaktere</p>
             </div>
             
             <div>
               <label class="block text-sm font-medium text-ink-700 dark:text-ink-300 mb-2">
-                Confirm Password <span class="text-red-500">*</span>
+                Konfirmo fjalëkalimin <span class="text-red-500">*</span>
               </label>
               <input
                 v-model="passwordForm.confirmPassword"
@@ -106,7 +106,7 @@
                 v-if="passwordForm.password && passwordForm.confirmPassword && passwordForm.password !== passwordForm.confirmPassword"
                 class="text-xs text-red-500 dark:text-red-400 mt-2"
               >
-                Passwords don't match
+                Fjalëkalimet nuk përputhen
               </p>
             </div>
             
@@ -118,7 +118,7 @@
               >
                 <UIcon v-if="savingPassword" name="i-heroicons-arrow-path" class="w-4 h-4 animate-spin" />
                 <UIcon v-else name="i-heroicons-check-circle" class="w-4 h-4" />
-                Update Password
+                Përditëso fjalëkalimin
               </button>
             </div>
           </form>
@@ -162,7 +162,7 @@ onMounted(async () => {
       .maybeSingle()
     
     if (profileError) {
-      console.error('Error loading profile:', profileError)
+      console.error('Gabim gjatë ngarkimit të profilit:', profileError)
     }
   
     if (profile) {
@@ -173,8 +173,8 @@ onMounted(async () => {
   } catch (error: unknown) {
     const err = error as { message?: string }
     toast.add({
-      title: 'Error',
-      description: err.message || 'Failed to load profile',
+      title: 'Gabim',
+      description: err.message || 'Dështoi ngarkimi i profilit',
       color: 'red',
       icon: 'i-heroicons-exclamation-circle',
       timeout: 5000
@@ -187,7 +187,7 @@ const handleUpdateProfile = async () => {
   try {
     const { data: { session } } = await client.auth.getSession()
     if (!session?.access_token) {
-      throw new Error('No active session')
+      throw new Error('Nuk ka seancë aktive')
     }
     
     await $fetch('/api/admin/account', {
@@ -202,8 +202,8 @@ const handleUpdateProfile = async () => {
     })
     
     toast.add({
-      title: 'Success',
-      description: 'Profile updated successfully',
+      title: 'Sukses',
+      description: 'Profili u përditësua me sukses',
       color: 'green',
       icon: 'i-heroicons-check-circle',
       timeout: 3000
@@ -211,8 +211,8 @@ const handleUpdateProfile = async () => {
   } catch (e: unknown) {
     const err = e as { message?: string }
     toast.add({
-      title: 'Error',
-      description: err.message || 'Failed to update profile',
+      title: 'Gabim',
+      description: err.message || 'Dështoi përditësimi i profilit',
       color: 'red',
       icon: 'i-heroicons-exclamation-circle',
       timeout: 5000
@@ -225,8 +225,8 @@ const handleUpdateProfile = async () => {
 const handleUpdatePassword = async () => {
   if (passwordForm.password !== passwordForm.confirmPassword) {
     toast.add({
-      title: 'Validation Error',
-      description: "Passwords don't match",
+      title: 'Gabim validimi',
+      description: 'Fjalëkalimet nuk përputhen',
       color: 'red',
       icon: 'i-heroicons-exclamation-circle',
       timeout: 3000
@@ -236,8 +236,8 @@ const handleUpdatePassword = async () => {
 
   if (passwordForm.password.length < 8) {
     toast.add({
-      title: 'Validation Error',
-      description: 'Password must be at least 8 characters',
+      title: 'Gabim validimi',
+      description: 'Fjalëkalimi duhet të ketë të paktën 8 karaktere',
       color: 'red',
       icon: 'i-heroicons-exclamation-circle',
       timeout: 3000
@@ -249,7 +249,7 @@ const handleUpdatePassword = async () => {
   try {
     const { data: { session } } = await client.auth.getSession()
     if (!session?.access_token) {
-      throw new Error('No active session')
+      throw new Error('Nuk ka seancë aktive')
     }
     
     await $fetch('/api/admin/account', {
@@ -263,8 +263,8 @@ const handleUpdatePassword = async () => {
     })
     
     toast.add({
-      title: 'Success',
-      description: 'Password updated successfully',
+      title: 'Sukses',
+      description: 'Fjalëkalimi u përditësua me sukses',
       color: 'green',
       icon: 'i-heroicons-check-circle',
       timeout: 3000
@@ -275,8 +275,8 @@ const handleUpdatePassword = async () => {
   } catch (e: unknown) {
     const err = e as { message?: string }
     toast.add({
-      title: 'Error',
-      description: err.message || 'Failed to update password',
+      title: 'Gabim',
+      description: err.message || 'Dështoi përditësimi i fjalëkalimit',
       color: 'red',
       icon: 'i-heroicons-exclamation-circle',
       timeout: 5000

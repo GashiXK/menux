@@ -13,19 +13,18 @@ export default <Partial<Config>>{
     extend: {
       colors: {
         brand: {
-          // Pantone 300 - Primary Blue
-          DEFAULT: '#0066CC',
-          50: '#E6F2FF',
-          100: '#CCE5FF',
-          200: '#99CBFF',
-          300: '#66B1FF',
-          400: '#3397FF',
-          500: '#0066CC', // Pantone 300
-          600: '#0052A3',
+          DEFAULT: '#003D7A',
+          50: '#E6EEF8',
+          100: '#C1D4F0',
+          200: '#94B7E2',
+          300: '#669AD4',
+          400: '#3F7EC6',
+          500: '#1C62B4',
+          600: '#0F4D99',
           700: '#003D7A',
-          800: '#002952',
-          900: '#001429',
-          950: '#000A14'
+          800: '#002F5C',
+          900: '#002140',
+          950: '#00142B'
         },
         // Black for text and graphics
         ink: {

@@ -8,33 +8,33 @@
       <div class="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
         <div class="space-y-4">
           <span class="inline-flex items-center gap-2 rounded-full border border-brand-500/30 bg-brand-500/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.4em] text-brand-700 dark:text-brand-300">
-            Menu architecture
+            Arkitektura e menysë
           </span>
           <div>
-            <h1 class="text-3xl font-bold text-ink-900 dark:text-white sm:text-4xl">Categories</h1>
+            <h1 class="text-3xl font-bold text-ink-900 dark:text-white sm:text-4xl">Kategori</h1>
             <p class="mt-2 max-w-2xl text-sm text-ink-600 dark:text-ink-300 sm:text-base">
-              Compose tasting pathways and organize every item into curated sections that feel effortless to scan.
+              Krijoni rrugë degustimi dhe organizoni çdo artikull në seksione të kuruara që lexohen lehtësisht.
             </p>
           </div>
           <div class="flex flex-wrap gap-3">
-            <UButton color="primary" size="md" icon="i-heroicons-plus-circle" :disabled="!menuId || menuLoading" label="Add category" @click="openDialog()" />
-            <UButton to="/dashboard/items" variant="soft" size="md" icon="i-heroicons-squares-2x2" label="Manage items" />
+            <UButton color="primary" size="md" icon="i-heroicons-plus-circle" :disabled="!menuId || menuLoading" label="Shto kategori" @click="openDialog()" />
+            <UButton to="/dashboard/items" variant="soft" size="md" icon="i-heroicons-squares-2x2" label="Menaxho artikujt" />
           </div>
-          <p v-if="menuLoading" class="text-sm text-ink-500 dark:text-ink-400">Loading your menu structure…</p>
+          <p v-if="menuLoading" class="text-sm text-ink-500 dark:text-ink-400">Po ngarkohet struktura e menysë…</p>
         </div>
         <div class="grid w-full max-w-xs gap-4 rounded-3xl bg-white/80 p-5 text-sm text-ink-600 shadow-lg dark:bg-ink-950/75 dark:text-ink-300">
           <div class="flex items-center justify-between">
-            <span class="font-medium">Published categories</span>
+            <span class="font-medium">Kategori të publikuara</span>
             <span v-if="loading" class="h-6 w-12 rounded bg-ink-200/70 dark:bg-ink-800/70 animate-pulse" />
             <span v-else class="text-lg font-semibold text-ink-900 dark:text-white">{{ visibleCount }}</span>
           </div>
           <div class="flex items-center justify-between">
-            <span class="font-medium">Hidden drafts</span>
+            <span class="font-medium">Skica të fshehura</span>
             <span v-if="loading" class="h-6 w-12 rounded bg-ink-200/70 dark:bg-ink-800/70 animate-pulse" />
             <span v-else class="text-lg font-semibold text-ink-900 dark:text-white">{{ hiddenCount }}</span>
           </div>
           <div class="flex items-center justify-between">
-            <span class="font-medium">Last updated</span>
+            <span class="font-medium">Përditësimi i fundit</span>
             <span class="text-xs uppercase tracking-[0.3em] text-ink-400 dark:text-ink-500">
               {{ lastUpdated }}
             </span>
@@ -73,9 +73,9 @@
                       : 'bg-ink-100 text-ink-600 dark:bg-ink-800 dark:text-ink-300'
                   ]"
                 >
-                  {{ category.visible ? 'Visible' : 'Hidden' }}
+                  {{ category.visible ? 'E dukshme' : 'E fshehur' }}
                 </span>
-                <span>Order {{ category.sort_order }}</span>
+                <span>Renditja {{ category.sort_order }}</span>
               </div>
             </div>
           </div>
@@ -83,7 +83,7 @@
 
         <div class="space-y-3 text-sm text-ink-600 dark:text-ink-300">
           <p v-if="category.description" class="line-clamp-3 leading-relaxed">{{ category.description }}</p>
-          <p v-else class="italic text-ink-400 dark:text-ink-500">No description</p>
+          <p v-else class="italic text-ink-400 dark:text-ink-500">Pa përshkrim</p>
         </div>
 
         <div class="mt-6 flex flex-wrap gap-2 border-t border-ink-100 pt-4 dark:border-ink-800">
@@ -91,13 +91,13 @@
             @click="openDialog(category)"
             class="flex-1 min-w-[110px] rounded-xl border border-brand-200 bg-brand-50/60 px-4 py-2 text-sm font-medium text-brand-600 transition hover:bg-brand-100 dark:border-brand-900/40 dark:bg-brand-900/20 dark:text-brand-300"
           >
-            Edit
+            Përpuno
           </button>
           <button
             @click="confirmDelete(category)"
             class="flex-1 min-w-[110px] rounded-xl border border-red-200 bg-red-50/70 px-4 py-2 text-sm font-medium text-red-600 transition hover:bg-red-100 dark:border-red-900/40 dark:bg-red-900/20 dark:text-red-300"
           >
-            Delete
+            Fshij
           </button>
         </div>
       </div>
@@ -108,11 +108,11 @@
         <div class="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-3xl bg-gradient-to-br from-brand-500 to-brand-600 text-white shadow-2xl shadow-brand-500/30">
           <UIcon name="i-heroicons-folder" class="h-12 w-12" />
         </div>
-        <h3 class="text-2xl font-semibold text-ink-900 dark:text-white">No categories yet</h3>
+        <h3 class="text-2xl font-semibold text-ink-900 dark:text-white">Ende pa kategori</h3>
         <p class="mt-3 text-sm text-ink-600 dark:text-ink-300">
-          Create your first category to organize the story across your sections. Guests discover faster when your menu has rhythm.
+          Krijoni kategorinë tuaj të parë për të organizuar historinë në seksione. Mysafirët orientohen më shpejt kur menuja ka ritëm.
         </p>
-        <UButton class="mt-6" color="primary" size="md" icon="i-heroicons-plus-circle" label="Create category" @click="openDialog()" />
+        <UButton class="mt-6" color="primary" size="md" icon="i-heroicons-plus-circle" label="Krijo kategori" @click="openDialog()" />
       </div>
     </div>
 
@@ -128,7 +128,7 @@
           <div class="relative bg-white dark:bg-ink-900 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col z-10">
             <div class="flex items-center justify-between p-6 border-b border-ink-100 dark:border-ink-800">
               <h2 class="text-2xl font-bold text-ink-900 dark:text-white">
-                {{ editingCategory ? 'Edit Category' : 'Create New Category' }}
+                {{ editingCategory ? 'Përpuno kategorinë' : 'Krijo kategori të re' }}
               </h2>
               <button
                 @click="dialogOpen = false"
@@ -141,12 +141,12 @@
               <form @submit.prevent="handleSave" class="space-y-6">
                 <div>
                   <label class="block text-sm font-medium text-ink-700 dark:text-ink-300 mb-2">
-                    Category Name <span class="text-red-500">*</span>
+                    Emri i kategorisë <span class="text-red-500">*</span>
                   </label>
                   <input
                     v-model="form.name"
                     type="text"
-                    placeholder="e.g., Appetizers, Main Courses, Desserts"
+                    placeholder="p.sh., Antipasta, Pjata kryesore, Ëmbëlsira"
                     required
                     autofocus
                     class="w-full px-4 py-3 rounded-xl border border-ink-200 dark:border-ink-700 bg-white dark:bg-ink-800 text-ink-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
@@ -155,11 +155,11 @@
 
                 <div>
                   <label class="block text-sm font-medium text-ink-700 dark:text-ink-300 mb-2">
-                    Description
+                    Përshkrimi
                   </label>
                   <textarea
                     v-model="form.description"
-                    placeholder="Optional description for this category"
+                    placeholder="Përshkrim opsional për këtë kategori"
                     rows="3"
                     class="w-full px-4 py-3 rounded-xl border border-ink-200 dark:border-ink-700 bg-white dark:bg-ink-800 text-ink-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                   />
@@ -168,7 +168,7 @@
                 <div class="grid grid-cols-2 gap-4">
                   <div>
                     <label class="block text-sm font-medium text-ink-700 dark:text-ink-300 mb-2">
-                      Sort Order
+                      Renditja
                     </label>
                     <input
                       v-model.number="form.sort_order"
@@ -181,7 +181,7 @@
 
                   <div>
                     <label class="block text-sm font-medium text-ink-700 dark:text-ink-300 mb-2">
-                      Visibility
+                      Dukshmëria
                     </label>
                     <div class="flex items-center gap-3 pt-2">
                       <button
@@ -200,7 +200,7 @@
                         />
                       </button>
                       <span class="text-sm text-ink-600 dark:text-ink-400">
-                        {{ form.visible ? 'Visible' : 'Hidden' }}
+                        {{ form.visible ? 'E dukshme' : 'E fshehur' }}
                       </span>
                     </div>
                   </div>
@@ -212,7 +212,7 @@
                 @click="dialogOpen = false"
                 class="px-6 py-2 text-sm font-medium text-ink-700 dark:text-ink-300 hover:bg-ink-100 dark:hover:bg-ink-800 rounded-xl transition-colors"
               >
-                Cancel
+                Anulo
               </button>
               <button
                 @click="handleSave"
@@ -221,7 +221,7 @@
               >
                 <UIcon v-if="saving" name="i-heroicons-arrow-path" class="w-4 h-4 animate-spin" />
                 <UIcon v-else name="i-heroicons-check-circle" class="w-4 h-4" />
-                {{ editingCategory ? 'Update Category' : 'Create Category' }}
+                {{ editingCategory ? 'Përditëso kategorinë' : 'Krijo kategorinë' }}
               </button>
             </div>
           </div>
@@ -246,13 +246,13 @@
                 </div>
                 <div class="flex-1">
                   <h3 class="text-lg font-bold text-ink-900 dark:text-white mb-2">
-                    Delete Category
+                    Fshij kategorinë
                   </h3>
                   <p class="text-ink-600 dark:text-ink-400 mb-4">
-                    Are you sure you want to delete <strong>{{ deletingCategory?.name }}</strong>?
+                    Jeni i sigurt që doni të fshini <strong>{{ deletingCategory?.name }}</strong>?
                   </p>
                   <p class="text-sm text-ink-500 dark:text-ink-400">
-                    This will permanently delete the category and all items within it. This action cannot be undone.
+                    Kjo do të fshijë përgjithmonë kategorinë dhe të gjithë artikujt brenda saj. Ky veprim nuk mund të zhbëhet.
                   </p>
                 </div>
               </div>
@@ -262,14 +262,14 @@
                 @click="showDeleteDialog = false"
                 class="px-6 py-2 text-sm font-medium text-ink-700 dark:text-ink-300 hover:bg-ink-100 dark:hover:bg-ink-800 rounded-xl transition-colors"
               >
-                Cancel
+                Anulo
               </button>
               <button
                 @click="handleDelete"
                 class="px-6 py-2 text-sm font-semibold text-white bg-red-500 hover:bg-red-600 rounded-xl transition-colors flex items-center gap-2"
               >
                 <UIcon name="i-heroicons-trash" class="w-4 h-4" />
-                Delete Category
+                Fshij kategorinë
               </button>
             </div>
           </div>
@@ -316,14 +316,14 @@ const menuId = ref('')
 const visibleCount = computed(() => categories.value.filter(category => category.visible).length)
 const hiddenCount = computed(() => Math.max(categories.value.length - visibleCount.value, 0))
 const lastUpdated = computed(() => {
-  if (!categories.value.length) return 'No activity yet'
+  if (!categories.value.length) return 'Ende pa aktivitet'
   const timestamps = categories.value
     .map(category => {
       const date = category.created_at ? new Date(category.created_at) : null
       return date && !Number.isNaN(date.getTime()) ? date.getTime() : null
     })
     .filter((value): value is number => value !== null)
-  if (!timestamps.length) return 'No activity yet'
+  if (!timestamps.length) return 'Ende pa aktivitet'
   const latest = new Date(Math.max(...timestamps))
   return latest.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
 })
@@ -337,8 +337,8 @@ const loadCategories = async () => {
   } catch (error: unknown) {
     const err = error as { message?: string }
     toast.add({
-      title: 'Error',
-      description: err.message || 'Failed to load categories',
+      title: 'Gabim',
+      description: err.message || 'Dështoi ngarkimi i kategorive',
       color: 'red',
       icon: 'i-heroicons-exclamation-circle',
       timeout: 5000
@@ -367,8 +367,8 @@ const loadMenus = async (tenantId: string) => {
   } catch (error: unknown) {
     const err = error as { message?: string }
     toast.add({
-      title: 'Error',
-      description: err.message || 'Failed to load menus',
+      title: 'Gabim',
+      description: err.message || 'Dështoi ngarkimi i menyve',
       color: 'red',
       icon: 'i-heroicons-exclamation-circle',
       timeout: 5000
@@ -418,11 +418,10 @@ const openDialog = (category?: Category) => {
 }
 
 const handleSave = async () => {
-  console.log('menuId', menuId.value)
   if (!menuId.value) {
     toast.add({
-      title: 'Error',
-      description: 'No menu selected',
+      title: 'Gabim',
+      description: 'Nuk është zgjedhur asnjë menu',
       color: 'red',
       icon: 'i-heroicons-exclamation-circle',
       timeout: 3000
@@ -432,8 +431,8 @@ const handleSave = async () => {
   
   if (!form.name) {
     toast.add({
-      title: 'Validation Error',
-      description: 'Category name is required',
+      title: 'Gabim validimi',
+      description: 'Emri i kategorisë është i detyrueshëm',
       color: 'red',
       icon: 'i-heroicons-exclamation-circle',
       timeout: 3000
@@ -452,8 +451,8 @@ const handleSave = async () => {
       })
       
       toast.add({
-        title: 'Success',
-        description: `${form.name} category updated successfully`,
+        title: 'Sukses',
+        description: `${form.name} u përditësua me sukses`,
         color: 'green',
         icon: 'i-heroicons-check-circle',
         timeout: 3000
@@ -461,8 +460,8 @@ const handleSave = async () => {
     } else {
       if (!currentTenantId.value) {
         toast.add({
-          title: 'Error',
-          description: 'No tenant information available',
+          title: 'Gabim',
+          description: 'Nuk ka informacion për qiramarrësin',
           color: 'red',
           icon: 'i-heroicons-exclamation-circle',
           timeout: 3000
@@ -480,8 +479,8 @@ const handleSave = async () => {
       })
       
       toast.add({
-        title: 'Success',
-        description: `${form.name} category created successfully`,
+        title: 'Sukses',
+        description: `${form.name} u krijua me sukses`,
         color: 'green',
         icon: 'i-heroicons-check-circle',
         timeout: 3000
@@ -493,8 +492,8 @@ const handleSave = async () => {
   } catch (error: unknown) {
     const err = error as { message?: string }
     toast.add({
-      title: 'Error',
-      description: err.message || 'Failed to save category',
+      title: 'Gabim',
+      description: err.message || 'Dështoi ruajtja e kategorisë',
       color: 'red',
       icon: 'i-heroicons-exclamation-circle',
       timeout: 5000
@@ -520,8 +519,8 @@ const handleDelete = async () => {
     deletingCategory.value = null
     
     toast.add({
-      title: 'Success',
-      description: `${categoryName} category deleted successfully`,
+      title: 'Sukses',
+      description: `${categoryName} u fshi me sukses`,
       color: 'green',
       icon: 'i-heroicons-check-circle',
       timeout: 3000
@@ -529,8 +528,8 @@ const handleDelete = async () => {
   } catch (error: unknown) {
     const err = error as { message?: string }
     toast.add({
-      title: 'Error',
-      description: err.message || 'Failed to delete category',
+      title: 'Gabim',
+      description: err.message || 'Dështoi fshirja e kategorisë',
       color: 'red',
       icon: 'i-heroicons-exclamation-circle',
       timeout: 5000
