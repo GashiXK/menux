@@ -7,7 +7,7 @@
             <UIcon name="i-heroicons-rocket-launch" class="h-6 w-6 text-white" />
           </span>
           <div>
-            <p class="text-xl font-semibold text-ink-900 dark:text-white leading-tight">MenuX</p>
+            <p class="text-xl font-semibold text-ink-900 dark:text-white leading-tight">MenuPika</p>
             <p class="text-xs font-medium uppercase tracking-widest text-brand-600 dark:text-brand-300">Digital Menu Platform</p>
           </div>
         </NuxtLink>
@@ -38,11 +38,11 @@
               Craft stunning digital menus that convert diners into loyal fans
             </h1>
             <p class="max-w-2xl text-lg text-ink-600 dark:text-ink-300">
-              MenuX blends modern design systems with real-time publishing, giving restaurants an enterprise-grade experience across mobile, tablet, and tabletop displays.
+              MenuPika blends modern design systems with real-time publishing, giving restaurants an enterprise-grade experience across mobile, tablet, and tabletop displays.
             </p>
             <div class="flex flex-wrap gap-4">
               <UButton to="/auth/login" size="lg" color="primary" label="Start building" icon="i-heroicons-arrow-right-circle" />
-              <UButton to="#features" size="lg" variant="soft" label="Why MenuX" icon="i-heroicons-information-circle" />
+              <UButton to="#features" size="lg" variant="soft" label="Why MenuPika" icon="i-heroicons-information-circle" />
             </div>
             <div class="flex flex-wrap items-center gap-10 pt-10 text-sm text-ink-500 dark:text-ink-400">
               <div class="space-y-1">
@@ -112,7 +112,7 @@
         <div class="mx-auto max-w-7xl px-6 py-24">
           <div class="mx-auto max-w-3xl text-center">
             <h2 class="text-3xl font-bold text-ink-900 dark:text-white sm:text-4xl">A modern toolkit crafted for hospitality teams</h2>
-            <p class="mt-4 text-lg text-ink-600 dark:text-ink-300">Blend brand storytelling with operational efficiency. MenuX keeps teams in sync and guests delighted.</p>
+            <p class="mt-4 text-lg text-ink-600 dark:text-ink-300">Blend brand storytelling with operational efficiency. MenuPika keeps teams in sync and guests delighted.</p>
           </div>
           <div class="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             <UCard class="h-full border border-ink-100/70 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg dark:border-ink-800/70 dark:bg-ink-900/80">
@@ -225,7 +225,7 @@
                 </div>
                 <div class="rounded-2xl border border-ink-100 bg-ink-50/80 p-5 dark:border-ink-800 dark:bg-ink-900/70">
                   <p class="text-2xl font-semibold text-secondary">92%</p>
-                  <p class="mt-2 text-sm text-ink-600 dark:text-ink-400">Guest satisfaction score for digital ordering flows augmented with MenuX.</p>
+                  <p class="mt-2 text-sm text-ink-600 dark:text-ink-400">Guest satisfaction score for digital ordering flows augmented with MenuPika.</p>
                 </div>
               </div>
               <div class="flex flex-wrap gap-3">
@@ -298,7 +298,7 @@
         <div class="mx-auto max-w-7xl px-6 py-24">
           <div class="mx-auto max-w-3xl text-center">
             <h2 class="text-3xl font-bold text-ink-900 dark:text-white sm:text-4xl">Loved by chefs, sommeliers, and operators</h2>
-            <p class="mt-4 text-lg text-ink-600 dark:text-ink-300">MenuX unlocks hospitality teams to deliver premium guest journeys without sacrificing agility.</p>
+            <p class="mt-4 text-lg text-ink-600 dark:text-ink-300">MenuPika unlocks hospitality teams to deliver premium guest journeys without sacrificing agility.</p>
           </div>
           <div class="mt-16 grid gap-8 lg:grid-cols-3">
             <UCard class="border border-ink-100/80 bg-white/90 shadow-lg shadow-ink-500/10 dark:border-ink-800/70 dark:bg-ink-900/80">
@@ -326,7 +326,7 @@
                     <p class="text-sm text-ink-500 dark:text-ink-400">GM · Skyline Lounge</p>
                   </div>
                 </div>
-                <p class="text-sm leading-relaxed text-ink-600 dark:text-ink-300">“MenuX lets our servers focus on storytelling while the platform personalizes offers. Guests love how premium and responsive the experience feels.”</p>
+                <p class="text-sm leading-relaxed text-ink-600 dark:text-ink-300">“MenuPika lets our servers focus on storytelling while the platform personalizes offers. Guests love how premium and responsive the experience feels.”</p>
               </div>
             </UCard>
             <UCard class="border border-ink-100/80 bg-white/90 shadow-lg shadow-ink-500/10 dark:border-ink-800/70 dark:bg-ink-900/80">
@@ -340,7 +340,7 @@
                     <p class="text-sm text-ink-500 dark:text-ink-400">Revenue Manager · Vista Collective</p>
                   </div>
                 </div>
-                <p class="text-sm leading-relaxed text-ink-600 dark:text-ink-300">“The analytics suite revealed unexpected best sellers and guided a pricing strategy that paid off in weeks. MenuX is now core to our growth stack.”</p>
+                <p class="text-sm leading-relaxed text-ink-600 dark:text-ink-300">“The analytics suite revealed unexpected best sellers and guided a pricing strategy that paid off in weeks. MenuPika is now core to our growth stack.”</p>
               </div>
             </UCard>
           </div>
@@ -359,7 +359,7 @@
                 <div class="mb-4 inline-flex items-center gap-2 rounded-full bg-brand-500 px-4 py-1 text-xs font-semibold uppercase tracking-[0.4em] text-white">
                   Unified plan
                 </div>
-                <p class="text-sm font-semibold uppercase tracking-[0.48em] text-brand-700 dark:text-brand-200">MenuX Studio</p>
+                <p class="text-sm font-semibold uppercase tracking-[0.48em] text-brand-700 dark:text-brand-200">MenuPika Studio</p>
                 <p class="mt-5 text-5xl font-bold text-ink-900 dark:text-white">€34.99<span class="ml-2 text-base font-medium text-ink-500 dark:text-ink-300">per month</span></p>
                 <p class="mt-3 max-w-xl text-sm text-ink-600 dark:text-ink-300">One simple package with premium tooling, 50 handcrafted designs, and data-driven publishing workflows that scale across every table.</p>
               </div>
@@ -382,7 +382,7 @@
                 </li>
               </ul>
               <div class="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-center">
-                <UButton to="/auth/login" size="lg" color="primary" icon="i-heroicons-arrow-right-circle" label="Activate MenuX Studio" class="w-full sm:w-auto" />
+                <UButton to="/auth/login" size="lg" color="primary" icon="i-heroicons-arrow-right-circle" label="Activate MenuPika Studio" class="w-full sm:w-auto" />
                 <UButton to="/demo" size="lg" variant="soft" icon="i-heroicons-eye" label="Preview included designs" class="w-full sm:w-auto" />
               </div>
             </UCard>

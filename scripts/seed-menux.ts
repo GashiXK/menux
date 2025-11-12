@@ -1,5 +1,5 @@
-// scripts/seed-menux.ts
-// Comprehensive seed for MenuX project with 10 tenants, 10 templates, and 10 users
+// scripts/seed-MenuPika.ts
+// Comprehensive seed for MenuPika project with 10 tenants, 10 templates, and 10 users
 import 'dotenv/config'
 import { createClient } from '@supabase/supabase-js'
 
@@ -72,7 +72,7 @@ async function ensureUser(email: string, password: string, fullName: string, rol
 }
 
 async function run() {
-  console.log('🌱 Starting MenuX seed...\n')
+  console.log('🌱 Starting MenuPika seed...\n')
 
   // 1. Super Admin
   console.log('📋 Creating Super Admin...')
@@ -404,7 +404,7 @@ async function run() {
   console.log('👥 Creating tenant users...')
   const tenantUserEmails: Record<string, string> = {}
   for (const tenant of tenants) {
-    const email = `${tenant.slug}.admin@menux.com`
+    const email = `${tenant.slug}.admin@MenuPika.com`
     const fullName = `${tenant.name} Admin`
     const userId = await ensureUser(email, '12345678', fullName, 'tenant_user')
     tenantUserEmails[tenant.slug] = email

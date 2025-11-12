@@ -11,10 +11,10 @@
           <header>
             <NuxtLink to="/" class="inline-flex items-center gap-3 rounded-full bg-white/10 px-5 py-2 text-sm font-semibold tracking-[0.2em] text-white/90 ring-1 ring-white/20 backdrop-blur">
               <UIcon name="i-heroicons-rocket-launch" class="h-5 w-5" />
-              MenuX Platform
+              MenuPika Platform
             </NuxtLink>
             <h1 class="mt-12 text-4xl font-semibold leading-tight">Design menus that feel personal, perform globally.</h1>
-            <p class="mt-4 max-w-lg text-base text-white/80">MenuX empowers hospitality teams to launch menu experiences that reinforce brand trust, convert upsells, and deliver insights to every location.</p>
+            <p class="mt-4 max-w-lg text-base text-white/80">MenuPika empowers hospitality teams to launch menu experiences that reinforce brand trust, convert upsells, and deliver insights to every location.</p>
           </header>
           <dl class="mt-12 grid gap-6 sm:grid-cols-2">
             <div class="rounded-2xl bg-white/10 p-6 backdrop-blur">
@@ -36,7 +36,7 @@
           </div>
           <div class="flex items-center gap-3 rounded-2xl bg-white/10 px-4 py-3 backdrop-blur">
             <UIcon name="i-heroicons-sparkles" class="h-5 w-5" />
-            Guided onboarding and white-glove template rollout from MenuX specialists.
+            Guided onboarding and white-glove template rollout from MenuPika specialists.
           </div>
         </footer>
       </section>
@@ -48,7 +48,7 @@
               <UIcon name="i-heroicons-rocket-launch" class="h-6 w-6 text-white" />
             </span>
             <div>
-              <p class="text-lg font-semibold text-ink-900 dark:text-white">MenuX</p>
+              <p class="text-lg font-semibold text-ink-900 dark:text-white">MenuPika</p>
               <p class="text-xs font-medium uppercase tracking-[0.32em] text-brand-600 dark:text-brand-300">Digital Menu Platform</p>
             </div>
           </div>
@@ -75,7 +75,7 @@
               <UFormField label="Email" name="email">
                 <template #description>
                   <p id="login-email-description" class="text-sm text-ink-500 dark:text-ink-400">
-                    Enter the work email connected to your MenuX account.
+                    Enter the work email connected to your MenuPika account.
                   </p>
                 </template>
                     <UInput
@@ -95,7 +95,7 @@
                   <UFormField label="Password" name="password">
                 <template #description>
                   <p id="login-password-description" class="text-sm text-ink-500 dark:text-ink-400">
-                    Use the secure password provided by your MenuX administrator.
+                    Use the secure password provided by your MenuPika administrator.
                   </p>
                 </template>
                     <UInput
@@ -136,8 +136,8 @@
               </UForm>
 
               <p class="text-xs text-ink-400 dark:text-ink-500">
-                Need access? Contact your MenuX admin or reach our team at
-                <ULink to="mailto:hello@menux.io" class="font-medium text-brand-600 hover:text-brand-500">hello@menux.io</ULink>
+                Need access? Contact your MenuPika admin or reach our team at
+                <ULink to="mailto:hello@MenuPika.io" class="font-medium text-brand-600 hover:text-brand-500">hello@MenuPika.io</ULink>
               </p>
             </div>
           </UCard>

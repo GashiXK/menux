@@ -24,7 +24,7 @@ if (!fs.existsSync(manifestDir)) {
 // Create dev.json if it doesn't exist
 const devJsonPath = path.join(manifestDir, 'dev.json');
 if (!fs.existsSync(devJsonPath)) {
-  fs.writeFileSync(devJsonPath, JSON.stringify({ buildId: 'dev', appId: 'menux' }, null, 2));
+  fs.writeFileSync(devJsonPath, JSON.stringify({ buildId: 'dev', appId: 'MenuPika' }, null, 2));
   console.log('✅ Created .nuxt/manifest/meta/dev.json');
 }
 

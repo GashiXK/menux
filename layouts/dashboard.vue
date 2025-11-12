@@ -24,7 +24,7 @@
                 </div>
                 <div>
                   <p class="text-lg font-semibold text-ink-900 dark:text-white leading-tight">
-                    {{ tenant?.name || 'MenuX' }}
+                    {{ tenant?.name || 'MenuPika' }}
                   </p>
                   <p v-if="tenant && !tenant.is_active" class="text-xs font-medium text-red-600 dark:text-red-400">
                     Inactive
@@ -81,7 +81,7 @@
             </div>
             <div>
               <p class="text-xl font-bold text-ink-900 dark:text-white leading-tight">
-                {{ tenant?.name || 'MenuX' }}
+                {{ tenant?.name || 'MenuPika' }}
               </p>
               <p v-if="tenant && !tenant.is_active" class="text-xs font-semibold text-red-600 dark:text-red-400">
                 Inactive

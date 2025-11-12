@@ -94,7 +94,7 @@ const countdown = ref<string | null>(null)
 const progress = ref<number | null>(null)
 const dismissedAds = ref<Map<string, number>>(new Map())
 
-const DISMISS_STORAGE_KEY = 'menux.dismissedAds'
+const DISMISS_STORAGE_KEY = 'MenuPika.dismissedAds'
 const DEFAULT_DISMISS_MS = 1000 * 60 * 60 * 12
 let refreshIntervalId: number | null = null
 let expiryTimeoutId: number | null = null

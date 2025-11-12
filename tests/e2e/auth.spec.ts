@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test'
 test.describe('Authentication', () => {
   test('should show login page', async ({ page }) => {
     await page.goto('/auth/login')
-    await expect(page.locator('h1')).toContainText('MenuX')
+    await expect(page.locator('h1')).toContainText('MenuPika')
     await expect(page.locator('input[type="email"]')).toBeVisible()
     await expect(page.locator('input[type="password"]')).toBeVisible()
   })

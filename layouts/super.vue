@@ -73,7 +73,7 @@
           </span>
           <div>
             <p class="text-xl font-semibold text-ink-900 dark:text-white leading-tight">Super Admin</p>
-            <p class="text-xs font-medium uppercase tracking-widest text-brand-600 dark:text-brand-300">MenuX Control</p>
+            <p class="text-xs font-medium uppercase tracking-widest text-brand-600 dark:text-brand-300">MenuPika Control</p>
           </div>
         </NuxtLink>
         <div class="mt-10 flex-1 space-y-6">

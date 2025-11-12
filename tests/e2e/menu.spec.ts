@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test'
 test.describe('Public Menu Page', () => {
   test('should display homepage', async ({ page }) => {
     await page.goto('/')
-    await expect(page.locator('h1')).toContainText('MenuX')
+    await expect(page.locator('h1')).toContainText('MenuPika')
     await expect(page.locator('text=Sign In')).toBeVisible()
   })
   

@@ -9,7 +9,7 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "seed": "tsx scripts/seed.ts",
-    "seed:menux": "tsx scripts/seed-menux.ts",
+    "seed:MenuPika": "tsx scripts/seed-MenuPika.ts",
     "test": "vitest",
     "test:e2e": "playwright test"
   },

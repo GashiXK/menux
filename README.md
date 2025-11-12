@@ -1,4 +1,4 @@
-# MenuX - Multi-Tenant Digital Menu Platform
+# MenuPika - Multi-Tenant Digital Menu Platform
 
 A modern, full-featured digital menu system built with **Nuxt 3**, **Nuxt UI**, **Tailwind CSS**, and **Supabase**.
 
