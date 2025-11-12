@@ -42,6 +42,58 @@ export const updateAccountSchema = z.object({
 })
 
 export class AdminService {
+  private static async findUserByEmail(adminClient: ReturnType<typeof AuthService['getAdminClient']>, email: string) {
+    let page = 1
+    const perPage = 200
+    const normalized = email.toLowerCase()
+
+    while (true) {
+      const { data, error } = await adminClient.auth.admin.listUsers({ page, perPage })
+      if (error) {
+        break
+      }
+
+      const users = data?.users || []
+      const match = users.find((user: any) => user.email?.toLowerCase() === normalized)
+      if (match) {
+        return match
+      }
+
+      if (users.length < perPage) {
+        break
+      }
+
+      page += 1
+    }
+
+    return null
+  }
+
+  private static async listAllUsers(adminClient: ReturnType<typeof AuthService['getAdminClient']>) {
+    let page = 1
+    const perPage = 200
+    const collected: any[] = []
+
+    while (true) {
+      const { data, error } = await adminClient.auth.admin.listUsers({ page, perPage })
+      if (error) break
+
+      const users = data?.users || []
+      collected.push(...users)
+
+      if (users.length < perPage) break
+      page += 1
+    }
+
+    return collected
+  }
+
+  private static isAlreadyExistsError(message?: string | null) {
+    if (!message) return false
+    const normalized = message.toLowerCase()
+    return normalized.includes('already registered') || normalized.includes('duplicate')
+  }
+
   /**
    * Get all tenant users with optional filtering
    */
@@ -68,8 +120,8 @@ export class AdminService {
     }
 
     // Get all users to match emails
-    const { data: allUsers } = await adminClient.auth.admin.listUsers()
-    const userEmailMap = new Map(allUsers?.users?.map(u => [u.id, u.email]) || [])
+    const allUsers = await AdminService.listAllUsers(adminClient)
+    const userEmailMap = new Map(allUsers.map(u => [u.id, u.email]) || [])
 
     // Map emails to tenant users
     return tenantUsers.map((tu: any) => ({
@@ -86,78 +138,102 @@ export class AdminService {
   static async createUser(event: any, data: z.infer<typeof createUserSchema>) {
     const { adminClient } = await AuthService.verifySuperAdmin(event)
 
-    // Check if user already exists
-    const { data: existingUsers, error: existingUsersError } = await adminClient.auth.admin.listUsers({
-      page: 1,
-      perPage: 1,
-      email: data.email
-    } as { page?: number; perPage?: number; email?: string })
-
-    if (existingUsersError) {
-      throw createError({
-        statusCode: 400,
-        message: existingUsersError.message || 'Unable to check existing user'
-      })
-    }
-
-    const existingUser = existingUsers?.users?.[0] ?? null
-
-    let userId: string
+    let userId: string | null = null
     let accountAction: 'existing' | 'created' | 'invited' = 'existing'
+    const email = data.email.toLowerCase()
 
-    if (existingUser?.id) {
-      userId = existingUser.id
+    if (data.password) {
+      const { data: newUser, error: adminCreateError } = await adminClient.auth.admin.createUser({
+        email,
+        email_confirm: true,
+        password: data.password
+      })
 
-      if (data.password) {
-        const { error: passwordUpdateError } = await adminClient.auth.admin.updateUserById(userId, {
-          password: data.password
-        })
-
-        if (passwordUpdateError) {
+      if (adminCreateError) {
+        if (!AdminService.isAlreadyExistsError(adminCreateError.message)) {
           throw createError({
             statusCode: 400,
-            message: passwordUpdateError.message || 'Failed to update existing user password'
-          })
-        }
-      }
-    } else {
-      if (data.password) {
-        const { data: newUser, error: adminCreateError } = await adminClient.auth.admin.createUser({
-          email: data.email,
-          email_confirm: true,
-          password: data.password
-        })
-
-        if (adminCreateError || !newUser?.user) {
-          throw createError({
-            statusCode: 400,
-            message: adminCreateError?.message || 'Failed to create user'
+            message: adminCreateError.message || 'Failed to create user'
           })
         }
 
+        const existingUser = await AdminService.findUserByEmail(adminClient, email)
+        if (!existingUser?.id) {
+          throw createError({
+            statusCode: 400,
+            message: 'User already exists but could not be retrieved'
+          })
+        }
+
+        userId = existingUser.id
+        accountAction = 'existing'
+      } else if (!newUser?.user?.id) {
+        throw createError({
+          statusCode: 400,
+          message: 'Failed to create user'
+        })
+      } else {
         userId = newUser.user.id
         accountAction = 'created'
-      } else {
-        const { data: invitedUser, error: inviteError } = await adminClient.auth.admin.inviteUserByEmail(data.email)
+      }
+    } else {
+      const { data: invitedUser, error: inviteError } = await adminClient.auth.admin.inviteUserByEmail(email)
 
-        if (inviteError || !invitedUser?.user) {
+      if (inviteError) {
+        if (!AdminService.isAlreadyExistsError(inviteError.message)) {
           throw createError({
             statusCode: 400,
-            message: inviteError?.message || 'Failed to invite user'
+            message: inviteError.message || 'Failed to invite user'
           })
         }
 
+        const existingUser = await AdminService.findUserByEmail(adminClient, email)
+        if (!existingUser?.id) {
+          throw createError({
+            statusCode: 400,
+            message: 'User already exists but could not be retrieved'
+          })
+        }
+
+        userId = existingUser.id
+        accountAction = 'existing'
+      } else if (!invitedUser?.user?.id) {
+        throw createError({
+          statusCode: 400,
+          message: 'Failed to invite user'
+        })
+      } else {
         userId = invitedUser.user.id
         accountAction = 'invited'
       }
     }
 
+    if (!userId) {
+      throw createError({
+        statusCode: 400,
+        message: 'Unable to resolve user ID'
+      })
+    }
+
+    if (accountAction === 'existing' && data.password) {
+      const { error: passwordUpdateError } = await adminClient.auth.admin.updateUserById(userId, {
+        password: data.password
+      })
+
+      if (passwordUpdateError) {
+        throw createError({
+          statusCode: 400,
+          message: passwordUpdateError.message || 'Failed to update existing user password'
+        })
+      }
+    }
+
     // Create/update profile
-    const { error: profileUpsertError } = await adminClient
+    const { error: profileUpsertError } = await (adminClient as any)
       .from('profiles')
       .upsert({
         id: userId,
-        full_name: data.full_name || data.email.split('@')[0],
+        full_name: data.full_name || email.split('@')[0],
         app_role: 'tenant_user'
       }, { onConflict: 'id' })
 
@@ -169,7 +245,7 @@ export class AdminService {
     }
 
     // Link user to tenant
-    const { error: tenantUserError } = await adminClient
+    const { error: tenantUserError } = await (adminClient as any)
       .from('tenant_users')
       .upsert({
         tenant_id: data.tenant_id,
@@ -185,12 +261,12 @@ export class AdminService {
       })
     }
 
-    const existingAccount = Boolean(existingUser?.id)
+    const existingAccount = accountAction === 'existing'
 
     return {
       success: true,
       user_id: userId,
-      email: data.email,
+      email,
       message: existingAccount
         ? 'User linked to tenant'
         : accountAction === 'created'
@@ -243,7 +319,7 @@ export class AdminService {
 
     // Update profile if needed
     if (data.full_name) {
-      const { error: profileError } = await client
+      const { error: profileError } = await (client as any)
         .from('profiles')
         .update({ full_name: data.full_name })
         .eq('id', user.id)
@@ -265,8 +341,9 @@ export class AdminService {
   static async updateTenantUser(event: any, data: z.infer<typeof updateTenantUserSchema>) {
     const { adminClient } = await AuthService.verifySuperAdmin(event)
 
-    const { data: existingTenantUser, error: existingError } = await adminClient
-      .from('tenant_users')
+    const tenantUsersTable = (adminClient as any).from('tenant_users')
+
+    const { data: existingTenantUser, error: existingError } = await tenantUsersTable
       .select('tenant_id, user_id')
       .eq('tenant_id', data.tenant_id)
       .eq('user_id', data.user_id)
@@ -286,8 +363,7 @@ export class AdminService {
       })
     }
 
-    const { error: updateError } = await adminClient
-      .from('tenant_users')
+    const { error: updateError } = await tenantUsersTable
       .update({
         role: data.role,
         is_owner: Boolean(data.is_owner)

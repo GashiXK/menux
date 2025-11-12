@@ -3,8 +3,9 @@
  * Handles authentication logic for API endpoints
  */
 import { createClient } from '@supabase/supabase-js'
-import type { User } from '@supabase/supabase-js'
+import type { SupabaseClient, User } from '@supabase/supabase-js'
 import { serverSupabaseUser } from '#supabase/server'
+import type { Database } from '~/types/database'
 
 export interface AuthContext {
   user: User
@@ -12,7 +13,7 @@ export interface AuthContext {
 }
 
 export class AuthService {
-  private static getAdminClient() {
+  private static getAdminClient(): SupabaseClient<Database> {
     const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
     if (!serviceKey) {
       throw createError({
@@ -22,7 +23,7 @@ export class AuthService {
     }
 
     const config = useRuntimeConfig()
-    return createClient(
+    return createClient<Database>(
       config.public.supabaseUrl || process.env.NUXT_PUBLIC_SUPABASE_URL || '',
       serviceKey
     )
@@ -50,11 +51,11 @@ export class AuthService {
       if (authHeader) {
         const token = authHeader.replace(/^Bearer\s+/i, '').trim()
         if (token) {
-          const config = useRuntimeConfig()
-          const supabaseUrl = config.public.supabaseUrl || process.env.NUXT_PUBLIC_SUPABASE_URL || ''
-          const supabaseAnonKey = config.public.supabaseAnonKey || process.env.NUXT_PUBLIC_SUPABASE_ANON_KEY || ''
+      const config = useRuntimeConfig()
+      const supabaseUrl = config.public.supabaseUrl || process.env.NUXT_PUBLIC_SUPABASE_URL || ''
+      const supabaseAnonKey = config.public.supabaseAnonKey || process.env.NUXT_PUBLIC_SUPABASE_ANON_KEY || ''
 
-          const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+      const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
             global: {
               headers: {
                 Authorization: `Bearer ${token}`
@@ -115,11 +116,11 @@ export class AuthService {
   /**
    * Verify user is authenticated (tenant user or super admin)
    */
-  static async verifyAuthenticated(event: any): Promise<{ user: User; client: ReturnType<typeof createClient> }> {
+  static async verifyAuthenticated(event: any): Promise<{ user: User; client: SupabaseClient<Database> }> {
     const user = await this.authenticate(event)
     const config = useRuntimeConfig()
     
-    const client = createClient(
+    const client = createClient<Database>(
       config.public.supabaseUrl || process.env.NUXT_PUBLIC_SUPABASE_URL || '',
       config.public.supabaseAnonKey || process.env.NUXT_PUBLIC_SUPABASE_ANON_KEY || ''
     )
