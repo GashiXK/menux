@@ -8,12 +8,12 @@
       <div class="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
         <div class="space-y-4">
           <span class="inline-flex items-center gap-2 rounded-full border border-brand-500/30 bg-brand-500/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.4em] text-brand-700 dark:text-brand-300">
-            Menu inventory
+            Inventari i menysë
           </span>
           <div>
-            <h1 class="text-3xl font-bold text-ink-900 dark:text-white sm:text-4xl">Menu items</h1>
+            <h1 class="text-3xl font-bold text-ink-900 dark:text-white sm:text-4xl">Artikujt e menysë</h1>
             <p class="mt-2 max-w-2xl text-sm text-ink-600 dark:text-ink-300 sm:text-base">
-              Curate every plate and beverage with rich descriptions, imagery, and pricing designed to convert.
+              Kuroni çdo pjatë dhe pije me përshkrime të pasura, imazhe dhe çmime që nxisin porositë.
             </p>
           </div>
           <div class="flex flex-wrap gap-3">
@@ -21,26 +21,26 @@
               color="primary"
               size="md"
               icon="i-heroicons-plus-circle"
-              label="Add item"
+              label="Shto artikull"
               :disabled="!selectedCategoryId"
               @click="openDialog()"
             />
-            <UButton to="/dashboard/categories" variant="soft" size="md" icon="i-heroicons-folder" label="Manage categories" />
+            <UButton to="/dashboard/categories" variant="soft" size="md" icon="i-heroicons-folder" label="Menaxho kategoritë" />
           </div>
         </div>
         <div class="grid w-full max-w-xs gap-4 rounded-3xl bg-white/80 p-5 text-sm text-ink-600 shadow-lg dark:bg-ink-950/75 dark:text-ink-300">
           <div class="flex items-center justify-between">
-            <span class="font-medium">Published items</span>
+            <span class="font-medium">Artikujt e publikuar</span>
             <span v-if="loading" class="h-6 w-12 rounded bg-ink-200/70 dark:bg-ink-800/70 animate-pulse" />
             <span v-else class="text-lg font-semibold text-ink-900 dark:text-white">{{ activeCount }}</span>
           </div>
           <div class="flex items-center justify-between">
-            <span class="font-medium">Draft items</span>
+            <span class="font-medium">Artikujt në skicë</span>
             <span v-if="loading" class="h-6 w-12 rounded bg-ink-200/70 dark:bg-ink-800/70 animate-pulse" />
             <span v-else class="text-lg font-semibold text-ink-900 dark:text-white">{{ inactiveCount }}</span>
           </div>
           <div class="flex items-center justify-between text-xs uppercase tracking-[0.3em] text-ink-400 dark:text-ink-500">
-            <span>Last update</span>
+            <span>Përditësimi i fundit</span>
             <span>{{ lastUpdated }}</span>
           </div>
         </div>
@@ -50,9 +50,9 @@
     <section class="rounded-3xl border border-ink-100 bg-white px-6 py-6 shadow-md dark:border-ink-800 dark:bg-ink-900 sm:px-8">
       <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div class="space-y-1">
-          <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink-400 dark:text-ink-500">Category focus</p>
+          <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink-400 dark:text-ink-500">Fokusi i kategorisë</p>
           <h2 class="text-xl font-semibold text-ink-900 dark:text-white">
-            {{ selectedCategoryName || 'Select a category' }}
+            {{ selectedCategoryName || 'Zgjidhni një kategori' }}
           </h2>
         </div>
         <div class="flex items-center gap-4">
@@ -61,7 +61,7 @@
             @change="loadItems"
             class="w-full rounded-2xl border border-ink-200 bg-white px-4 py-3 text-sm font-medium text-ink-900 shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 dark:border-ink-700 dark:bg-ink-900 dark:text-ink-100 md:w-72"
           >
-            <option value="">Choose a category to manage items</option>
+            <option value="">Zgjidhni një kategori për të menaxhuar artikujt</option>
             <option v-for="cat in categories" :key="cat.id" :value="cat.id">
               {{ cat.name }}
             </option>
@@ -103,7 +103,7 @@
                       : 'bg-ink-100 text-ink-600 dark:bg-ink-800 dark:text-ink-300'
                   ]"
                 >
-                  {{ item.is_active ? 'Active' : 'Draft' }}
+                  {{ item.is_active ? 'Aktiv' : 'Skicë' }}
                 </span>
               </div>
             </div>
@@ -112,8 +112,8 @@
 
         <div class="space-y-3 text-sm text-ink-600 dark:text-ink-300">
           <p v-if="item.description" class="line-clamp-3 leading-relaxed">{{ item.description }}</p>
-          <p v-else class="italic text-ink-400 dark:text-ink-500">No description provided</p>
-          <p class="text-xs text-ink-400 dark:text-ink-500">Display order {{ item.sort_order }}</p>
+          <p v-else class="italic text-ink-400 dark:text-ink-500">Pa përshkrim</p>
+          <p class="text-xs text-ink-400 dark:text-ink-500">Renditja e shfaqjes {{ item.sort_order }}</p>
         </div>
 
         <div class="mt-6 flex flex-wrap gap-2 border-t border-ink-100 pt-4 dark:border-ink-800">
@@ -121,13 +121,13 @@
             @click="openDialog(item)"
             class="flex-1 min-w-[110px] rounded-xl border border-brand-200 bg-brand-50/60 px-4 py-2 text-sm font-medium text-brand-600 transition hover:bg-brand-100 dark:border-brand-900/40 dark:bg-brand-900/20 dark:text-brand-300"
           >
-            Edit
+            Përpuno
           </button>
           <button
             @click="confirmDelete(item)"
             class="flex-1 min-w-[110px] rounded-xl border border-red-200 bg-red-50/70 px-4 py-2 text-sm font-medium text-red-600 transition hover:bg-red-100 dark:border-red-900/40 dark:bg-red-900/20 dark:text-red-300"
           >
-            Delete
+            Fshij
           </button>
         </div>
       </div>
@@ -138,11 +138,11 @@
         <div class="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-3xl bg-gradient-to-br from-brand-500 to-brand-600 text-white shadow-2xl shadow-brand-500/30">
           <UIcon name="i-heroicons-squares-plus" class="h-12 w-12" />
         </div>
-        <h3 class="text-2xl font-semibold text-ink-900 dark:text-white">No items yet</h3>
+        <h3 class="text-2xl font-semibold text-ink-900 dark:text-white">Ende pa artikuj</h3>
         <p class="mt-3 text-sm text-ink-600 dark:text-ink-300">
-          Add your first item to this category to bring the page to life. Items sync instantly with your published menu.
+          Shtoni artikullin tuaj të parë në këtë kategori për të sjellë faqe në jetë. Artikujt sinkronizohen menjëherë me menunë e publikuar.
         </p>
-        <UButton class="mt-6" color="primary" size="md" icon="i-heroicons-plus-circle" label="Add item" @click="openDialog()" />
+        <UButton class="mt-6" color="primary" size="md" icon="i-heroicons-plus-circle" label="Shto artikull" @click="openDialog()" />
       </div>
     </div>
 
@@ -151,9 +151,9 @@
         <div class="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-3xl bg-ink-100 text-ink-500 shadow-inner dark:bg-ink-900 dark:text-ink-300">
           <UIcon name="i-heroicons-folder-open" class="h-12 w-12" />
         </div>
-        <h3 class="text-2xl font-semibold text-ink-900 dark:text-white">Select a category</h3>
+        <h3 class="text-2xl font-semibold text-ink-900 dark:text-white">Zgjidhni një kategori</h3>
         <p class="mt-3 text-sm text-ink-600 dark:text-ink-300">
-          Choose a category above to review and edit the items inside. Create a new category first if you are starting from scratch.
+          Zgjidhni një kategori më sipër për të parë dhe përpunuar artikujt brenda saj. Krijoni fillimisht një kategori të re nëse po nisni nga e para.
         </p>
       </div>
     </div>
@@ -170,7 +170,7 @@
           <div class="relative bg-white dark:bg-ink-900 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col z-10">
             <div class="flex items-center justify-between p-6 border-b border-ink-100 dark:border-ink-800">
               <h2 class="text-2xl font-bold text-ink-900 dark:text-white">
-                {{ editingItem ? 'Edit Menu Item' : 'Create New Menu Item' }}
+                {{ editingItem ? 'Përpuno artikullin e menysë' : 'Krijo artikull të ri të menysë' }}
               </h2>
               <button
                 @click="dialogOpen = false"
@@ -183,12 +183,12 @@
               <form @submit.prevent="handleSave" class="space-y-6">
                 <div>
                   <label class="block text-sm font-medium text-ink-700 dark:text-ink-300 mb-2">
-                    Item Name <span class="text-red-500">*</span>
+                    Emri i artikullit <span class="text-red-500">*</span>
                   </label>
                   <input
                     v-model="form.name"
                     type="text"
-                    placeholder="e.g., Margherita Pizza, Caesar Salad"
+                    placeholder="p.sh., Pizza Margherita, Sallatë Caesar"
                     required
                     autofocus
                     class="w-full px-4 py-3 rounded-xl border border-ink-200 dark:border-ink-700 bg-white dark:bg-ink-800 text-ink-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
@@ -197,11 +197,11 @@
 
                 <div>
                   <label class="block text-sm font-medium text-ink-700 dark:text-ink-300 mb-2">
-                    Description
+                    Përshkrimi
                   </label>
                   <textarea
                     v-model="form.description"
-                    placeholder="Describe the item (ingredients, preparation, etc.)"
+                    placeholder="Përshkruani artikullin (përbërësit, përgatitjen, etj.)"
                     rows="3"
                     class="w-full px-4 py-3 rounded-xl border border-ink-200 dark:border-ink-700 bg-white dark:bg-ink-800 text-ink-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                   />
@@ -210,7 +210,7 @@
                 <div class="grid grid-cols-2 gap-4">
                   <div>
                     <label class="block text-sm font-medium text-ink-700 dark:text-ink-300 mb-2">
-                      Price <span class="text-red-500">*</span>
+                      Çmimi <span class="text-red-500">*</span>
                     </label>
                     <input
                       v-model.number="form.price"
@@ -225,7 +225,7 @@
 
                   <div>
                     <label class="block text-sm font-medium text-ink-700 dark:text-ink-300 mb-2">
-                      Currency <span class="text-red-500">*</span>
+                      Monedha <span class="text-red-500">*</span>
                     </label>
                     <input
                       v-model="form.currency"
@@ -240,7 +240,7 @@
                 <div class="grid grid-cols-2 gap-4">
                   <div>
                     <label class="block text-sm font-medium text-ink-700 dark:text-ink-300 mb-2">
-                      Sort Order
+                      Renditja
                     </label>
                     <input
                       v-model.number="form.sort_order"
@@ -253,7 +253,7 @@
 
                   <div>
                     <label class="block text-sm font-medium text-ink-700 dark:text-ink-300 mb-2">
-                      Status
+                      Statusi
                     </label>
                     <div class="flex items-center gap-3 pt-2">
                       <button
@@ -272,7 +272,7 @@
                         />
                       </button>
                       <span class="text-sm text-ink-600 dark:text-ink-400">
-                        {{ form.is_active ? 'Active' : 'Inactive' }}
+                        {{ form.is_active ? 'Aktiv' : 'Jo aktiv' }}
                       </span>
                     </div>
                   </div>
@@ -284,7 +284,7 @@
                 @click="dialogOpen = false"
                 class="px-6 py-2 text-sm font-medium text-ink-700 dark:text-ink-300 hover:bg-ink-100 dark:hover:bg-ink-800 rounded-xl transition-colors"
               >
-                Cancel
+                Anulo
               </button>
               <button
                 @click="handleSave"
@@ -293,7 +293,7 @@
               >
                 <UIcon v-if="saving" name="i-heroicons-arrow-path" class="w-4 h-4 animate-spin" />
                 <UIcon v-else name="i-heroicons-check-circle" class="w-4 h-4" />
-                {{ editingItem ? 'Update Item' : 'Create Item' }}
+                {{ editingItem ? 'Përditëso artikullin' : 'Krijo artikullin' }}
               </button>
             </div>
           </div>
@@ -318,13 +318,13 @@
                 </div>
                 <div class="flex-1">
                   <h3 class="text-lg font-bold text-ink-900 dark:text-white mb-2">
-                    Delete Menu Item
+                    Fshij artikullin e menysë
                   </h3>
                   <p class="text-ink-600 dark:text-ink-400 mb-4">
-                    Are you sure you want to delete <strong>{{ deletingItem?.name }}</strong>?
+                    Jeni i sigurt që doni të fshini <strong>{{ deletingItem?.name }}</strong>?
                   </p>
                   <p class="text-sm text-ink-500 dark:text-ink-400">
-                    This action cannot be undone. The item will be permanently removed from your menu.
+                    Ky veprim nuk mund të zhbëhet. Artikulli do të largohet përgjithmonë nga menuja juaj.
                   </p>
                 </div>
               </div>
@@ -334,14 +334,14 @@
                 @click="showDeleteDialog = false"
                 class="px-6 py-2 text-sm font-medium text-ink-700 dark:text-ink-300 hover:bg-ink-100 dark:hover:bg-ink-800 rounded-xl transition-colors"
               >
-                Cancel
+                Anulo
               </button>
               <button
                 @click="handleDelete"
                 class="px-6 py-2 text-sm font-semibold text-white bg-red-500 hover:bg-red-600 rounded-xl transition-colors flex items-center gap-2"
               >
                 <UIcon name="i-heroicons-trash" class="w-4 h-4" />
-                Delete Item
+                Fshij artikullin
               </button>
             </div>
           </div>
@@ -393,14 +393,14 @@ const activeCount = computed(() => items.value.filter(item => item.is_active).le
 const inactiveCount = computed(() => Math.max(items.value.length - activeCount.value, 0))
 const selectedCategoryName = computed(() => categories.value.find(category => category.id === selectedCategoryId.value)?.name ?? '')
 const lastUpdated = computed(() => {
-  if (!items.value.length) return 'No activity yet'
+  if (!items.value.length) return 'Ende pa aktivitet'
   const timestamps = items.value
     .map(item => {
       const date = item.created_at ? new Date(item.created_at) : null
       return date && !Number.isNaN(date.getTime()) ? date.getTime() : null
     })
     .filter((value): value is number => value !== null)
-  if (!timestamps.length) return 'No activity yet'
+  if (!timestamps.length) return 'Ende pa aktivitet'
   const latest = new Date(Math.max(...timestamps))
   return latest.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
 })
@@ -421,8 +421,8 @@ const loadCategories = async () => {
   } catch (error: unknown) {
     const err = error as { message?: string }
     toast.add({
-      title: 'Error',
-      description: err.message || 'Failed to load categories',
+      title: 'Gabim',
+      description: err.message || 'Dështoi ngarkimi i kategorive',
       color: 'red',
       icon: 'i-heroicons-exclamation-circle',
       timeout: 5000
@@ -442,8 +442,8 @@ const loadItems = async () => {
   } catch (error: unknown) {
     const err = error as { message?: string }
     toast.add({
-      title: 'Error',
-      description: err.message || 'Failed to load items',
+      title: 'Gabim',
+      description: err.message || 'Dështoi ngarkimi i artikujve',
       color: 'red',
       icon: 'i-heroicons-exclamation-circle',
       timeout: 5000
@@ -456,8 +456,8 @@ const loadItems = async () => {
 onMounted(async () => {
   if (!currentTenantId.value) {
     toast.add({
-      title: 'Error',
-      description: 'No tenant information available',
+      title: 'Gabim',
+      description: 'Nuk ka informacion për qiramarrësin',
       color: 'red',
       icon: 'i-heroicons-exclamation-circle',
       timeout: 5000
@@ -475,8 +475,8 @@ onMounted(async () => {
   } catch (error: unknown) {
     const err = error as { message?: string }
     toast.add({
-      title: 'Error',
-      description: err.message || 'Failed to load menus',
+      title: 'Gabim',
+      description: err.message || 'Dështoi ngarkimi i menyve',
       color: 'red',
       icon: 'i-heroicons-exclamation-circle',
       timeout: 5000
@@ -512,8 +512,8 @@ const openDialog = (item?: MenuItem) => {
 const handleSave = async () => {
   if (!selectedCategoryId.value) {
     toast.add({
-      title: 'Error',
-      description: 'Please select a category first',
+      title: 'Gabim',
+      description: 'Ju lutemi zgjidhni fillimisht një kategori',
       color: 'red',
       icon: 'i-heroicons-exclamation-circle',
       timeout: 3000
@@ -523,8 +523,8 @@ const handleSave = async () => {
   
   if (!currentTenantId.value) {
     toast.add({
-      title: 'Error',
-      description: 'No tenant information available',
+      title: 'Gabim',
+      description: 'Nuk ka informacion për qiramarrësin',
       color: 'red',
       icon: 'i-heroicons-exclamation-circle',
       timeout: 3000
@@ -534,8 +534,8 @@ const handleSave = async () => {
 
   if (!form.name || form.price < 0 || !form.currency) {
     toast.add({
-      title: 'Validation Error',
-      description: 'Please fill in all required fields with valid values',
+      title: 'Gabim validimi',
+      description: 'Ju lutemi plotësoni të gjitha fushat e domosdoshme me vlera të vlefshme',
       color: 'red',
       icon: 'i-heroicons-exclamation-circle',
       timeout: 3000
@@ -556,8 +556,8 @@ const handleSave = async () => {
       })
       
       toast.add({
-        title: 'Success',
-        description: `${form.name} item updated successfully`,
+        title: 'Sukses',
+        description: `${form.name} u përditësua me sukses`,
         color: 'green',
         icon: 'i-heroicons-check-circle',
         timeout: 3000
@@ -575,8 +575,8 @@ const handleSave = async () => {
       })
       
       toast.add({
-        title: 'Success',
-        description: `${form.name} item created successfully`,
+        title: 'Sukses',
+        description: `${form.name} u krijua me sukses`,
         color: 'green',
         icon: 'i-heroicons-check-circle',
         timeout: 3000
@@ -588,8 +588,8 @@ const handleSave = async () => {
   } catch (error: unknown) {
     const err = error as { message?: string }
     toast.add({
-      title: 'Error',
-      description: err.message || 'Failed to save item',
+      title: 'Gabim',
+      description: err.message || 'Dështoi ruajtja e artikullit',
       color: 'red',
       icon: 'i-heroicons-exclamation-circle',
       timeout: 5000
@@ -615,8 +615,8 @@ const handleDelete = async () => {
     deletingItem.value = null
     
     toast.add({
-      title: 'Success',
-      description: `${itemName} item deleted successfully`,
+      title: 'Sukses',
+      description: `${itemName} u fshi me sukses`,
       color: 'green',
       icon: 'i-heroicons-check-circle',
       timeout: 3000
@@ -624,8 +624,8 @@ const handleDelete = async () => {
   } catch (error: unknown) {
     const err = error as { message?: string }
     toast.add({
-      title: 'Error',
-      description: err.message || 'Failed to delete item',
+      title: 'Gabim',
+      description: err.message || 'Dështoi fshirja e artikullit',
       color: 'red',
       icon: 'i-heroicons-exclamation-circle',
       timeout: 5000

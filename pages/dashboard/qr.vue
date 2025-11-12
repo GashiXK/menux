@@ -4,10 +4,10 @@
       <!-- Header -->
       <div class="space-y-2">
         <h1 class="text-4xl font-bold text-ink-900 dark:text-white tracking-tight">
-          QR Code Generator
+          Gjenerator i kodeve QR
         </h1>
         <p class="text-ink-600 dark:text-ink-300 text-lg">
-          Generate a QR code for your menu. Customers can scan it to view your digital menu instantly.
+          Gjeneroni një kod QR për menunë tuaj. Klientët mund ta skanojnë për të parë menunë digjitale menjëherë.
         </p>
       </div>
       
@@ -19,22 +19,22 @@
               <div class="w-12 h-12 rounded-xl bg-brand-500/10 flex items-center justify-center">
                 <UIcon name="i-heroicons-qr-code" class="w-6 h-6 text-brand-500" />
               </div>
-              <h2 class="text-2xl font-bold text-ink-900 dark:text-white">Generate QR Code</h2>
+              <h2 class="text-2xl font-bold text-ink-900 dark:text-white">Gjenero kod QR</h2>
             </div>
             
             <p class="text-ink-600 dark:text-ink-400">
-              Create a QR code that links directly to your digital menu. Print it out and place it on tables for customers to scan.
+              Krijoni një kod QR që lidh direkt me menunë tuaj digjitale. Printojeni dhe vendoseni në tavolina që klientët ta skanojnë.
             </p>
             
             <!-- Menu Selection -->
             <div class="space-y-2">
               <label class="block text-sm font-semibold text-ink-700 dark:text-ink-300">
-                Select Menu
+                Zgjidh menunë
               </label>
               <div v-if="loadingMenus" class="bg-ink-50 dark:bg-ink-800 rounded-xl p-4 border border-ink-200 dark:border-ink-700">
                 <div class="flex items-center gap-3">
                   <UIcon name="i-heroicons-arrow-path" class="w-5 h-5 animate-spin text-brand-500" />
-                  <span class="text-sm text-ink-600 dark:text-ink-400">Loading menus...</span>
+                  <span class="text-sm text-ink-600 dark:text-ink-400">Po ngarkohen menutë...</span>
                 </div>
               </div>
               <select
@@ -42,18 +42,18 @@
                 v-model="selectedMenuId"
                 class="w-full px-4 py-3 bg-white dark:bg-ink-800 border-2 border-ink-200 dark:border-ink-700 rounded-xl text-ink-900 dark:text-white font-medium focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all"
               >
-                <option value="" disabled>Choose a menu...</option>
+                <option value="" disabled>Zgjidh një menu...</option>
                 <option
                   v-for="menu in menus"
                   :key="menu.id"
                   :value="menu.id"
                   class="bg-white dark:bg-ink-800"
                 >
-                  {{ menu.name }} {{ menu.is_default ? '(Default)' : '' }} {{ menu.is_published ? '✓ Published' : '✗ Draft' }}
+                  {{ menu.name }} {{ menu.is_default ? '(Standard)' : '' }} {{ menu.is_published ? '✓ e publikuar' : '✗ skicë' }}
                 </option>
               </select>
               <p v-if="menus.length === 0" class="text-sm text-ink-500 dark:text-ink-400">
-                No menus available. Please create a menu first.
+                Nuk ka menu të disponueshme. Ju lutemi krijoni fillimisht një menu.
               </p>
             </div>
             
@@ -64,7 +64,7 @@
             >
               <UIcon v-if="generating" name="i-heroicons-arrow-path" class="w-5 h-5 animate-spin" />
               <UIcon v-else name="i-heroicons-qr-code" class="w-5 h-5" />
-              {{ generating ? 'Generating...' : 'Generate QR Code' }}
+              {{ generating ? 'Po gjenerohet...' : 'Gjenero kod QR' }}
             </button>
           </div>
         </div>
@@ -72,12 +72,12 @@
         <!-- QR Code Display Card -->
         <div v-if="qrCodeUrl || qrCode" class="bg-white dark:bg-ink-900 rounded-2xl p-8 shadow-lg border border-ink-100 dark:border-ink-800">
           <div class="flex justify-between items-center mb-6">
-            <h2 class="text-2xl font-bold text-ink-900 dark:text-white">Your QR Code</h2>
+            <h2 class="text-2xl font-bold text-ink-900 dark:text-white">Kodi juaj QR</h2>
             <button
               @click="loadExistingQR"
               :disabled="loadingQR"
               class="p-2 hover:bg-ink-100 dark:hover:bg-ink-800 rounded-lg transition-colors"
-              aria-label="Refresh QR code"
+              aria-label="Rifresko kodin QR"
             >
               <UIcon
                 :name="loadingQR ? 'i-heroicons-arrow-path' : 'i-heroicons-arrow-path'"
@@ -92,13 +92,13 @@
               <img
                 v-if="qrCode?.image_url"
                 :src="qrCode.image_url"
-                alt="QR Code"
+                alt="Kod QR"
                 class="w-full max-w-sm rounded-xl shadow-2xl border-4 border-ink-100 dark:border-ink-800"
                 @error="(e) => {
-                  console.error('Image load error:', e)
+                  console.error('Gabim në ngarkimin e imazhit:', e)
                   toast.add({
-                    title: 'Error',
-                    description: 'Failed to load QR code image',
+                    title: 'Gabim',
+                    description: 'Dështoi ngarkimi i imazhit të kodit QR',
                     color: 'red',
                     icon: 'i-heroicons-exclamation-circle',
                     timeout: 5000
@@ -106,15 +106,15 @@
                 }"
               />
               <div v-else class="w-full max-w-sm rounded-xl bg-ink-100 dark:bg-ink-800 p-8 flex items-center justify-center">
-                <p class="text-ink-500 dark:text-ink-400">No QR code available</p>
+                <p class="text-ink-500 dark:text-ink-400">Nuk ka kod QR të disponueshëm</p>
               </div>
             </div>
             
             <div class="space-y-2">
-              <p class="text-sm font-medium text-ink-700 dark:text-ink-300">Menu URL:</p>
+              <p class="text-sm font-medium text-ink-700 dark:text-ink-300">URL e menysë:</p>
               <div class="bg-ink-50 dark:bg-ink-800 p-4 rounded-xl border border-ink-200 dark:border-ink-700">
                 <code class="text-sm break-all text-ink-900 dark:text-white font-mono">
-                  {{ qrCodeUrl || qrCode?.url || 'No URL available' }}
+                  {{ qrCodeUrl || qrCode?.url || 'Nuk ka URL të disponueshme' }}
                 </code>
               </div>
             </div>
@@ -125,14 +125,14 @@
                 class="flex-1 bg-brand-500 hover:bg-brand-600 text-white shadow-lg shadow-brand-500/30 hover:shadow-xl hover:shadow-brand-500/40 transition-all duration-300 font-semibold px-6 py-3 rounded-xl flex items-center justify-center gap-2"
               >
                 <UIcon name="i-heroicons-arrow-down-tray" class="w-5 h-5" />
-                Download
+                Shkarko
               </button>
               <button
                 @click="copyURL"
                 class="flex-1 bg-ink-100 dark:bg-ink-800 hover:bg-ink-200 dark:hover:bg-ink-700 text-ink-900 dark:text-white transition-all duration-300 font-semibold px-6 py-3 rounded-xl flex items-center justify-center gap-2"
               >
                 <UIcon name="i-heroicons-clipboard" class="w-5 h-5" />
-                Copy URL
+                Kopjo URL-në
               </button>
             </div>
           </div>
@@ -142,7 +142,7 @@
         <div v-else-if="loadingQR" class="md:col-span-2 bg-white dark:bg-ink-900 rounded-2xl p-12 shadow-lg border border-ink-100 dark:border-ink-800">
           <div class="text-center">
             <UIcon name="i-heroicons-arrow-path" class="w-16 h-16 animate-spin text-brand-500 mx-auto mb-4" />
-            <p class="text-ink-600 dark:text-ink-400 text-lg mb-2">Loading QR code...</p>
+            <p class="text-ink-600 dark:text-ink-400 text-lg mb-2">Po ngarkohet kodi QR...</p>
           </div>
         </div>
         
@@ -153,10 +153,10 @@
               <UIcon name="i-heroicons-qr-code" class="w-12 h-12 text-white" />
             </div>
             <h3 class="text-2xl font-bold text-ink-900 dark:text-white mb-3">
-              Select a menu to generate QR code
+              Zgjidh një menu për të gjeneruar kodin QR
             </h3>
             <p class="text-ink-600 dark:text-ink-400 text-lg">
-              Choose a menu from the dropdown above to see the QR code
+              Zgjidh një menu nga lista më sipër për të parë kodin QR
             </p>
           </div>
         </div>
@@ -165,7 +165,7 @@
         <div v-else-if="loadingQR" class="md:col-span-2 bg-white dark:bg-ink-900 rounded-2xl p-12 shadow-lg border border-ink-100 dark:border-ink-800">
           <div class="text-center">
             <UIcon name="i-heroicons-arrow-path" class="w-16 h-16 animate-spin text-brand-500 mx-auto mb-4" />
-            <p class="text-ink-600 dark:text-ink-400 text-lg mb-2">Loading QR code...</p>
+            <p class="text-ink-600 dark:text-ink-400 text-lg mb-2">Po ngarkohet kodi QR...</p>
           </div>
         </div>
       </div>
@@ -224,7 +224,7 @@ const loadExistingQR = async () => {
       .maybeSingle()
     
     if (error) {
-      console.error('Error loading QR code:', error)
+      console.error('Gabim gjatë ngarkimit të kodit QR:', error)
       return
     }
     
@@ -235,7 +235,7 @@ const loadExistingQR = async () => {
     }
   } catch (error: unknown) {
     const err = error as { message?: string }
-    console.error('Error loading QR code:', err)
+    console.error('Gabim gjatë ngarkimit të kodit QR:', err)
   } finally {
     loadingQR.value = false
   }
@@ -266,8 +266,8 @@ const loadMenus = async () => {
   } catch (error: unknown) {
     const err = error as { message?: string }
     toast.add({
-      title: 'Error',
-      description: err.message || 'Failed to load menus',
+      title: 'Gabim',
+      description: err.message || 'Dështoi ngarkimi i menyve',
       color: 'red',
       icon: 'i-heroicons-exclamation-circle',
       timeout: 5000
@@ -280,8 +280,8 @@ const loadMenus = async () => {
 const generateQR = async () => {
   if (!currentTenantId.value) {
     toast.add({
-      title: 'Error',
-      description: 'No tenant information available',
+      title: 'Gabim',
+      description: 'Nuk ka informacion për qiramarrësin',
       color: 'red',
       icon: 'i-heroicons-exclamation-circle',
       timeout: 5000
@@ -291,8 +291,8 @@ const generateQR = async () => {
   
   if (!selectedMenuId.value) {
     toast.add({
-      title: 'Error',
-      description: 'Please select a menu first',
+      title: 'Gabim',
+      description: 'Ju lutemi zgjidhni fillimisht një menu',
       color: 'red',
       icon: 'i-heroicons-exclamation-circle',
       timeout: 5000
@@ -306,12 +306,12 @@ const generateQR = async () => {
     const selectedMenu = menus.value.find(m => m.id === selectedMenuId.value)
     
     if (!selectedMenu) {
-      throw new Error('Selected menu not found. Please select a valid menu.')
+      throw new Error('Menuja e zgjedhur nuk u gjet. Ju lutemi zgjidhni një menu të vlefshme.')
     }
     
     // Check if user is authenticated
     if (!user.value) {
-      throw new Error('User not authenticated. Please log in again.')
+      throw new Error('Përdoruesi nuk është autentikuar. Ju lutemi identifikohuni përsëri.')
     }
     
     // Get session token for API call
@@ -322,7 +322,7 @@ const generateQR = async () => {
         accessToken = sessionData.session.access_token
       }
     } catch (e) {
-      console.log('⚠️ Could not get session, but continuing anyway (cookies should work)')
+      console.log('⚠️ Nuk u mor sesioni, por po vazhdojmë sidoqoftë (cookies duhet të funksionojnë)')
     }
     
     // Make the API call to save QR code to database
@@ -341,7 +341,7 @@ const generateQR = async () => {
     })
     
     if (!result || !result.id) {
-      throw new Error('Invalid QR code response from server')
+      throw new Error('Përgjigje e pavlefshme për kodin QR nga serveri')
     }
     
     // Set the QR code (URL will be used by qrcode.vue component)
@@ -351,19 +351,19 @@ const generateQR = async () => {
     await loadExistingQR()
     
     toast.add({
-      title: 'Success',
-      description: 'QR code generated successfully!',
+      title: 'Sukses',
+      description: 'Kodi QR u gjenerua me sukses!',
       color: 'green',
       icon: 'i-heroicons-check-circle',
       timeout: 3000
     })
   } catch (error: unknown) {
-    console.error('❌ QR generation error:', error)
+    console.error('❌ Gabim gjatë gjenerimit të kodit QR:', error)
     const err = error as { message?: string; statusMessage?: string; data?: { message?: string } }
-    const errorMessage = err.data?.message || err.statusMessage || err.message || 'Failed to generate QR code'
+    const errorMessage = err.data?.message || err.statusMessage || err.message || 'Dështoi gjenerimi i kodit QR'
     
     toast.add({
-      title: 'Error',
+      title: 'Gabim',
       description: errorMessage,
       color: 'red',
       icon: 'i-heroicons-exclamation-circle',
@@ -382,13 +382,13 @@ const downloadQR = async () => {
     // Create a canvas element to capture the SVG
     const qrElement = document.querySelector('.qrcode-vue3') as HTMLElement
     if (!qrElement) {
-      throw new Error('QR code element not found')
+      throw new Error('Elementi i kodit QR nuk u gjet')
     }
     
     // Get the SVG element
     const svgElement = qrElement.querySelector('svg')
     if (!svgElement) {
-      throw new Error('SVG element not found')
+      throw new Error('Elementi SVG nuk u gjet')
     }
     
     // Convert SVG to data URL
@@ -406,8 +406,8 @@ const downloadQR = async () => {
     URL.revokeObjectURL(url)
     
     toast.add({
-      title: 'Success',
-      description: 'QR code downloaded successfully',
+      title: 'Sukses',
+      description: 'Kodi QR u shkarkua me sukses',
       color: 'green',
       icon: 'i-heroicons-check-circle',
       timeout: 3000
@@ -424,22 +424,22 @@ const downloadQR = async () => {
         document.body.removeChild(a)
         
         toast.add({
-          title: 'Success',
-          description: 'QR code downloaded successfully',
+          title: 'Sukses',
+          description: 'Kodi QR u shkarkua me sukses',
           color: 'green',
           icon: 'i-heroicons-check-circle',
           timeout: 3000
         })
         return
       } catch (fallbackError) {
-        console.error('Fallback download error:', fallbackError)
+        console.error('Gabim gjatë shkarkimit rezervë:', fallbackError)
       }
     }
     
     const err = error as { message?: string }
     toast.add({
-      title: 'Error',
-      description: err.message || 'Failed to download QR code',
+      title: 'Gabim',
+      description: err.message || 'Dështoi shkarkimi i kodit QR',
       color: 'red',
       icon: 'i-heroicons-exclamation-circle',
       timeout: 5000
@@ -454,8 +454,8 @@ const copyURL = async () => {
   try {
     await navigator.clipboard.writeText(urlToCopy)
     toast.add({
-      title: 'Copied!',
-      description: 'Menu URL copied to clipboard',
+      title: 'U kopjua!',
+      description: 'URL e menysë u kopjua në kujtesë',
       color: 'green',
       icon: 'i-heroicons-check-circle',
       timeout: 3000
@@ -463,8 +463,8 @@ const copyURL = async () => {
   } catch (error: unknown) {
     const err = error as { message?: string }
     toast.add({
-      title: 'Error',
-      description: err.message || 'Failed to copy URL',
+      title: 'Gabim',
+      description: err.message || 'Dështoi kopjimi i URL-së',
       color: 'red',
       icon: 'i-heroicons-exclamation-circle',
       timeout: 5000

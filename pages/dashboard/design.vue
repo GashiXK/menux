@@ -4,10 +4,10 @@
       <!-- Header -->
       <div class="space-y-2">
         <h1 class="text-4xl font-bold text-ink-900 dark:text-white tracking-tight">
-          Menu Design & Templates
+          Dizajni i menysë dhe shabllonet
         </h1>
         <p class="text-ink-600 dark:text-ink-300 text-lg">
-          Choose a template that matches your restaurant's style or create a custom design
+          Zgjidhni një shabllon që i përshtatet stilit të restorantit ose krijoni një dizajn të personalizuar
         </p>
       </div>
 
@@ -15,9 +15,9 @@
       <div v-if="currentMenu" class="bg-white dark:bg-ink-900 rounded-2xl p-6 shadow-lg border border-ink-100 dark:border-ink-800">
         <div class="flex items-center justify-between">
           <div>
-            <h2 class="text-xl font-semibold text-ink-900 dark:text-white mb-2">Current Template</h2>
+            <h2 class="text-xl font-semibold text-ink-900 dark:text-white mb-2">Shablloni aktual</h2>
             <p class="text-ink-600 dark:text-ink-400">
-              {{ currentTemplate?.name || 'No template selected' }}
+              {{ currentTemplate?.name || 'Nuk është zgjedhur asnjë shabllon' }}
             </p>
           </div>
           <a
@@ -27,14 +27,14 @@
             class="px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white rounded-xl font-semibold transition-colors flex items-center gap-2"
           >
             <UIcon name="i-heroicons-eye" class="w-5 h-5" />
-            Preview Menu
+            Shiko menunë
           </a>
         </div>
       </div>
 
       <!-- Template Grid -->
       <div class="space-y-6">
-        <h2 class="text-2xl font-bold text-ink-900 dark:text-white">Choose a Template</h2>
+        <h2 class="text-2xl font-bold text-ink-900 dark:text-white">Zgjidh një shabllon</h2>
         
         <div v-if="loading" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           <div v-for="i in 6" :key="i" class="bg-ink-200 dark:bg-ink-800 rounded-2xl h-96 animate-pulse"></div>
@@ -56,7 +56,7 @@
               <img
                 v-if="template.preview_image_url"
                 :src="template.preview_image_url"
-                :alt="`${template.name} preview`"
+                :alt="`Parapamje e ${template.name}`"
                 class="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105"
                 loading="lazy"
               />
@@ -87,7 +87,7 @@
                   v-if="currentMenu?.template_key === template.key"
                   class="px-2 py-1 bg-brand-100 dark:bg-brand-900/30 text-brand-700 dark:text-brand-400 rounded-lg text-xs font-semibold"
                 >
-                  Active
+                  Aktiv
                 </span>
               </div>
               <p class="text-sm text-ink-600 dark:text-ink-400 line-clamp-2">
@@ -110,7 +110,7 @@
                 class="px-4 py-2 rounded-xl font-semibold transition-all border border-ink-200 dark:border-ink-700 text-ink-700 dark:text-ink-300 hover:border-brand-400 hover:text-brand-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
                 @click.stop="openPreview(template)"
               >
-                Preview Design
+                Parapamje dizajni
               </button>
               <button
                 type="button"
@@ -118,7 +118,7 @@
                 :disabled="!getTemplatePreviewUrl(template.key)"
                 @click.stop="previewTemplateLive(template)"
               >
-                Live Preview
+                Parapamje live
               </button>
               <button
                 type="button"
@@ -131,7 +131,7 @@
                 ]"
                 :disabled="currentMenu?.template_key === template.key"
               >
-                {{ currentMenu?.template_key === template.key ? 'Current Template' : 'Apply Template' }}
+                {{ currentMenu?.template_key === template.key ? 'Shablloni aktual' : 'Apliko shabllonin' }}
               </button>
             </div>
           </div>
@@ -145,15 +145,15 @@
             <UIcon name="i-heroicons-sparkles" class="w-6 h-6 text-white" />
           </div>
           <div class="flex-1">
-            <h3 class="text-xl font-semibold text-ink-900 dark:text-white mb-2">Custom Template Builder</h3>
+            <h3 class="text-xl font-semibold text-ink-900 dark:text-white mb-2">Ndërtuesi i shablloneve të personalizuara</h3>
             <p class="text-ink-600 dark:text-ink-400 mb-4">
-              Coming soon! Create your own custom template with full control over colors, fonts, layout, and styling.
+              Së shpejti! Krijoni shabllonin tuaj të personalizuar me kontroll të plotë mbi ngjyrat, fontet, paraqitjen dhe stilimin.
             </p>
             <button
               disabled
               class="px-4 py-2 bg-ink-200 dark:bg-ink-700 text-ink-500 dark:text-ink-400 rounded-xl font-semibold cursor-not-allowed"
             >
-              Coming Soon
+              Së shpejti
             </button>
           </div>
         </div>
@@ -166,7 +166,7 @@
         <div v-if="previewTemplate" class="modal-overlay" @click.self="previewTemplate = null">
           <div class="modal-container max-w-4xl">
             <div class="modal-header">
-              <h3 class="modal-title">Preview: {{ previewTemplate.name }}</h3>
+              <h3 class="modal-title">Parapamje: {{ previewTemplate.name }}</h3>
               <button class="modal-close-button" @click="previewTemplate = null">×</button>
             </div>
             <div class="modal-body">
@@ -174,7 +174,7 @@
                 <img
                   v-if="previewTemplate.preview_image_url"
                   :src="previewTemplate.preview_image_url"
-                  :alt="`${previewTemplate.name} preview`"
+                  :alt="`Parapamje e ${previewTemplate.name}`"
                   class="absolute inset-0 h-full w-full object-cover"
                 />
                 <div
@@ -185,7 +185,7 @@
                 <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                 <div class="relative z-10 flex h-full flex-col justify-end gap-3 p-6 text-white">
                   <span class="inline-flex w-max items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-white/80">
-                    {{ getTemplateHighlights(previewTemplate.key)[0] || 'Design system' }}
+                    {{ getTemplateHighlights(previewTemplate.key)[0] || 'Sistem dizajni' }}
                   </span>
                   <div>
                     <h3 class="text-2xl font-semibold leading-tight">{{ previewTemplate.name }}</h3>
@@ -220,16 +220,16 @@
                       : 'bg-brand-500 hover:bg-brand-600 text-white'
                   ]"
                 >
-                  <span v-if="currentMenu?.template_key === previewTemplate.key">Current Template</span>
-                  <span v-else-if="!previewTemplate.id">Coming Soon</span>
-                  <span v-else>Apply This Template</span>
+                  <span v-if="currentMenu?.template_key === previewTemplate.key">Shablloni aktual</span>
+                  <span v-else-if="!previewTemplate.id">Së shpejti</span>
+                  <span v-else>Apliko këtë shabllon</span>
                 </button>
                 <button
                   type="button"
                   @click="previewTemplate = null"
                   class="px-6 py-3 bg-ink-100 dark:bg-ink-800 hover:bg-ink-200 dark:hover:bg-ink-700 text-ink-700 dark:text-ink-400 rounded-xl font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
                 >
-                  Cancel
+                  Anulo
                 </button>
               </div>
             </div>
@@ -281,8 +281,8 @@ const curatedTemplates: TemplateCard[] = [
         body: 'Inter'
       }
     },
-    inspiration: 'Polar-inspired gradients with luminous highlights for premium dining experiences.',
-    tags: ['Aurora gradients', 'Glass depth', 'Premium feel']
+    inspiration: 'Gradientë të frymëzuar nga aurora me theksime të ndritshme për përvoja kulinare premium.',
+    tags: ['Gradientë aurora', 'Thellësi xhami', 'Ndjesi premium']
   },
   {
     key: 'modern-bento',
@@ -300,8 +300,8 @@ const curatedTemplates: TemplateCard[] = [
         body: 'Inter'
       }
     },
-    inspiration: 'Modular bento grid layout inspired by contemporary product design systems.',
-    tags: ['Bento grid', 'Modular cards', 'Mobile-first']
+    inspiration: 'Rrjet modular bento i frymëzuar nga sistemet bashkëkohore të dizajnit të produkteve.',
+    tags: ['Rrjet bento', 'Karta modulare', 'Prioritet mobil']
   },
   {
     key: 'pastel-dream',
@@ -318,8 +318,8 @@ const curatedTemplates: TemplateCard[] = [
         body: 'Nunito Sans'
       }
     },
-    inspiration: 'Soft pastel layering with elevated typography for patisseries and boutique cafés.',
-    tags: ['Soft pastels', 'Elegant serif', 'Photo friendly']
+    inspiration: 'Shtresa pastel të buta me tipografi të rafinuar për pastiçeri dhe kafene boutique.',
+    tags: ['Pastel të buta', 'Serif elegant', 'Miqësore për foto']
   },
   {
     key: 'ember-noir',
@@ -336,8 +336,8 @@ const curatedTemplates: TemplateCard[] = [
         body: 'Inter Tight'
       }
     },
-    inspiration: 'High-contrast dark mode with ember highlights designed for chef-driven concepts.',
-    tags: ['Dark mode', 'Ember accents', 'Chef spotlight']
+    inspiration: 'Modalitet i errët me kontrast të lartë dhe theksime flakërimesh për koncepte të udhëhequra nga shefat.',
+    tags: ['Modalitet i errët', 'Theksime flake', 'Në qendër shefi']
   },
   {
     key: 'botanical-garden',
@@ -354,8 +354,8 @@ const curatedTemplates: TemplateCard[] = [
         body: 'Source Sans Pro'
       }
     },
-    inspiration: 'Lush botanical textures and organic spacing ideal for farm-to-table experiences.',
-    tags: ['Organic palette', 'Nature motifs', 'Slow dining']
+    inspiration: 'Tekstura botanike të pasura dhe hapësira organike ideale për përvoja nga ferma në tryezë.',
+    tags: ['Paletë organike', 'Motiv natyre', 'Ritëm i ngadaltë']
   },
   {
     key: 'nordic-slate',
@@ -372,8 +372,8 @@ const curatedTemplates: TemplateCard[] = [
         body: 'Inter'
       }
     },
-    inspiration: 'Scandinavian calm with slate gradients, crisp typography, and generous breathing space.',
-    tags: ['Scandinavian', 'Slate gradients', 'Ambient lighting']
+    inspiration: 'Qetësi skandinave me gradientë shisto, tipografi të qartë dhe hapësirë të bollshme.',
+    tags: ['Skandinave', 'Gradientë shisto', 'Ndriçim ambient']
   },
   {
     key: 'neo-brutalist',
@@ -390,8 +390,8 @@ const curatedTemplates: TemplateCard[] = [
         body: 'General Sans'
       }
     },
-    inspiration: 'Bold neo-brutal aesthetics with layered cards, strong color blocking, and tactile elevation.',
-    tags: ['Bold blocks', 'High contrast', 'Layered shadows']
+    inspiration: 'Estetikë neo-brutaliste me karta të shtresuara, ndarje të forta ngjyrash dhe thellësi taktile.',
+    tags: ['Blloqe të guximshme', 'Kontrast i lartë', 'Hije të shtresuara']
   },
   {
     key: 'holographic-wave',
@@ -408,8 +408,8 @@ const curatedTemplates: TemplateCard[] = [
         body: 'Satoshi'
       }
     },
-    inspiration: 'Holographic light waves, glass panels, and cinematic typography for immersive dining experiences.',
-    tags: ['Holographic', 'Glass layers', 'Cinematic']
+    inspiration: 'Valë drite holografike, panele xhami dhe tipografi kinematike për përvoja zhytëse të ngrënies.',
+    tags: ['Holografike', 'Shtresa xhami', 'Kinematike']
   },
   {
     key: 'velvet-dusk',
@@ -426,8 +426,8 @@ const curatedTemplates: TemplateCard[] = [
         body: 'Satoshi'
       }
     },
-    inspiration: 'Opulent twilight palette with velvet textures for cocktail lounges and tasting menus.',
-    tags: ['Velvet noir', 'Opulent glow', 'Late night']
+    inspiration: 'Paletë perëndimi luksoze me tekstura kadifeje për lounge koktejsh dhe menu degustimi.',
+    tags: ['Kadife noir', 'Shkëlqim i pasur', 'Natë vonë']
   },
   {
     key: 'celestial-ink',
@@ -444,8 +444,8 @@ const curatedTemplates: TemplateCard[] = [
         body: 'Inter'
       }
     },
-    inspiration: 'Deep midnight gradients with celestial accents crafted for immersive fine dining.',
-    tags: ['Midnight gradient', 'Constellation', 'Immersive']
+    inspiration: 'Gradientë të thellë mesnate me theksime qiellore të krijuara për darka të sofistikuara.',
+    tags: ['Gradient mesnate', 'Konstelacion', 'Përvojë zhytëse']
   },
   {
     key: 'gilded-art-deco',
@@ -462,8 +462,8 @@ const curatedTemplates: TemplateCard[] = [
         body: 'Work Sans'
       }
     },
-    inspiration: 'Art Deco geometry with gilded framing tailored for upscale dining rooms.',
-    tags: ['Art deco', 'Gold framing', 'Grand foyer']
+    inspiration: 'Gjeometri Art Deco me korniza të arta të përshtatura për hapësira të sofistikuara ngrënieje.',
+    tags: ['Art Deco', 'Kornizë e artë', 'Foyer madhështor']
   },
   {
     key: 'savanna-sunset',
@@ -480,8 +480,8 @@ const curatedTemplates: TemplateCard[] = [
         body: 'Inter'
       }
     },
-    inspiration: 'Sun-drenched gradients and warm textures suited for fusion bistros and rooftops.',
-    tags: ['Warm glow', 'Sunset palette', 'Outdoor dining']
+    inspiration: 'Gradientë të zhytur në diell dhe tekstura të ngrohta të përshtatshme për bistro fusion dhe terasa.',
+    tags: ['Shkëlqim i ngrohtë', 'Paletë perëndimi', 'Ngrënie në natyrë']
   },
   {
     key: 'coastal-zen',
@@ -498,8 +498,8 @@ const curatedTemplates: TemplateCard[] = [
         body: 'Source Sans Pro'
       }
     },
-    inspiration: 'Airy coastal minimalism with textured blues perfect for seafood and beach clubs.',
-    tags: ['Coastal calm', 'Breezy layers', 'Seafood ready']
+    inspiration: 'Minimalizëm bregdetar i ajrosur me blu të teksturuara, perfekt për ushqim deti dhe beach club.',
+    tags: ['Qetësi bregdetare', 'Shtresa me fllad', 'Gati për ushqim deti']
   }
 ]
 
@@ -532,42 +532,42 @@ const normalizeTemplate = (template: TemplateCard): TemplateCard => {
 }
 
 const templateHighlights: Record<string, string[]> = {
-  'aurora-luxe': ['Gradient glass', 'Premium typography', 'Dark-to-light contrast'],
-  'modern-bento': ['Bento layout', 'Card sorting', 'Edge-to-edge'],
-  'pastel-dream': ['Pastel layering', 'Hero imagery', 'Social ready'],
-  'ember-noir': ['Chef spotlight', 'Warm ember glow', 'Night mode'],
-  'botanical-garden': ['Organic spacing', 'Leaf motifs', 'Calming palette'],
-  'neon-night': ['Neon glow', 'Club vibe', 'Animated aura'],
-  'minimal-elegance': ['Minimal grid', 'Luxury serif', 'Soft shadows'],
-  'dark-glass': ['Glassmorphism', 'Depth blur', 'Premium dark'],
-  'retro-card': ['Vintage cards', 'Retro palette', 'Nostalgia'],
-  'photo-hero': ['Photo forward', 'Edge gradients', 'Immersive'],
-  'grid-menu': ['Structured grid', 'High density', 'Quick scan'],
-  'split-panels': ['Split hero', 'Editorial vibe', 'Asymmetric'],
-  'chalk-board': ['Handwritten', 'Chalk texture', 'Casual'],
-  'magazine': ['Editorial', 'Large headlines', 'Storytelling'],
-  'mono-zen': ['Monochrome', 'Zen balance', 'Whitespace'],
-  'elegant-modern': ['Soft gradients', 'Elegant type', 'Light chrome'],
-  'cosmic-dark': ['Cosmic gradient', 'Galaxy light', 'Modern dark'],
-  'glass-morphism': ['Frosted panels', 'Vibrant accents', 'Layered depth'],
-  'luxury-gold': ['Gold accents', 'Grand serif', 'Deep contrast'],
-  'tropical-vibes': ['Tropical blend', 'Warm gradient', 'Playful'],
-  'ocean-breeze': ['Coastal', 'Cool tones', 'Relaxed'],
-  'neon-gradient': ['Vivid neon', 'High energy', 'Nightlife'],
-  'minimalist-white': ['Ultra clean', 'Bold type', 'High contrast'],
-  'forest-nature': ['Earthy greens', 'Organic', 'Calm'],
-  'sunset-warm': ['Sunset glow', 'Warm gradient', 'Cozy'],
-  'nordic-slate': ['Slate gradient', 'Nordic calm', 'Liquid cards'],
-  'neo-brutalist': ['Color blocking', 'Layered depth', 'Punchy type'],
-  'holographic-wave': ['Holographic light', 'Glass surfaces', 'Future luxe'],
-  'velvet-dusk': ['Velvet shadows', 'Crimson highlights', 'Night lounge'],
-  'celestial-ink': ['Midnight canvas', 'Starlit layering', 'Immersive ambience'],
-  'gilded-art-deco': ['Art deco lines', 'Gilded frames', 'Statement serif'],
-  'savanna-sunset': ['Amber warmth', 'Golden hour', 'Fusion ready'],
-  'coastal-zen': ['Sea breeze', 'Cerulean tones', 'Lightweight layout']
+  'aurora-luxe': ['Gradient xhami', 'Tipografi premium', 'Kontrast errësirë-dritë'],
+  'modern-bento': ['Paraqitje bento', 'Renditje kartash', 'Skaj në skaj'],
+  'pastel-dream': ['Shtresim pastel', 'Imazhe hero', 'Gati për rrjete sociale'],
+  'ember-noir': ['Në qendër shefi', 'Shkëlqim flake i ngrohtë', 'Modalitet nate'],
+  'botanical-garden': ['Hapësirë organike', 'Motiv gjethe', 'Paletë qetësuese'],
+  'neon-night': ['Shkëlqim neon', 'Atmosferë klubi', 'Aureolë e animuar'],
+  'minimal-elegance': ['Rrjet minimal', 'Serif luksoz', 'Hije të buta'],
+  'dark-glass': ['Glassmorphism', 'Mjegull thellësie', 'E errët premium'],
+  'retro-card': ['Karta vintage', 'Paletë retro', 'Nostalgi'],
+  'photo-hero': ['Fokus te fotoja', 'Gradientë skaji', 'Përvojë zhytëse'],
+  'grid-menu': ['Rrjet i strukturuar', 'Dendësi e lartë', 'Skanim i shpejtë'],
+  'split-panels': ['Hero i ndarë', 'Frymë editoriale', 'Asimetrike'],
+  'chalk-board': ['Shkrim me dorë', 'Teksturë shkumësi', 'Casual'],
+  'magazine': ['Editorial', 'Tituj të mëdhenj', 'Rrëfim i pasur'],
+  'mono-zen': ['Monokrom', 'Balancë zen', 'Hapësirë e bardhë'],
+  'elegant-modern': ['Gradientë të butë', 'Tipografi elegante', 'Shkëlqim i lehtë'],
+  'cosmic-dark': ['Gradient kozmik', 'Dritë galaksie', 'Modalitet modern i errët'],
+  'glass-morphism': ['Panele të ngrira', 'Theksime të gjalla', 'Thellësi e shtresuar'],
+  'luxury-gold': ['Theksime ari', 'Serif madhështor', 'Kontrast i thellë'],
+  'tropical-vibes': ['Përzierje tropikale', 'Gradient i ngrohtë', 'Lojë e gjallë'],
+  'ocean-breeze': ['Bregdetare', 'Tonalitete të ftohta', 'Atmosferë relaksuese'],
+  'neon-gradient': ['Neon i gjallë', 'Energji e lartë', 'Natë urbane'],
+  'minimalist-white': ['Shumë i pastër', 'Tipografi e theksuar', 'Kontrast i lartë'],
+  'forest-nature': ['Tonalitete toke', 'Organike', 'Qetësi'],
+  'sunset-warm': ['Shkëlqim perëndimi', 'Gradient i ngrohtë', 'Atmosferë e ngrohtë'],
+  'nordic-slate': ['Gradient shisto', 'Qetësi nordike', 'Karta fluide'],
+  'neo-brutalist': ['Bllokime ngjyrash', 'Thellësi e shtresuar', 'Tipografi e fuqishme'],
+  'holographic-wave': ['Dritë holografike', 'Siperfaqe xhami', 'Luks futurist'],
+  'velvet-dusk': ['Hije kadifeje', 'Theksime karmin', 'Lounge nate'],
+  'celestial-ink': ['Kanvas mesnate', 'Shtresa me yje', 'Atmosferë zhytëse'],
+  'gilded-art-deco': ['Vija Art Deco', 'Korniza të arta', 'Serif mahnitës'],
+  'savanna-sunset': ['Ngrohtësi qelibar', 'Orë e artë', 'Gati për fusion'],
+  'coastal-zen': ['Fllad deti', 'Tonalitete cerulean', 'Paraqitje e lehtë']
 }
 
-const getTemplateHighlights = (key: string): string[] => templateHighlights[key] ?? ['Responsive layout', 'Accessible contrast', 'Modern UI']
+const getTemplateHighlights = (key: string): string[] => templateHighlights[key] ?? ['Paraqitje responsive', 'Kontrast i aksesueshëm', 'UI moderne']
 
 const templates = ref<TemplateCard[]>([])
 const currentMenu = ref<MenuWithDetails | null>(null)
@@ -586,8 +586,8 @@ const previewTemplateLive = (template: TemplateCard) => {
   const url = getTemplatePreviewUrl(template.key)
   if (!url) {
     toast.add({
-      title: 'Preview unavailable',
-      description: 'We need a published menu to render this preview.',
+      title: 'Parapamja nuk është e disponueshme',
+      description: 'Na nevojitet një menu e publikuar për ta shfaqur këtë parapamje.',
       color: 'yellow',
       icon: 'i-heroicons-information-circle',
       timeout: 4000
@@ -648,8 +648,8 @@ const loadTemplates = async () => {
   } catch (error: unknown) {
     const err = error as { message?: string }
     toast.add({
-      title: 'Error',
-      description: err.message || 'Failed to load templates',
+      title: 'Gabim',
+      description: err.message || 'Dështoi ngarkimi i shablloneve',
       color: 'red',
       icon: 'i-heroicons-exclamation-circle',
       timeout: 5000
@@ -666,8 +666,8 @@ const loadCurrentMenu = async () => {
       currentMenu.value = null
       defaultMenuSlugState.value = 'main'
       toast.add({
-        title: 'No menus found',
-        description: 'Create and publish a menu before previewing templates.',
+        title: 'Nuk u gjetën menu',
+        description: 'Krijoni dhe publikoni një menu përpara se të shihni shabllonet.',
         color: 'yellow',
         icon: 'i-heroicons-information-circle',
         timeout: 4000
@@ -695,7 +695,7 @@ const loadCurrentMenu = async () => {
       }
     }
   } catch (error: unknown) {
-    console.error('Error loading current menu:', error)
+    console.error('Gabim gjatë ngarkimit të menysë aktuale:', error)
   }
 }
 
@@ -706,8 +706,8 @@ const openPreview = (template: TemplateCard) => {
 const applyTemplate = async (template: TemplateCard) => {
   if (!currentMenu.value) {
     toast.add({
-      title: 'Error',
-      description: 'No menu found. Please create a menu first.',
+      title: 'Gabim',
+      description: 'Nuk u gjet asnjë menu. Ju lutemi krijoni fillimisht një menu.',
       color: 'red',
       icon: 'i-heroicons-exclamation-circle',
       timeout: 5000
@@ -716,8 +716,8 @@ const applyTemplate = async (template: TemplateCard) => {
   }
 
   const loadingToast = toast.add({
-    title: 'Applying template...',
-    description: `Applying ${template.name} to your menu`,
+    title: 'Po aplikohet shablloni...',
+    description: `Duke aplikuar ${template.name} në menunë tuaj`,
     color: 'primary',
     icon: 'i-heroicons-arrow-path',
       timeout: 0
@@ -726,8 +726,8 @@ const applyTemplate = async (template: TemplateCard) => {
   try {
     if (!template.id) {
       toast.add({
-        title: 'Coming soon',
-        description: 'This template is being finalized. Please contact support to enable it for your tenant.',
+        title: 'Së shpejti',
+        description: 'Ky shabllon po finalizohet. Ju lutemi kontaktoni mbështetjen për ta aktivizuar për qiramarrësin tuaj.',
         color: 'yellow',
         icon: 'i-heroicons-light-bulb',
         timeout: 5000
@@ -744,8 +744,8 @@ const applyTemplate = async (template: TemplateCard) => {
     previewTemplate.value = null
 
     toast.add({
-      title: 'Success',
-      description: `Template "${template.name}" has been applied to your menu`,
+      title: 'Sukses',
+      description: `Shablloni "${template.name}" u aplikua në menunë tuaj`,
       color: 'green',
       icon: 'i-heroicons-check-circle',
       timeout: 3000
@@ -753,8 +753,8 @@ const applyTemplate = async (template: TemplateCard) => {
   } catch (error: unknown) {
     const err = error as { message?: string }
     toast.add({
-      title: 'Error',
-      description: err.message || 'Failed to apply template',
+      title: 'Gabim',
+      description: err.message || 'Dështoi aplikimi i shabllonit',
       color: 'red',
       icon: 'i-heroicons-exclamation-circle',
       timeout: 5000
@@ -811,41 +811,41 @@ const getTemplateGradient = (key: string): string => {
 
 const getTemplateDescription = (key: string): string => {
   const descriptions: Record<string, string> = {
-    'neon-night': 'Bold neon colors with glassmorphism effects. Perfect for bars and nightlife venues.',
-    'minimal-elegance': 'Clean, minimalist design with elegant typography. Ideal for fine dining.',
-    'dark-glass': 'Modern dark theme with glassmorphism and blur effects. Great for upscale restaurants.',
-    'retro-card': 'Vintage-inspired design with card-based layout. Perfect for cafes and diners.',
-    'photo-hero': 'Hero image focused layout with stunning visuals. Best for showcasing food photography.',
-    'grid-menu': 'Organized grid layout with clear categorization. Great for large menus.',
-    'split-panels': 'Split-screen design with visual hierarchy. Perfect for modern restaurants.',
-    'chalk-board': 'Chalkboard-style design with handwritten feel. Ideal for casual dining.',
-    'magazine': 'Magazine-style layout with rich typography. Great for premium establishments.',
-    'mono-zen': 'Monochrome minimalist design with zen aesthetics. Perfect for Japanese and Asian cuisine.',
-    'elegant-modern': 'Sophisticated design with light typography and elegant spacing. Perfect for upscale dining.',
-    'cosmic-dark': 'Stunning dark theme with cosmic gradients and modern effects. Great for contemporary venues.',
-    'glass-morphism': 'Modern glassmorphism design with vibrant colors and blur effects. Perfect for trendy restaurants.',
-    'luxury-gold': 'Luxurious design with gold accents and elegant typography. Ideal for premium fine dining.',
-    'tropical-vibes': 'Vibrant tropical colors with warm gradients. Perfect for beach bars and tropical restaurants.',
-    'ocean-breeze': 'Fresh ocean-inspired design with cool blue tones. Great for seafood restaurants and cafes.',
-    'neon-gradient': 'Dynamic neon gradients with animated effects. Perfect for modern bars and nightlife.',
-    'minimalist-white': 'Ultra-minimal black and white design with bold typography. Ideal for contemporary restaurants.',
-    'forest-nature': 'Natural green tones inspired by nature. Perfect for organic and healthy food restaurants.',
-    'sunset-warm': 'Warm sunset colors with vibrant gradients. Great for cozy cafes and warm atmosphere venues.',
-    'aurora-luxe': 'Aurora borealis inspired gradient canvas layered with glass panels and premium type hierarchy.',
-    'modern-bento': 'Contemporary bento grid layout with modular sections perfect for tasting menus and chef specials.',
-    'pastel-dream': 'Pastel gradients with editorial photography frames create an inviting patisserie showcase.',
-    'ember-noir': 'Noir-inspired dark mode with ember highlights that amplify signature dishes and mixology.',
-    'botanical-garden': 'Botanical textures and refined typography tailored for farm-to-table and plant-forward concepts.',
-    'nordic-slate': 'Scandinavian-inspired slate gradients with frosted panels and soft ambient glow.',
-    'neo-brutalist': 'Statement-making neo-brutalist layout with tactile blocks and bold typography.',
-    'holographic-wave': 'Iridescent glow, glass layers, and cinematic typography for futuristic spaces.',
-    'velvet-dusk': 'Midnight velvet backdrop with blush highlights perfect for moody cocktail lounges.',
-    'celestial-ink': 'Celestial-inspired gradient canvas designed for immersive tasting menu storytelling.',
-    'gilded-art-deco': 'Art Deco lines and gilded accents curated for grand dining rooms and hotel lounges.',
-    'savanna-sunset': 'Sun-warmed palette with natural textures ideal for fusion bistros and terrace dining.',
-    'coastal-zen': 'Breezy coastal minimalism featuring airy blues and tactile whites for seafood concepts.'
+    'neon-night': 'Ngjyra neon të guximshme me efekte glassmorphism. Përkryer për bare dhe ambiente nate.',
+    'minimal-elegance': 'Dizajn i pastër minimal me tipografi elegante. Ideal për darka të rafinuara.',
+    'dark-glass': 'Temë moderne e errët me glassmorphism dhe efekte mjegulle. Shkëlqen për restorante luksoze.',
+    'retro-card': 'Dizajn i frymëzuar nga vintage me paraqitje në karta. I përshtatshëm për kafene dhe bistro klasike.',
+    'photo-hero': 'Paraqitje me fokus te imazhi kryesor dhe pamje mahnitëse. Ideale për të ekspozuar fotografi ushqimi.',
+    'grid-menu': 'Rrjet i organizuar me kategorizim të qartë. I shkëlqyer për menu të mëdha.',
+    'split-panels': 'Dizajn me ekran të ndarë dhe hierarki vizuale. Për restorante moderne.',
+    'chalk-board': 'Stil dërrase shkumësi me ndjesi shkrimi me dorë. I përshtatshëm për ambiente të përditshme.',
+    'magazine': 'Paraqitje në stil reviste me tipografi të pasur. I shkëlqyer për lokale premium.',
+    'mono-zen': 'Dizajn monokrom minimal me estetikë zen. Për kuzhina japoneze dhe aziatike.',
+    'elegant-modern': 'Dizajn i sofistikuar me tipografi të lehtë dhe hapësira elegante. Ideal për darka të nivelit të lartë.',
+    'cosmic-dark': 'Temë e errët mahnitëse me gradientë kozmikë dhe efekte moderne. Për ambiente bashkëkohore.',
+    'glass-morphism': 'Dizajn glassmorphism me ngjyra të gjalla dhe efekte mjegulle. Për restorante trendi.',
+    'luxury-gold': 'Dizajn luksoz me theksime ari dhe tipografi elegante. Ideal për fine dining premium.',
+    'tropical-vibes': 'Ngjyra tropikale të gjalla me gradientë të ngrohtë. Për beach bar dhe restorante tropikale.',
+    'ocean-breeze': 'Dizajn i frymëzuar nga deti me tonalitete blu të ftohta. I përshtatshëm për restorante ushqimi deti.',
+    'neon-gradient': 'Gradientë neon dinamikë me efekte të animuara. Për bare moderne dhe jetën e natës.',
+    'minimalist-white': 'Dizajn bardh e zi ultra minimal me tipografi të theksuar. Ideal për restorante bashkëkohore.',
+    'forest-nature': 'Tonalitete të gjelbra natyrore të frymëzuara nga pyjet. Për restorante organike dhe të shëndetshme.',
+    'sunset-warm': 'Ngjyra të ngrohta perëndimi me gradientë të gjallë. Të përsosur për kafene të ngrohta dhe ambiente intime.',
+    'aurora-luxe': 'Kanvas gradient i frymëzuar nga aurora me panele xhami dhe hierarki tipografike premium.',
+    'modern-bento': 'Rrjet bashkëkohor bento me seksione modulare për menu degustimi dhe oferta speciale të shefit.',
+    'pastel-dream': 'Gradientë pastel me korniza fotografike editoriale që krijojnë vitrinë mikpritëse për pastiçeri.',
+    'ember-noir': 'Modalitet i errët noir me theksime flake që nxjerrin në pah pjatat firmë dhe miksologjinë.',
+    'botanical-garden': 'Tekstura botanike dhe tipografi të rafinuara për koncepte nga ferma në tryezë dhe bazuar në bimë.',
+    'nordic-slate': 'Gradientë shisto të frymëzuar nga Skandinavia me panele të ngrira dhe dritë ambienti të butë.',
+    'neo-brutalist': 'Paraqitje neo-brutaliste me blloqe taktile dhe tipografi të guximshme.',
+    'holographic-wave': 'Shkëlqim iridescent, shtresa xhami dhe tipografi kinematike për hapësira futuriste.',
+    'velvet-dusk': 'Sfond kadifeje mesnate me theksime rozë, perfekt për lounge koktejsh atmosferikë.',
+    'celestial-ink': 'Kanvas gradient i frymëzuar nga qielli për rrëfim zhytës të menuse degustuese.',
+    'gilded-art-deco': 'Vija Art Deco dhe theksime të arta të kuruara për salla madhështore dhe lounge hotelesh.',
+    'savanna-sunset': 'Paletë e ngrohtë nga dielli me tekstura natyrore për bistro fusion dhe ngrënie në tarracë.',
+    'coastal-zen': 'Minimalizëm bregdetar me blu ajrore dhe të bardha taktile për koncepte ushqimi deti.'
   }
-  return descriptions[key] || 'A beautiful menu template for your restaurant.'
+  return descriptions[key] || 'Një shabllon i bukur menuje për restorantin tuaj.'
 }
 </script>
 
