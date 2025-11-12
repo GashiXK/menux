@@ -115,13 +115,28 @@ const loadTenantByDomain = async (domain: string): Promise<TenantWithCity> => {
     throw domainError
   }
  
-  if (!domainData || !domainData.tenant) {
+  const domainRecord = domainData as { tenant?: TenantWithCity } | null
+
+  if (!domainRecord || !domainRecord.tenant) {
     throw new Error(`Tenant not found for domain: ${domain}`)
   }
  
-  return domainData.tenant as TenantWithCity
+  return domainRecord.tenant
 }
  
+interface RawCategory {
+  id: string
+  visible: boolean
+  [key: string]: unknown
+}
+
+interface RawMenuItem {
+  id: string
+  category_id: string
+  is_active: boolean
+  [key: string]: unknown
+}
+
 const loadPublishedMenu = async (tenantId: string, slug = 'main') => {
   // Load menu with template
   const { data: menuData, error: menuError } = await client
@@ -136,7 +151,9 @@ const loadPublishedMenu = async (tenantId: string, slug = 'main') => {
     throw menuError
   }
  
-  if (!menuData) {
+  const menuRecord = menuData as MenuWithDetails | null
+
+  if (!menuRecord) {
     throw new Error(`Menu not found: ${slug} for tenant ${tenantId}`)
   }
  
@@ -144,7 +161,7 @@ const loadPublishedMenu = async (tenantId: string, slug = 'main') => {
   const { data: categoriesData, error: catError } = await client
     .from('categories')
     .select('*')
-    .eq('menu_id', menuData.id)
+    .eq('menu_id', menuRecord.id)
     .order('sort_order', { ascending: true })
    
   if (catError) {
@@ -153,8 +170,9 @@ const loadPublishedMenu = async (tenantId: string, slug = 'main') => {
   }
  
   // Load menu items for all categories
-  const categoryIds = (categoriesData || []).map(cat => cat.id)
-  let allItems: unknown[] = []
+  const categoryRows = (categoriesData || []) as RawCategory[]
+  const categoryIds = categoryRows.map(category => category.id)
+  let itemRows: RawMenuItem[] = []
  
   if (categoryIds.length > 0) {
     const { data: itemsData, error: itemsError } = await client
@@ -166,17 +184,17 @@ const loadPublishedMenu = async (tenantId: string, slug = 'main') => {
     if (itemsError) {
       console.warn('Error loading menu items:', itemsError)
     } else {
-      allItems = itemsData || []
+      itemRows = (itemsData || []) as RawMenuItem[]
     }
   }
  
+  const activeItems = itemRows.filter(item => item.is_active)
+
   // Attach items to categories
-  const categoriesWithItems = (categoriesData || []).map(category => ({
+  const visibleCategories = categoryRows.filter(category => category.visible)
+  const categoriesWithItems = visibleCategories.map(category => ({
     ...category,
-    items: allItems.filter((item: unknown) => {
-      const menuItem = item as { category_id: string }
-      return menuItem.category_id === category.id
-    })
+    items: activeItems.filter(item => item.category_id === category.id)
   }))
  
   // Load custom texts
@@ -189,13 +207,14 @@ const loadPublishedMenu = async (tenantId: string, slug = 'main') => {
     console.warn('Error loading custom texts:', textsError)
   }
  
-  const textsMap = (customTextsData || []).reduce((acc, text) => {
+  const textRows = (customTextsData || []) as Array<{ key: string; value: string }>
+  const textsMap = textRows.reduce((acc, text) => {
     acc[text.key] = text.value
     return acc
   }, {} as Record<string, string>)
  
   return {
-    menu: menuData as MenuWithDetails,
+    menu: menuRecord,
     categories: categoriesWithItems as CategoryWithItems[],
     customTexts: textsMap
   }
@@ -221,22 +240,22 @@ if (process.server) {
       }
      
       // 2. Check query parameter
-  if (!tenant.value) {
-    const tenantSlug = route.query.tenant as string
-    if (tenantSlug) {
+      if (!tenant.value) {
+        const tenantSlug = route.query.tenant as string
+        if (tenantSlug) {
           const { data: tenantData, error: tenantError } = await client
-          .from('tenants')
-          .select('*, city:cities(*)')
-          .eq('slug', tenantSlug)
+            .from('tenants')
+            .select('*, city:cities(*)')
+            .eq('slug', tenantSlug)
             .maybeSingle()
-       
+
           if (tenantError) {
             console.error('Error loading tenant from query param:', tenantError)
           } else if (tenantData) {
-          tenant.value = tenantData as Tenant
+            tenant.value = tenantData as Tenant
+          }
         }
       }
-    }
    
       // 3. Try domain-based detection
       if (!tenant.value && typeof window !== 'undefined') {
@@ -259,7 +278,7 @@ if (process.server) {
           .select('*, city:cities(*)')
           .limit(1)
           .maybeSingle()
-       
+
         if (!tenantsError && tenantsData) {
           tenant.value = tenantsData as Tenant
         } else {
