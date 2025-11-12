@@ -19,14 +19,40 @@
 
       <main class="mx-auto max-w-5xl px-6 py-16 md:px-10">
         <div class="space-y-12">
+          <div class="flex flex-wrap items-center justify-center gap-2 rounded-[1.75rem] border border-[#bae6fd] bg-white/80 px-4 py-4 text-[#0f172a]/80 shadow-sm backdrop-blur">
+            <button
+              type="button"
+              class="inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0ea5e9]/60"
+              :class="activeFilter === 'all' ? 'border-[#0ea5e9] bg-[#e0f2ff] text-[#0c4a6e]' : 'border-transparent bg-white text-[#0c4a6e]/70 hover:border-[#bae6fd] hover:bg-[#f0f9ff]'"
+              @click="activeFilter = 'all'"
+            >
+              Të Gjitha
+            </button>
+            <button
+              v-for="category in visibleCategories"
+              :key="category.id"
+              type="button"
+              class="inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0ea5e9]/60"
+              :class="activeFilter === category.id ? 'border-[#0ea5e9] bg-[#e0f2ff] text-[#0c4a6e]' : 'border-transparent bg-white text-[#0c4a6e]/70 hover:border-[#bae6fd] hover:bg-[#f0f9ff]'"
+              @click="activeFilter = category.id"
+            >
+              <span class="leading-none">{{ category.name.trim() || 'Kategori' }}</span>
+              <span v-if="category.items?.length" class="rounded-full bg-[#e0f2ff] px-2 py-0.5 text-xs font-semibold text-[#0ea5e9]">
+                {{ category.items.length }}
+              </span>
+            </button>
+          </div>
+
           <section
-            v-for="category in categories"
+            v-for="(category, index) in filteredCategories"
             :key="category.id"
             class="rounded-[2.25rem] border border-[#bae6fd] bg-white/85 p-8 shadow-[0_20px_60px_-40px_rgba(14,165,233,0.45)] backdrop-blur"
           >
             <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
               <div>
-                <p class="text-xs font-semibold uppercase tracking-[0.4em] text-[#0ea5e9]">Fresh catch</p>
+                <p class="text-xs font-semibold uppercase tracking-[0.4em] text-[#0ea5e9]">
+                  {{ getAccentLabel(index) }}
+                </p>
                 <h2 class="mt-2 text-3xl font-semibold text-[#0f172a] md:text-[2.2rem]">
                   {{ category.name }}
                 </h2>
@@ -34,9 +60,12 @@
                   {{ category.description }}
                 </p>
               </div>
-              <div class="inline-flex items-center gap-2 rounded-full border border-[#38bdf8]/40 bg-[#e0f2ff] px-4 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-[#0369a1]">
-                <span class="inline-block h-2 w-2 rounded-full bg-[#38bdf8]" />
-                Daily tides
+              <div
+                class="inline-flex items-center gap-2 rounded-full border px-4 py-1 text-xs font-semibold uppercase tracking-[0.35em]"
+                :class="getAccentBadge(index)"
+              >
+                <span class="inline-block h-2 w-2 rounded-full" :class="getAccentDot(index)" />
+                {{ getAccentTitle(index) }}
               </div>
             </div>
 
@@ -102,9 +131,69 @@
 </template>
 
 <script setup lang="ts">
+import { computed, ref, watch } from 'vue'
 import type { MenuTemplateProps } from '~/types/menu-template'
 
-defineProps<MenuTemplateProps>()
+const props = defineProps<MenuTemplateProps>()
+
+const visibleCategories = computed(() =>
+  props.categories.filter(category => category.visible !== false)
+)
+
+const accentPalette = [
+  {
+    label: 'Fresh catch',
+    title: 'Daily tides',
+    badge: 'border-[#38bdf8]/40 bg-[#e0f2ff] text-[#0369a1]',
+    dot: 'bg-[#38bdf8]'
+  },
+  {
+    label: 'Seasonal highlights',
+    title: 'Chef curated',
+    badge: 'border-[#0ea5e9]/35 bg-white text-[#0c4a6e]',
+    dot: 'bg-[#0ea5e9]'
+  },
+  {
+    label: 'Artisan crafted',
+    title: 'Signature picks',
+    badge: 'border-[#38bdf8]/40 bg-[#f1f7ff] text-[#0c4a6e]',
+    dot: 'bg-[#0ea5e9]'
+  },
+  {
+    label: 'House favourites',
+    title: 'Most loved',
+    badge: 'border-[#0ea5e9]/35 bg-white text-[#0c4a6e]',
+    dot: 'bg-[#38bdf8]'
+  }
+]
+
+const getAccentLabel = (index: number) => accentPalette[index % accentPalette.length].label
+const getAccentTitle = (index: number) => accentPalette[index % accentPalette.length].title
+const getAccentBadge = (index: number) => accentPalette[index % accentPalette.length].badge
+const getAccentDot = (index: number) => accentPalette[index % accentPalette.length].dot
+
+const activeFilter = ref<string>('all')
+
+watch(
+  () => visibleCategories.value.map(category => category.id),
+  ids => {
+    if (ids.length === 0) {
+      activeFilter.value = 'all'
+      return
+    }
+    if (activeFilter.value !== 'all' && !ids.includes(activeFilter.value)) {
+      activeFilter.value = ids[0]
+    }
+  },
+  { immediate: true }
+)
+
+const filteredCategories = computed(() => {
+  if (activeFilter.value === 'all') {
+    return visibleCategories.value
+  }
+  return visibleCategories.value.filter(category => category.id === activeFilter.value)
+})
 
 const formatPrice = (value: number | string, currency: string) => {
   const amount = Number(value)

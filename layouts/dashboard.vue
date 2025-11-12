@@ -1,5 +1,6 @@
 <template>
   <div class="min-h-screen bg-gradient-to-br from-white via-gray-50 to-gray-100 dark:from-ink-950 dark:via-ink-900 dark:to-ink-800">
+    <UNotifications />
     <Teleport to="body">
       <Transition
         enter-active-class="transition duration-200 ease-out"

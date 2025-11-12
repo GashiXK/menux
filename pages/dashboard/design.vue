@@ -725,7 +725,6 @@ const applyTemplate = async (template: TemplateCard) => {
 
   try {
     if (!template.id) {
-      toast.remove(loadingToast)
       toast.add({
         title: 'Coming soon',
         description: 'This template is being finalized. Please contact support to enable it for your tenant.',
@@ -744,7 +743,6 @@ const applyTemplate = async (template: TemplateCard) => {
     currentTemplate.value = normalizeTemplate(cloneTemplateCard(template))
     previewTemplate.value = null
 
-    toast.remove(loadingToast)
     toast.add({
       title: 'Success',
       description: `Template "${template.name}" has been applied to your menu`,
@@ -754,7 +752,6 @@ const applyTemplate = async (template: TemplateCard) => {
     })
   } catch (error: unknown) {
     const err = error as { message?: string }
-    toast.remove(loadingToast)
     toast.add({
       title: 'Error',
       description: err.message || 'Failed to apply template',
@@ -762,6 +759,14 @@ const applyTemplate = async (template: TemplateCard) => {
       icon: 'i-heroicons-exclamation-circle',
       timeout: 5000
     })
+  } finally {
+    const toastId =
+      typeof loadingToast === 'object' && loadingToast !== null && 'id' in loadingToast
+        ? loadingToast.id
+        : loadingToast
+    if (toastId) {
+      toast.remove(toastId)
+    }
   }
 }
 
