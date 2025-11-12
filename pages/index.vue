@@ -360,7 +360,7 @@
                   Unified plan
                 </div>
                 <p class="text-sm font-semibold uppercase tracking-[0.48em] text-brand-700 dark:text-brand-200">MenuX Studio</p>
-                <p class="mt-5 text-5xl font-bold text-ink-900 dark:text-white">€36<span class="ml-2 text-base font-medium text-ink-500 dark:text-ink-300">per month</span></p>
+                <p class="mt-5 text-5xl font-bold text-ink-900 dark:text-white">€34.99<span class="ml-2 text-base font-medium text-ink-500 dark:text-ink-300">per month</span></p>
                 <p class="mt-3 max-w-xl text-sm text-ink-600 dark:text-ink-300">One simple package with premium tooling, 50 handcrafted designs, and data-driven publishing workflows that scale across every table.</p>
               </div>
               <ul class="mt-8 grid gap-4 text-sm text-ink-600 dark:text-ink-300 sm:grid-cols-2">
