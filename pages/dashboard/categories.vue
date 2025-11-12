@@ -418,6 +418,7 @@ const openDialog = (category?: Category) => {
 }
 
 const handleSave = async () => {
+  console.log('menuId', menuId.value)
   if (!menuId.value) {
     toast.add({
       title: 'Error',
@@ -452,7 +453,7 @@ const handleSave = async () => {
       
       toast.add({
         title: 'Success',
-        description: 'Category updated successfully',
+        description: `${form.name} category updated successfully`,
         color: 'green',
         icon: 'i-heroicons-check-circle',
         timeout: 3000
@@ -480,7 +481,7 @@ const handleSave = async () => {
       
       toast.add({
         title: 'Success',
-        description: 'Category created successfully',
+        description: `${form.name} category created successfully`,
         color: 'green',
         icon: 'i-heroicons-check-circle',
         timeout: 3000
@@ -512,6 +513,7 @@ const handleDelete = async () => {
   if (!deletingCategory.value) return
   
   try {
+    const categoryName = deletingCategory.value.name
     await deleteCategory(deletingCategory.value.id)
     await loadCategories()
     showDeleteDialog.value = false
@@ -519,7 +521,7 @@ const handleDelete = async () => {
     
     toast.add({
       title: 'Success',
-      description: 'Category deleted successfully',
+      description: `${categoryName} category deleted successfully`,
       color: 'green',
       icon: 'i-heroicons-check-circle',
       timeout: 3000

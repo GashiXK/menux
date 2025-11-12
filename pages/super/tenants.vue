@@ -161,6 +161,13 @@
               Users
             </button>
             <button
+              @click="openSeedDialog(tenant)"
+              class="flex-1 min-w-[100px] px-4 py-2 text-sm font-medium text-brand-600 dark:text-brand-400 hover:bg-brand-500/10 rounded-lg transition-colors flex items-center justify-center gap-2"
+            >
+              <UIcon name="i-heroicons-cloud-arrow-up" class="w-4 h-4" />
+              Seed Menu
+            </button>
+            <button
               @click="confirmDelete(tenant)"
               class="flex-1 min-w-[100px] px-4 py-2 text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors flex items-center justify-center gap-2"
             >
@@ -374,6 +381,78 @@
               >
                 <UIcon name="i-heroicons-trash" class="w-4 h-4" />
                 Delete Tenant
+              </button>
+            </div>
+          </div>
+        </div>
+      </Transition>
+    </Teleport>
+
+    <!-- Seed Menu Modal -->
+    <Teleport to="body">
+      <Transition name="modal">
+        <div
+          v-if="showSeedDialog"
+          class="fixed inset-0 z-50 flex items-center justify-center p-4"
+          @click.self="closeSeedDialog"
+        >
+          <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" @click="closeSeedDialog"></div>
+          <div class="relative bg-white dark:bg-ink-900 rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col z-10">
+            <div class="flex items-center justify-between p-6 border-b border-ink-100 dark:border-ink-800">
+              <div>
+                <h2 class="text-2xl font-bold text-ink-900 dark:text-white">
+                  Seed Menu Content
+                </h2>
+                <p class="mt-1 text-sm text-ink-500 dark:text-ink-400">
+                  Provide categories and items as JSON to populate {{ seedingTenant?.name }}.
+                </p>
+              </div>
+              <button
+                @click="closeSeedDialog"
+                class="p-2 hover:bg-ink-100 dark:hover:bg-ink-800 rounded-lg transition-colors"
+              >
+                <UIcon name="i-heroicons-x-mark" class="w-5 h-5 text-ink-500 dark:text-ink-400" />
+              </button>
+            </div>
+            <div class="flex-1 overflow-y-auto p-6 space-y-6">
+              <div>
+                <label class="block text-sm font-medium text-ink-700 dark:text-ink-300 mb-2">
+                  JSON Payload
+                </label>
+                <textarea
+                  v-model="seedJson"
+                  rows="14"
+                  class="w-full rounded-xl border border-ink-200 dark:border-ink-700 bg-white dark:bg-ink-800 text-sm font-mono leading-relaxed text-ink-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent p-4"
+                  :placeholder="seedMenuJsonPlaceholder"
+                />
+              </div>
+              <div v-if="seedValidationError" class="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600 dark:border-red-900/40 dark:bg-red-900/20 dark:text-red-300">
+                {{ seedValidationError }}
+              </div>
+              <div class="rounded-xl border border-ink-200 bg-ink-50 px-4 py-4 text-sm text-ink-600 dark:border-ink-700 dark:bg-ink-900/40 dark:text-ink-300">
+                <p class="font-semibold text-ink-700 dark:text-ink-200">Tips</p>
+                <ul class="mt-2 space-y-1">
+                  <li>Categories are created in the order provided. Items inherit their category.</li>
+                  <li>Each item requires a name, price, and currency. Tags and images are optional.</li>
+                  <li> Existing menu data remains untouched. Run multiple times to append more content.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="border-t border-ink-100 dark:border-ink-800 p-6 flex justify-end gap-3">
+              <button
+                @click="closeSeedDialog"
+                class="px-6 py-2 text-sm font-medium text-ink-700 dark:text-ink-300 hover:bg-ink-100 dark:hover:bg-ink-800 rounded-xl transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                @click="handleSeed"
+                :disabled="seedLoading"
+                class="px-6 py-2 text-sm font-semibold text-white bg-brand-500 hover:bg-brand-600 rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+              >
+                <UIcon v-if="seedLoading" name="i-heroicons-arrow-path" class="w-4 h-4 animate-spin" />
+                <UIcon v-else name="i-heroicons-cloud-arrow-up" class="w-4 h-4" />
+                Seed Menu
               </button>
             </div>
           </div>
@@ -753,6 +832,28 @@ definePageMeta({
   middleware: ['super-admin']
 })
 
+const seedMenuJsonPlaceholder = ref<string>(`{
+  "categories": [
+    {
+      "name": "Emri i kategorisë",
+      "description": "Përshkrim opsional për kategorinë",
+      "sort_order": 1,
+      "is_special": false,
+      "visible": true,
+      "items": [
+        {
+          "name": "Emri i produktit",
+          "description": "Përshkrim i produktit dhe përbërësit kryesorë",
+          "price": 0.00,
+          "currency": "EUR",
+          "tags": ["etiketë1", "etiketë2"],
+          "image_url": "https://shembull.com/image.jpg"
+        }
+      ]
+    }
+  ]
+}`)
+
 const { client } = useSupabaseClientStrict()
 const { listMenusByTenant } = useMenu()
 const toast = useToast()
@@ -784,6 +885,31 @@ const editUserSchema = z.object({
   is_owner: z.boolean()
 })
 
+const seedMenuItemSchema = z.object({
+  name: z.string().min(1, 'Item name is required'),
+  description: z.string().nullable().optional(),
+  price: z.number().nonnegative('Price must be zero or positive'),
+  currency: z.string().min(1, 'Currency is required').default('EUR'),
+  tags: z.array(z.string()).optional(),
+  image_url: z.string().url().nullable().optional(),
+  is_active: z.boolean().optional(),
+  sort_order: z.number().int().nonnegative().optional(),
+  attributes: z.record(z.any()).optional()
+})
+
+const seedMenuCategorySchema = z.object({
+  name: z.string().min(1, 'Category name is required'),
+  description: z.string().nullable().optional(),
+  sort_order: z.number().int().nonnegative().optional(),
+  is_special: z.boolean().optional(),
+  visible: z.boolean().optional(),
+  items: z.array(seedMenuItemSchema).optional()
+})
+
+const seedMenuPayloadSchema = z.object({
+  categories: z.array(seedMenuCategorySchema).min(1, 'Provide at least one category')
+})
+
 const tenants = ref<(Tenant & { city?: City })[]>([])
 const cities = ref<City[]>([])
 const loading = ref(true)
@@ -805,6 +931,11 @@ const removingUser = ref<any | null>(null)
 const editingUser = ref<any | null>(null)
 const saving = ref(false)
 const savingUser = ref(false)
+const showSeedDialog = ref(false)
+const seedingTenant = ref<Tenant | null>(null)
+const seedJson = ref('')
+const seedLoading = ref(false)
+const seedValidationError = ref<string | null>(null)
 
 const form = reactive({
   name: '',
@@ -918,6 +1049,20 @@ const openDialog = (tenant?: Tenant) => {
   console.log('🔓 Dialog state:', dialogOpen.value)
 }
 
+const openSeedDialog = (tenant: Tenant) => {
+  seedingTenant.value = tenant
+  seedJson.value = ''
+  seedValidationError.value = null
+  showSeedDialog.value = true
+}
+
+const closeSeedDialog = () => {
+  showSeedDialog.value = false
+  seedingTenant.value = null
+  seedJson.value = ''
+  seedValidationError.value = null
+}
+
 const handleSave = async (e?: Event) => {
   if (e) {
     e.preventDefault()
@@ -952,7 +1097,7 @@ const handleSave = async (e?: Event) => {
       
       toast.add({
         title: 'Success',
-        description: 'Tenant updated successfully',
+        description: `${form.name} tenant updated successfully`,
         color: 'green',
         icon: 'i-heroicons-check-circle',
         timeout: 3000
@@ -978,7 +1123,7 @@ const handleSave = async (e?: Event) => {
 
       toast.add({
         title: 'Success',
-        description: 'Tenant created successfully',
+        description: `${form.name} tenant created successfully`,
         color: 'green',
         icon: 'i-heroicons-check-circle',
         timeout: 3000
@@ -1040,6 +1185,7 @@ const handleDelete = async () => {
   if (!deletingTenant.value) return
   
   try {
+    const tenantName = deletingTenant.value.name
     await client
       .from('tenants')
       .delete()
@@ -1051,7 +1197,7 @@ const handleDelete = async () => {
     
     toast.add({
       title: 'Success',
-      description: 'Tenant deleted successfully',
+      description: `${tenantName} tenant deleted successfully`,
       color: 'green',
       icon: 'i-heroicons-check-circle',
       timeout: 3000
@@ -1065,6 +1211,72 @@ const handleDelete = async () => {
       icon: 'i-heroicons-exclamation-circle',
       timeout: 5000
     })
+  }
+}
+
+const handleSeed = async () => {
+  if (!seedingTenant.value) return
+  seedValidationError.value = null
+
+  if (!seedJson.value || seedJson.value.trim().length === 0) {
+    seedValidationError.value = 'Provide the JSON payload before seeding.'
+    return
+  }
+
+  let parsedPayload: unknown
+  try {
+    parsedPayload = JSON.parse(seedJson.value)
+  } catch (error: unknown) {
+    seedValidationError.value = `Invalid JSON: ${(error as Error).message}`
+    return
+  }
+
+  const validation = seedMenuPayloadSchema.safeParse(parsedPayload)
+  if (!validation.success) {
+    seedValidationError.value = validation.error.errors.map(issue => issue.message).join('; ')
+    return
+  }
+
+  seedLoading.value = true
+  const tenantName = seedingTenant.value.name
+
+  try {
+    const { data: { session } } = await client.auth.getSession()
+    if (!session?.access_token) {
+      throw new Error('No active session')
+    }
+
+    await $fetch('/api/super/seed-tenant', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${session.access_token}`
+      },
+      body: {
+        tenantId: seedingTenant.value.id,
+        payload: validation.data
+      }
+    })
+
+    toast.add({
+      title: 'Success',
+      description: `${tenantName} menu seeded successfully`,
+      color: 'green',
+      icon: 'i-heroicons-check-circle',
+      timeout: 3000
+    })
+
+    closeSeedDialog()
+  } catch (error: unknown) {
+    const err = error as { data?: { statusMessage?: string; message?: string }; message?: string }
+    toast.add({
+      title: 'Error',
+      description: err.data?.statusMessage || err.data?.message || err.message || 'Failed to seed menu',
+      color: 'red',
+      icon: 'i-heroicons-exclamation-circle',
+      timeout: 5000
+    })
+  } finally {
+    seedLoading.value = false
   }
 }
 
@@ -1133,6 +1345,7 @@ const handleAddUser = async () => {
   
   savingUser.value = true
   try {
+    const userEmail = userForm.email
     const { data: { session } } = await client.auth.getSession()
     if (!session?.access_token) {
       throw new Error('No active session')
@@ -1171,7 +1384,7 @@ const handleAddUser = async () => {
     
     toast.add({
       title: 'Success',
-      description: 'User created and added to tenant successfully',
+      description: `${userEmail} added to ${managingTenant.value.name}`,
       color: 'green',
       icon: 'i-heroicons-check-circle',
       timeout: 3000
@@ -1205,6 +1418,7 @@ const handleUpdateUser = async () => {
   
   savingUser.value = true
   try {
+    const userEmail = userForm.email
     const { data: { session } } = await client.auth.getSession()
     if (!session?.access_token) {
       throw new Error('No active session')
@@ -1250,7 +1464,7 @@ const handleUpdateUser = async () => {
     
     toast.add({
       title: 'Success',
-      description: 'User updated successfully',
+      description: `${userEmail} updated successfully`,
       color: 'green',
       icon: 'i-heroicons-check-circle',
       timeout: 3000
@@ -1278,6 +1492,7 @@ const handleRemoveUser = async () => {
   if (!removingUser.value || !managingTenant.value) return
   
   try {
+    const removedUserLabel = removingUser.value.full_name || removingUser.value.email
     await client
       .from('tenant_users')
       .delete()
@@ -1290,7 +1505,7 @@ const handleRemoveUser = async () => {
     
     toast.add({
       title: 'Success',
-      description: 'User removed from tenant successfully',
+      description: `${removedUserLabel} removed from ${managingTenant.value.name}`,
       color: 'green',
       icon: 'i-heroicons-check-circle',
       timeout: 3000
