@@ -557,7 +557,7 @@ const handleSave = async () => {
       
       toast.add({
         title: 'Success',
-        description: 'Item updated successfully',
+        description: `${form.name} item updated successfully`,
         color: 'green',
         icon: 'i-heroicons-check-circle',
         timeout: 3000
@@ -576,7 +576,7 @@ const handleSave = async () => {
       
       toast.add({
         title: 'Success',
-        description: 'Item created successfully',
+        description: `${form.name} item created successfully`,
         color: 'green',
         icon: 'i-heroicons-check-circle',
         timeout: 3000
@@ -608,6 +608,7 @@ const handleDelete = async () => {
   if (!deletingItem.value) return
   
   try {
+    const itemName = deletingItem.value.name
     await deleteItem(deletingItem.value.id)
     await loadItems()
     showDeleteDialog.value = false
@@ -615,7 +616,7 @@ const handleDelete = async () => {
     
     toast.add({
       title: 'Success',
-      description: 'Item deleted successfully',
+      description: `${itemName} item deleted successfully`,
       color: 'green',
       icon: 'i-heroicons-check-circle',
       timeout: 3000

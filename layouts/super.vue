@@ -1,5 +1,6 @@
 <template>
   <div class="min-h-screen bg-gradient-to-br from-white via-slate-50 to-white text-ink-900 dark:from-ink-950 dark:via-ink-950 dark:to-ink-900 dark:text-ink-100">
+    <UNotifications />
     <Teleport to="body">
       <Transition name="super-nav-fade">
         <div v-if="isMobileNavOpen" class="fixed inset-0 z-[60] lg:hidden">

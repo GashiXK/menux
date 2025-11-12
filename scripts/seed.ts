@@ -239,6 +239,9 @@ async function run() {
 
   // Sample ads targeted by city and tenant
   const { data: pristina } = await supa.from('cities').select('id').eq('slug','pristina').single()
+  if (!pristina) {
+    throw new Error('City pristina must exist before seeding ad targets')
+  }
   const { data: ad1, error: adErr } = await supa.from('ads').insert([{
     title: 'City Night Promo',
     body: '2x1 cocktails this weekend',
