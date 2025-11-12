@@ -27,7 +27,7 @@
                     {{ tenant?.name || 'MenuX' }}
                   </p>
                   <p v-if="tenant && !tenant.is_active" class="text-xs font-medium text-red-600 dark:text-red-400">
-                    Inactive
+                    Jo aktive
                   </p>
                 </div>
               </div>
@@ -36,7 +36,7 @@
                 class="rounded-xl p-2 text-ink-500 dark:text-ink-300 hover:text-brand-500 dark:hover:text-brand-400 hover:bg-ink-100 dark:hover:bg-ink-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
                 @click="closeMobileNav"
               >
-                <span class="sr-only">Close navigation</span>
+                <span class="sr-only">Mbyll navigimin</span>
                 <UIcon name="i-heroicons-x-mark" class="w-6 h-6" />
               </button>
             </div>
@@ -64,7 +64,7 @@
                 class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-base font-semibold text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/30 hover:bg-red-100 dark:hover:bg-red-900/50 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
               >
                 <UIcon name="i-heroicons-arrow-right-on-rectangle" class="w-5 h-5" />
-                Logout
+                Dil
               </button>
             </div>
           </aside>
@@ -84,7 +84,7 @@
                 {{ tenant?.name || 'MenuX' }}
               </p>
               <p v-if="tenant && !tenant.is_active" class="text-xs font-semibold text-red-600 dark:text-red-400">
-                Inactive
+                Jo aktive
               </p>
             </div>
           </NuxtLink>
@@ -124,7 +124,7 @@
           <div class="space-y-4">
             <div class="rounded-2xl bg-ink-50/80 dark:bg-ink-800/60 px-4 py-5">
               <p class="text-xs uppercase tracking-wide text-ink-400 dark:text-ink-500 mb-1">
-                Account
+                Llogaria
               </p>
               <p class="text-sm font-semibold text-ink-700 dark:text-ink-200">
                 {{ user?.email }}
@@ -136,7 +136,7 @@
               class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-semibold text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/30 hover:bg-red-100 dark:hover:bg-red-900/50 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
             >
               <UIcon name="i-heroicons-arrow-right-on-rectangle" class="w-5 h-5" />
-              Logout
+              Dil
             </button>
           </div>
         </div>
@@ -154,12 +154,12 @@
                   aria-controls="dashboard-mobile-nav"
                   @click="toggleMobileNav"
                 >
-                  <span class="sr-only">{{ isMobileNavOpen ? 'Close navigation' : 'Open navigation' }}</span>
+                  <span class="sr-only">{{ isMobileNavOpen ? 'Mbyll navigimin' : 'Hap navigimin' }}</span>
                   <UIcon :name="isMobileNavOpen ? 'i-heroicons-x-mark' : 'i-heroicons-bars-3'" class="w-7 h-7" />
                 </button>
                 <div>
                   <p class="text-sm font-medium text-ink-500 dark:text-ink-400 uppercase tracking-wide">
-                    Tenant Dashboard
+                    Dashboard
                   </p>
                   <h1 class="text-2xl font-bold text-ink-900 dark:text-white leading-snug">
                     {{ currentSectionTitle }}
@@ -173,7 +173,7 @@
                   @click="goToMenuPreview"
                 >
                   <UIcon name="i-heroicons-eye" class="w-4 h-4" />
-                  View Menu
+                  Shiko menunë
                 </button>
               </div>
             </div>
@@ -183,7 +183,7 @@
           <div v-if="loading" class="flex items-center justify-center py-12">
             <div class="text-center space-y-3">
               <UIcon name="i-heroicons-arrow-path" class="w-8 h-8 animate-spin text-brand-500 mx-auto" />
-              <p class="text-ink-600 dark:text-ink-400 text-sm font-medium">Loading dashboard data</p>
+              <p class="text-ink-600 dark:text-ink-400 text-sm font-medium">Po ngarkohen të dhënat e panelit</p>
             </div>
           </div>
           <slot v-else />
@@ -206,13 +206,20 @@ const loading = ref(true)
 const isMobileNavOpen = ref(false)
 const defaultMenuSlug = useState<string>('tenant-default-menu-slug', () => 'main')
 
-const navItems = [
-  { label: 'Overview', path: '/dashboard', icon: 'i-heroicons-home-modern' },
-  { label: 'Categories', path: '/dashboard/categories', icon: 'i-heroicons-squares-2x2' },
-  { label: 'Items', path: '/dashboard/items', icon: 'i-heroicons-clipboard-document-list' },
-  { label: 'Design', path: '/dashboard/design', icon: 'i-heroicons-swatch' },
-  { label: 'QR Code', path: '/dashboard/qr', icon: 'i-heroicons-qr-code' },
-  { label: 'Settings', path: '/dashboard/settings', icon: 'i-heroicons-cog-6-tooth' }
+type NavItem = {
+  label: string
+  path: string
+  icon: string
+  badge?: string
+}
+
+const navItems: NavItem[] = [
+  { label: 'Paneli Kryesor', path: '/dashboard', icon: 'i-heroicons-home-modern' },
+  { label: 'Kategori', path: '/dashboard/categories', icon: 'i-heroicons-squares-2x2' },
+  { label: 'Artikuj', path: '/dashboard/items', icon: 'i-heroicons-clipboard-document-list' },
+  { label: 'Dizajn', path: '/dashboard/design', icon: 'i-heroicons-swatch' },
+  { label: 'Kodi QR', path: '/dashboard/qr', icon: 'i-heroicons-qr-code' },
+  { label: 'Cilësimet', path: '/dashboard/settings', icon: 'i-heroicons-cog-6-tooth' }
 ]
 
 const isActive = (path: string) => {
@@ -251,7 +258,7 @@ const currentSectionTitle = computed(() => {
   if (match) {
     return match.label
   }
-  return 'Dashboard'
+  return 'Paneli'
 })
 
 const fetchDefaultMenuSlug = async () => {
@@ -267,7 +274,7 @@ const fetchDefaultMenuSlug = async () => {
     const activeMenu = menus.find(menuItem => menuItem.is_default) ?? menus[0]
     defaultMenuSlug.value = activeMenu?.slug ?? 'main'
   } catch (error) {
-    console.error('Failed to load default menu slug', error)
+    console.error('Dështoi ngarkimi i slug-ut të menysë së parazgjedhur', error)
   }
 }
 
@@ -275,8 +282,8 @@ const handleLogout = async () => {
   try {
     await client.auth.signOut()
     toast.add({
-      title: 'Logged out',
-      description: 'You have been successfully logged out',
+      title: 'U çkyçët',
+      description: 'U çkyçët me sukses',
       color: 'green',
       icon: 'i-heroicons-check-circle',
       timeout: 3000
@@ -284,8 +291,8 @@ const handleLogout = async () => {
     await router.push('/auth/login')
   } catch (error: any) {
     toast.add({
-      title: 'Error',
-      description: 'Failed to logout. Please try again.',
+      title: 'Gabim',
+      description: 'Dështoi çkyçja. Ju lutemi provoni përsëri.',
       color: 'red',
       icon: 'i-heroicons-exclamation-circle',
       timeout: 5000
@@ -306,10 +313,10 @@ onMounted(async () => {
       await loadTenantForUser()
       await fetchDefaultMenuSlug()
     } catch (error: any) {
-      console.error('Error loading tenant:', error)
+      console.error('Gabim gjatë ngarkimit të qiramarrësit:', error)
       toast.add({
-        title: 'Error',
-        description: 'Failed to load tenant information',
+        title: 'Gabim',
+        description: 'Dështoi ngarkimi i informacionit të qiramarrësit',
         color: 'red',
         icon: 'i-heroicons-exclamation-circle',
         timeout: 5000
